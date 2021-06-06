@@ -62,10 +62,10 @@ ansible-playbook \
     -t download \
     -e download_run_once=True \
     -e download_localhost=True \
-    -e download_cache_dir=${CURRENT_DIR}/offline/kubespray \
+    -e download_cache_dir=${CURRENT_DIR}/outputs/kubespray \
     ${ADDONS} \
     --become --become-user=root \
     -v \
     cluster.yml
 
-sudo chown -R "$USER" ${CURRENT_DIR}/offline/kubespray
+sudo chown -R "$USER" ${CURRENT_DIR}/outputs/kubespray
