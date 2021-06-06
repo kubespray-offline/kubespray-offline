@@ -1,0 +1,21 @@
+# Docker
+docker-ce
+containerd.io
+
+audit
+yum-plugin-versionlock
+firewalld
+gnupg2
+lvm2
+unzip
+
+# python3
+python3
+libselinux-python3
+#python3-devel
+#gcc
+#openssl-devel
+
+# nfs
+#rpcbind
+#nfs-utils
