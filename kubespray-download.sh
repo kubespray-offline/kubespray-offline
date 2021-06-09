@@ -17,6 +17,8 @@ if [ ! -e $KUBESPRAY_DIR/$INVENTORY_DIR ]; then
     exit 1
 fi
 
+[ ! -e /etc/kubernetes ] && sudo mkdir /etc/kubernetes
+
 echo "MYIP = $MYIP"
 
 cat >${KUBESPRAY_DIR}/${INVENTORY_DIR}/local_download.yml <<EOF
