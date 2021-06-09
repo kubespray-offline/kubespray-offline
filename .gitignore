@@ -4,3 +4,4 @@
 
 kubespray/
 outputs/
+.vagrant/
