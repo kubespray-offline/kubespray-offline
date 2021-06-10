@@ -54,10 +54,10 @@ ADDONS="
 -e metrics_server_enabled=True
 -e local_path_provisioner_enabled=True
 -e local_volume_provisioner_enabled=True
--e rbd_provisioner_enabled=True
 -e ingress_nginx_enabled=True
 -e metallb_enabled=True
 "
+#-e rbd_provisioner_enabled=True
 
 TAGS="-t download"
 if [ "$1" = "install" ]; then
