@@ -1,0 +1,15 @@
+# Kubespray offline file generator scripts
+
+## Requirements
+
+Same OS of k8s target nodes.
+
+- CentOS/RHEL 7/8
+- Ubuntu 20.04
+
+## Preparation
+
+Install required packages.
+
+    $ ./prepare.sh
+

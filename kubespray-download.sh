@@ -59,15 +59,29 @@ ADDONS="
 -e metallb_enabled=True
 "
 
+TAGS="-t download"
+if [ "$1" = "install" ]; then
+    TAGS=""
+fi
+
+PROXY=""
+if [ -n "$http_proxy" ]; then
+    PROXY="-e http_proxy=$http_proxy"
+fi
+if [ -n "$https_proxy" ]; then
+    PROXY="$PROXY -e https_proxy=$https_proxy"
+fi
+
 ansible-playbook \
     -i ${INVENTORY_DIR}/local_download.yml \
-    -t download \
+    ${TAGS} \
+    ${PROXY} \
     -e download_run_once=True \
     -e download_localhost=True \
     -e download_cache_dir=${CURRENT_DIR}/outputs/kubespray \
     ${ADDONS} \
     --become --become-user=root \
-    -v \
+    -vv \
     cluster.yml
 
 sudo chown -R "$USER" ${CURRENT_DIR}/outputs/kubespray
