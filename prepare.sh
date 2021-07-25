@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /etc/os-release
+
 # Install required packages
 if [ -e /etc/redhat-release ]; then
     sudo yum check-update
@@ -12,6 +14,17 @@ if [ -e /etc/redhat-release ]; then
     sudo yum install -y gcc python3-devel libffi-devel # pypi-mirror
     sudo yum install -y createrepo
     sudo systemctl enable --now docker
+
+
+    if [ "$VERSION_ID" != "7" ]; then
+        # RHEL/CentOS 8
+        if ! command -v repo2module >/dev/null; then
+            echo "==> Install modulemd-tools"
+            sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+            sudo dnf copr enable -y frostyx/modulemd-tools-epel
+            sudo dnf install -y modulemd-tools
+        fi
+    fi
 else
     sources=/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list  # Same as kubespray
     if [ ! -e $sources ]; then

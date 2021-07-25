@@ -15,14 +15,6 @@ else
     # RHEL 8
     IS_RHEL8=true
     RT="sudo dnf download --resolve --alldeps --downloaddir $CACHEDIR"
-
-    # Install EPEL8
-    if ! command -v repo2module >/dev/null; then
-        echo "==> Install modulemd-tools"
-        sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-        sudo dnf copr enable -y frostyx/modulemd-tools-epel
-        sudo dnf install -y modulemd-tools
-    fi
 fi
 
 YD="yumdownloader --destdir=$CACHEDIR -y"
