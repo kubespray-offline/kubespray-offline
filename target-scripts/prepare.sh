@@ -33,5 +33,5 @@ fi
 
 # Load images
 cd $BASEDIR/images
-sudo docker load -i ./images/docker.io-library-registry-*.tar
-sudo docker load -i ./images/docker.io-library-nginx-*.tar
+sudo docker load -i docker.io-library-registry-*.tar
+sudo docker load -i docker.io-library-nginx-*.tar
