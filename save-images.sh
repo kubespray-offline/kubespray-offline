@@ -34,23 +34,24 @@ image_save() {
     out="$2"
 
     if [ "$CONTAINER_ENGINE" = "docker" ]; then
-        sudo docker save $image > "$out" || exit 1
+        sudo docker save -o $out $image || exit 1
     else
         sudo ctr -n k8s.io images export $out $image || exit 1
     fi
 }
 
-IMAGEDIR=outputs/kubespray/images/
-if [ ! -e $IMAGEDIR ]; then
+IMAGEDIR=outputs/images
+if [ ! -d $IMAGEDIR ]; then
     mkdir -p $IMAGEDIR
 fi
 
 echo "==> Pull container images"
 
-cat imagelists/*.txt | sed "s/#.*$//g" | sort -u > $IMAGEDIR/images.txt
-cat $IMAGEDIR/images.txt
 
-IMAGES=$(cat $IMAGEDIR/images.txt)
+cat imagelists/*.txt | sed "s/#.*$//g" | sort -u > $IMAGEDIR/additional-images.list
+cat $IMAGEDIR/additional-images.list
+
+IMAGES=$(cat $IMAGEDIR/additional-images.list)
 
 for i in $IMAGES; do
     i=$(expand_image_repo $i)
