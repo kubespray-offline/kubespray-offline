@@ -24,6 +24,8 @@ get_image() {
         echo "==> Pull $image"
         sudo docker pull $image || exit 1
         sudo docker save -o $IMAGES_DIR/$filename $image
+        sudo chown $(whoami) $IMAGES_DIR/$filename
+        chmod 0644 $IMAGES_DIR/$filename
     else
         echo "==> Skip $image"
     fi

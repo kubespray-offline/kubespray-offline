@@ -38,6 +38,8 @@ image_save() {
     else
         sudo ctr -n k8s.io images export $out $image || exit 1
     fi
+    sudo chown $(whoami) $out
+    chmod 0644 $out
 }
 
 IMAGEDIR=outputs/images
