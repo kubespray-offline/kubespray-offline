@@ -23,12 +23,14 @@ Vagrant.configure("2") do |config|
     c.vm.hostname = "ubuntu"
     c.vm.network "private_network", ip: "10.240.0.51"
     c.vm.box = "generic/ubuntu2004"
+    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2230
   end
 
   config.vm.define "cent8" do |c|
     c.vm.hostname = "cent8"
     c.vm.network "private_network", ip: "10.240.0.51"
     c.vm.box = "generic/centos8"
+    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2231
   end
 
 =begin
@@ -36,6 +38,7 @@ Vagrant.configure("2") do |config|
     c.vm.hostname = "cent7"
     c.vm.network "private_network", ip: "10.240.0.52"
     c.vm.box = "generic/centos7"
+    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2232
   end
 =end
 
