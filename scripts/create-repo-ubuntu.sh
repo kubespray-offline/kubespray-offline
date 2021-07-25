@@ -8,7 +8,7 @@ sudo apt install -y apt-transport-https ca-certificates curl gnupg lsb-release a
 # Package list
 PKGS=$(cat pkglist/ubuntu/*.txt | grep -v "^#" | sort | uniq)
 
-CACHEDIR=outputs/cache-debs
+CACHEDIR=cache/cache-debs
 mkdir -p $CACHEDIR
 
 echo "===> Update apt cache"

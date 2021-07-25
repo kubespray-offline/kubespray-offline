@@ -5,7 +5,7 @@
 # packages
 PKGS=$(cat pkglist/rhel/*.txt pkglist/rhel/${VERSION_ID}/*.txt | grep -v "^#" | sort | uniq)
 
-CACHEDIR=outputs/cache-rpms
+CACHEDIR=cache/cache-rpms
 mkdir -p $CACHEDIR
 
 if [ "$VERSION_ID" = "7" ]; then
