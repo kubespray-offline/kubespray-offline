@@ -9,7 +9,7 @@ if [ -e /etc/redhat-release ]; then
     fi
     sudo rpm -e podman-docker docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
     sudo yum install -y python3 python3-pip rsync docker-ce docker-ce-cli
-    sudo yum install -y libffi-devel # pypi-mirror
+    sudo yum install -y gcc python3-devel libffi-devel # pypi-mirror
     sudo systemctl enable --now docker
 else
     sources=/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list  # Same as kubespray
@@ -20,7 +20,7 @@ else
     sudo apt update
     sudo dpkg -r docker docker-engine docker.io containerd runc
     sudo apt install -y python3 python3-pip python3-venv rsync docker-ce docker-ce-cli
-    sudo apt install -y libffi-dev # pypi-mirror
+    sudo apt install -y gcc python3-dev libffi-dev # pypi-mirror
 fi
 
 # Set up docker proxy
