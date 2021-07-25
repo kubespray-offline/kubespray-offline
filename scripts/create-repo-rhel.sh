@@ -5,22 +5,6 @@
 # packages
 PKGS=$(cat pkglist/rhel/*.txt pkglist/rhel/${VERSION_ID}/*.txt | grep -v "^#" | sort | uniq)
 
-# Docker CE
-echo "==> Setup docker-ce repo"
-sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo rpm -e podman-docker docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
-
-# install tools
-if ! type createrepo >/dev/null 2>&1; then
-    echo "==> Install createrepo"
-    sudo yum install -y createrepo || exit 1
-fi
-if ! type repotrack >/dev/null 2>&1; then
-    echo "==> Install yum-utils"
-    sudo yum install -y yum-utils || exit 1
-fi
-
 CACHEDIR=outputs/cache-rpms
 mkdir -p $CACHEDIR
 
@@ -46,8 +30,8 @@ mkdir -p $RPMDIR
 
 sudo createrepo $RPMDIR || exit 1
 
-echo "==> Create repo tarball"
-mkdir -p outputs/offline-files
-(cd outputs && tar cvzf offline-files/offline-rpm-repo.tar.gz rpms)
+#echo "==> Create repo tarball"
+#mkdir -p outputs/offline-files
+#(cd outputs && tar cvzf offline-files/offline-rpm-repo.tar.gz rpms)
 
 echo "create-repo done."

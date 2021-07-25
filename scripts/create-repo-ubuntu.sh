@@ -8,15 +8,6 @@ sudo apt install -y apt-transport-https ca-certificates curl gnupg lsb-release a
 # Package list
 PKGS=$(cat pkglist/ubuntu/*.txt | grep -v "^#" | sort | uniq)
 
-# setup Docker CE repo
-sources=/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list  # Same as kubespray
-if [ ! -e $sources ]; then
-    echo "===> Setup Docker repo"
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
-        | sudo tee $sources
-fi
-
 CACHEDIR=outputs/cache-debs
 mkdir -p $CACHEDIR
 
@@ -49,8 +40,6 @@ apt-ftparchive release . > Release
 popd
 
 # Create tarball
-(cd outputs && mkdir -p offline-files && tar czf offline-files/offline-apt-repo.tar.gz debs)
+#(cd outputs && mkdir -p offline-files && tar czf offline-files/offline-apt-repo.tar.gz debs)
 
 echo "Done."
-
-

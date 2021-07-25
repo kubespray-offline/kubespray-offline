@@ -10,6 +10,7 @@ if [ -e /etc/redhat-release ]; then
     sudo rpm -e podman-docker docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
     sudo yum install -y python3 python3-pip rsync docker-ce docker-ce-cli
     sudo yum install -y gcc python3-devel libffi-devel # pypi-mirror
+    sudo yum install -y createrepo
     sudo systemctl enable --now docker
 else
     sources=/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list  # Same as kubespray
