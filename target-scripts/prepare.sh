@@ -23,9 +23,6 @@ enabled=0
 gpgcheck=0
 EOF
 
-    # ad hoc...
-    sudo yum localinstall -y --disablerepo="*" --enablerepo=local-repo container-selinux-* libslirp-* slirp4netns-* fuse-overlayfs-*
-
     # Install docker-ce
     sudo yum install -y --disablerepo="*" --enablerepo=local-repo docker-ce
   else
