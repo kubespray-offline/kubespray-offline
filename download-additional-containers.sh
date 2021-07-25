@@ -57,11 +57,15 @@ IMAGES=$(cat $IMAGEDIR/additional-images.list)
 
 for i in $IMAGES; do
     i=$(expand_image_repo $i)
-    f="$(echo $i | sed 's/\//_/g').tar"
+    f="$(echo $i | sed 's/\//-/g' | sed 's/:/-/g').tar"
 
-    echo "==> pulling $i"
-    image_pull $i
+    if [ -e $IMAGEDIR/$f ]; then
+        echo "==> Skip: $i"
+    else
+        echo "==> pulling $i"
+        image_pull $i
 
-    echo "==> saving $i to $IMAGEDIR/$f"
-    image_save $i "$IMAGEDIR/$f" || exit 1
+        echo "==> saving $i to $IMAGEDIR/$f"
+        image_save $i "$IMAGEDIR/$f" || exit 1
+    fi
 done
