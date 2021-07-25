@@ -2,6 +2,7 @@
 *.iml
 *~
 
-kubespray/
+kubespray*.tar.gz
+kubespray*/
 outputs/
 .vagrant/
