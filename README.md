@@ -13,23 +13,35 @@ Install required packages.
 
     $ ./prepare.sh
 
+Download and extract kubespray.
+
+    $ ./get-kubespray.sh
+
+Activate python3 venv
+
+    $ . ~/.venv/default/bin/activate
+
 ## Download Kubespray offline files
 
 Set KUBESPRAY_DIR environment variable to kubespray directory,
 or just prepare kubespray in ./kubespray dir.
 
-Active python3 venv
+Execute download files of kubespray
 
-    $ . ~/.venv/default/bin/activate
+    $ ./download-kubespray-files.sh
 
-Install kubespray required packages including ansible.
+## Download additional container images
 
-    $ pip install -r $KUBESPRAY_DIR/requirements.txt
+Download additional container images.
+You can add any container image repoTag to imagelists/*.txt.
 
-Create invetory directory.
+    $ ./download-additional-containers.sh
 
-    $ cp -rfp $KUBESPRAY_DIR/inventory/sample $KUBESPRAY_DIR/inventory/mycluster
+## Download RPM/DEB repositories
 
-Execute download tasks of kubespray.
+    $ ./create-repo.sh
 
-    $ ./kubespray-download.sh
+## Download PyPI mirror files
+
+    $ ./pypi-mirror.sh
+
