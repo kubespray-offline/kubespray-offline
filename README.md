@@ -21,27 +21,27 @@ Activate python3 venv
 
     $ . ~/.venv/default/bin/activate
 
-## Download Kubespray offline files
+## Download offline files
 
-Set KUBESPRAY_DIR environment variable to kubespray directory,
-or just prepare kubespray in ./kubespray dir.
+You can set KUBESPRAY_DIR environment variable to kubespray directory,
+or download kubespray automatically.
 
-Execute download files of kubespray
+Download all files:
 
-    $ ./download-kubespray-files.sh
+    $ ./download-all.sh
 
-## Download additional container images
+This script calls all of following scripts.
 
-Download additional container images.
-You can add any container image repoTag to imagelists/*.txt.
-
-    $ ./download-additional-containers.sh
-
-## Download RPM/DEB repositories
-
-    $ ./create-repo.sh
-
-## Download PyPI mirror files
-
-    $ ./pypi-mirror.sh
-
+* prepare.sh
+    - Setup docker, python venv, etc.
+* get-kubespray.sh
+    - Download and extract kubespray, if KUBESPRAY_DIR does not exist.
+* pypi-mirror.sh
+    - Download PyPI mirror files
+* download-kubespray-files.sh
+    - Download kubespray offline files (containers, files, etc)
+* download-additional-containers.sh
+    - Download additional containers.
+    - You can add any container image repoTag to imagelists/*.txt.
+* create-repo.sh
+    - Download RPM or DEB repositories.
