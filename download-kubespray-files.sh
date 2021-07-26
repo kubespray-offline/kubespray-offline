@@ -1,5 +1,12 @@
 #!/bin/bash
 
+source config.sh
+
+if [ ! -e $KUBESPRAY_DIR ]; then
+    echo "No kubespray dir at $KUBESPRAY_DIR"
+    exit 1
+fi
+
 FILES_DIR=outputs/files
 IMAGES_DIR=outputs/images
 
@@ -30,12 +37,6 @@ get_image() {
         echo "==> Skip $image"
     fi
 }
-
-KUBESPRAY_DIR=${KUBESPRAY_DIR:-./kubespray}
-if [ ! -e $KUBESPRAY_DIR ]; then
-    echo "No kubespray dir at $KUBESPRAY_DIR"
-    exit 1
-fi
 
 # execute offline generate_list.sh
 /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1

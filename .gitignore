@@ -7,3 +7,4 @@ kubespray*/
 outputs/
 cache/
 .vagrant/
+.venv/

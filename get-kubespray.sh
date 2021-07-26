@@ -1,9 +1,6 @@
 #!/bin/bash
 
-KUBESPRAY_VERSION=2.16.0
-KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
-
-KUBESPRAY_DIR=${KUBESPRAY_DIR:-./kubespray}
+source config.sh
 
 if [ ! -d ${KUBESPRAY_DIR} ]; then
     if [ ! -e ${KUBESPRAY_TARBALL} ]; then

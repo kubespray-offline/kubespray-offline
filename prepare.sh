@@ -63,10 +63,10 @@ EOF
 fi
 
 # Create python3 venv
-if [ ! -e ~/.venv/default ]; then
-    python3 -m venv ~/.venv/default
+if [ ! -e ./.venv ]; then
+    python3 -m venv ./.venv
 fi
-. ~/.venv/default/bin/activate
+source ./.venv/bin/activate
 
 echo "==> Install python packages"
 pip install -r requirements.txt
