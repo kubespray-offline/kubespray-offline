@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "==> prepare.sh"
+
 . /etc/os-release
 
 # Install required packages
@@ -64,6 +66,7 @@ fi
 if [ ! -e ~/.venv/default ]; then
     python3 -m venv ~/.venv/default
 fi
-
 . ~/.venv/default/bin/activate
+
+echo "==> Install python packages"
 pip install -r requirements.txt

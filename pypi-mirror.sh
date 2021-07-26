@@ -2,6 +2,7 @@
 
 KUBESPRAY_DIR=${KUBESPRAY_DIR:-./kubespray}
 
+echo "==> Create pypi mirror for kubespray"
 pypi-mirror download -d outputs/pypi/files -r ${KUBESPRAY_DIR}/requirements.txt
 pypi-mirror create -d outputs/pypi/files -m outputs/pypi
 
