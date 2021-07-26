@@ -10,13 +10,42 @@ fi
 FILES_DIR=outputs/files
 IMAGES_DIR=outputs/images
 
+# Decide relative directory of file from URL
+decide_relative_dir() {
+    local url=$1
+    local rdir
+    rdir=$url
+    rdir=$(echo $rdir | sed "s@.*/\(v[0-9.]*\)/.*/kube\(adm\|ctl\|let\)@kubernetes/\1@g")
+    rdir=$(echo $rdir | sed "s@.*/etcd-.*.tar.gz@kubernetes/etcd@")
+    rdir=$(echo $rdir | sed "s@.*/cni-plugins.*.tgz@kubernetes/cni@")
+    rdir=$(echo $rdir | sed "s@.*/crictl-.*.tar.gz@kubernetes/cri-tools@")
+    rdir=$(echo $rdir | sed "s@.*/calicoctl-.*@kubernetes/calico@")
+    rdir=$(echo $rdir | sed "s@.*/calico/.*@kubernetes/calico@")
+
+    if [ "$url" != "$rdir" ]; then
+        echo $rdir
+    else
+        echo ""
+    fi
+}
+
 get_url() {
     url=$1
     filename="${url##*/}"
 
-    if [ ! -e $FILES_DIR/$filename ]; then
+    rdir=$(decide_relative_dir $url)
+
+    if [ -n "$rdir" ]; then
+        if [ ! -d $FILES_DIR/$rdir ]; then
+            mkdir -p $FILES_DIR/$rdir
+        fi
+    else
+        rdir="."
+    fi
+
+    if [ ! -e $FILES_DIR/$rdir/$filename ]; then
         echo "==> Download $url"
-        curl -SL $url > $FILES_DIR/$filename
+        curl -SL $url > $FILES_DIR/$rdir/$filename
     else
         echo "==> Skip $url"
     fi
