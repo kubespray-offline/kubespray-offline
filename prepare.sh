@@ -11,13 +11,15 @@ if [ -e /etc/redhat-release ]; then
         sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     fi
 
-    sudo rpm -e podman-docker docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
+    if ! command -v docker >/dev/null; then
+        sudo rpm -e podman-docker docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
 
-    echo "==> Install docker-ce related packages"
-    sudo yum install -y python3 python3-pip rsync docker-ce docker-ce-cli
-    sudo yum install -y gcc python3-devel libffi-devel # pypi-mirror
-    sudo yum install -y createrepo
-    sudo systemctl enable --now docker
+        echo "==> Install docker-ce related packages"
+        sudo yum install -y python3 python3-pip rsync docker-ce docker-ce-cli
+        sudo yum install -y gcc python3-devel libffi-devel # pypi-mirror
+        sudo yum install -y createrepo
+        sudo systemctl enable --now docker
+    fi
 
 
     if [ "$VERSION_ID" != "7" ]; then
@@ -36,12 +38,15 @@ else
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
         echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee $sources
     fi
-    sudo apt update
-    sudo dpkg -r docker docker-engine docker.io containerd runc
+
+    if ! command -v docker >/dev/null; then
+        sudo apt update
+        sudo dpkg -r docker docker-engine docker.io containerd runc
     
-    echo "==> Install docker-ce related packages"
-    sudo apt install -y python3 python3-pip python3-venv rsync docker-ce docker-ce-cli
-    sudo apt install -y gcc python3-dev libffi-dev # pypi-mirror
+        echo "==> Install docker-ce related packages"
+        sudo apt install -y python3 python3-pip python3-venv rsync docker-ce docker-ce-cli
+        sudo apt install -y gcc python3-dev libffi-dev # pypi-mirror
+    fi
 fi
 
 # Set up docker proxy
