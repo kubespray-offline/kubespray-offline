@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REGISTRY=localhost:35000
+LOCAL_REGISTRY=${LOCAL_REGISTRY:-"localhost:35000"}
 
 BASEDIR="."
 if [ ! -d images ] && [ -d ../outputs ]; then
@@ -17,10 +17,23 @@ load_images() {
 push_images() {
   images=$(cat $BASEDIR/images/*.list)
   for image in $images; do
+
+    # Removes specific repo parts from each image for kubespray
+    FIRST_PART=$(echo ${image} | awk -F"/" '{print $1}')
+    if  [ "$FIRST_PART" = "k8s.gcr.io" ] ||
+        [ "$FIRST_PART" = "gcr.io" ] ||
+        [ "$FIRST_PART" = "docker.io" ] ||
+        [ "$FIRST_PART" = "quay.io" ]; then
+        newimage=$(echo ${image} | sed s@"${FIRST_PART}/"@@)
+    else
+        newimage=$image
+    fi
+
     echo "===> Tag $image"
-    sudo docker tag $image ${LOCAL_REGISTRY}/${image}
+    sudo docker tag $image ${LOCAL_REGISTRY}/${newimage}
+
     echo "===> Push $image"
-    sudo docker push ${LOCAL_REGISTRY}/${image}
+    sudo docker push ${LOCAL_REGISTRY}/${newimage}
   done
 }
 
