@@ -29,10 +29,10 @@ push_images() {
         newimage=$image
     fi
 
-    echo "===> Tag $image"
+    echo "===> Tag $image -> $newimage"
     sudo docker tag $image ${LOCAL_REGISTRY}/${newimage}
 
-    echo "===> Push $image"
+    echo "===> Push $newimage"
     sudo docker push ${LOCAL_REGISTRY}/${newimage}
   done
 }
