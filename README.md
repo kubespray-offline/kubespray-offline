@@ -7,24 +7,9 @@ Same OS of k8s target nodes.
 - CentOS/RHEL 7/8
 - Ubuntu 20.04
 
-## Preparation
-
-Install required packages.
-
-    $ ./prepare.sh
-
-Download and extract kubespray.
-
-    $ ./get-kubespray.sh
-
-Activate python3 venv
-
-    $ . ~/.venv/default/bin/activate
-
 ## Download offline files
 
-You can set KUBESPRAY_DIR environment variable to kubespray directory,
-or download kubespray automatically.
+Before download offline files, check and edit configurations in config.sh.
 
 Download all files:
 
