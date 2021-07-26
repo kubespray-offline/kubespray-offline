@@ -6,7 +6,6 @@
 ./download-kubespray-files.sh || exit 1
 ./download-additional-containers.sh || exit 1
 ./create-repo.sh || exit 1
-
-/bin/cp -f target-scripts/*.sh outputs/
+./copy-target-scripts.sh || exit 1
 
 echo "Done."

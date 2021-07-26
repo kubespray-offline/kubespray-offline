@@ -15,6 +15,8 @@ Download all files:
 
     $ ./download-all.sh
 
+All artifiacts are stored in ./outputs directory.
+
 This script calls all of following scripts.
 
 * prepare.sh
@@ -30,3 +32,5 @@ This script calls all of following scripts.
     - You can add any container image repoTag to imagelists/*.txt.
 * create-repo.sh
     - Download RPM or DEB repositories.
+* copy-target-scripts.sh
+    - Copy scripts for target node.
