@@ -21,11 +21,11 @@ expand_image_repo() {
 image_pull() {
     image="$1"
 
-    if [ "$CONTAINER_ENGINE" = "docker" ]; then
-        sudo docker pull $image || exit 1
-    else
-        sudo ctr -n k8s.io images pull $image || exit 1
-    fi
+    #if [ "$CONTAINER_ENGINE" = "docker" ]; then
+    sudo docker pull $image || exit 1
+    #else
+    #sudo ctr -n k8s.io images pull $image || exit 1
+    #fi
 }
 
 # Save container image to tarball
@@ -33,11 +33,11 @@ image_save() {
     image="$1"
     out="$2"
 
-    if [ "$CONTAINER_ENGINE" = "docker" ]; then
-        sudo docker save -o $out $image || exit 1
-    else
-        sudo ctr -n k8s.io images export $out $image || exit 1
-    fi
+    #if [ "$CONTAINER_ENGINE" = "docker" ]; then
+    sudo docker save -o $out $image || exit 1
+    #else
+    #sudo ctr -n k8s.io images export $out $image || exit 1
+    #fi
     sudo chown $(whoami) $out
     chmod 0644 $out
 }
