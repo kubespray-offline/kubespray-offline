@@ -1,0 +1,3 @@
+#!/bin/bash
+
+REGISTRY_PORT=${REGISTRY_PORT:-35000}

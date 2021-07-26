@@ -1,6 +1,8 @@
 #!/bin/bash
 
-LOCAL_REGISTRY=${LOCAL_REGISTRY:-"localhost:35000"}
+source ./config.sh
+
+LOCAL_REGISTRY=${LOCAL_REGISTRY:-"localhost:${REGISTRY_PORT}"}
 
 BASEDIR="."
 if [ ! -d images ] && [ -d ../outputs ]; then
