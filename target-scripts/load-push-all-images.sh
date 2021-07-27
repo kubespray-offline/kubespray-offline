@@ -21,21 +21,18 @@ push_images() {
   for image in $images; do
 
     # Removes specific repo parts from each image for kubespray
-    FIRST_PART=$(echo ${image} | awk -F"/" '{print $1}')
-    if  [ "$FIRST_PART" = "k8s.gcr.io" ] ||
-        [ "$FIRST_PART" = "gcr.io" ] ||
-        [ "$FIRST_PART" = "docker.io" ] ||
-        [ "$FIRST_PART" = "quay.io" ]; then
-        newimage=$(echo ${image} | sed s@"${FIRST_PART}/"@@)
-    else
-        newimage=$image
-    fi
+    newImage=$image
+    for repo in k8s.gcr.io gcr.io docker.io quay.io; do
+        newImage=$(echo ${newImage} | sed s@^${repo}/@@)
+    done
 
-    echo "===> Tag $image -> $newimage"
-    sudo docker tag $image ${LOCAL_REGISTRY}/${newimage}
+    newImage=${LOCAL_REGISTRY}/${newImage}
 
-    echo "===> Push $newimage"
-    sudo docker push ${LOCAL_REGISTRY}/${newimage}
+    echo "===> Tag ${image} -> ${newImage}"
+    sudo docker tag ${image} ${newImage}
+
+    echo "===> Push ${newImage}"
+    sudo docker push ${newImage}
   done
 }
 
