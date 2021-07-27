@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source config.sh
+source scripts/images.sh
 
 if [ ! -e $KUBESPRAY_DIR ]; then
     echo "No kubespray dir at $KUBESPRAY_DIR"
@@ -8,7 +9,6 @@ if [ ! -e $KUBESPRAY_DIR ]; then
 fi
 
 FILES_DIR=outputs/files
-IMAGES_DIR=outputs/images
 
 # Decide relative directory of file from URL
 decide_relative_dir() {
@@ -51,27 +51,10 @@ get_url() {
     fi
 }
 
-get_image() {
-    image=$1
-
-    filename="$(echo ${image} | sed s@"/"@"-"@g | sed s/":"/"-"/g)".tar
-
-    if [ ! -e $IMAGES_DIR/$filename ]; then
-        echo "==> Pull $image"
-        sudo docker pull $image || exit 1
-        sudo docker save -o $IMAGES_DIR/$filename $image
-        sudo chown $(whoami) $IMAGES_DIR/$filename
-        chmod 0644 $IMAGES_DIR/$filename
-    else
-        echo "==> Skip $image"
-    fi
-}
-
 # execute offline generate_list.sh
 /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
 
 mkdir -p $FILES_DIR
-mkdir -p $IMAGES_DIR
 
 cp ${KUBESPRAY_DIR}/contrib/offline/temp/files.list $FILES_DIR/
 cp ${KUBESPRAY_DIR}/contrib/offline/temp/images.list $IMAGES_DIR/
