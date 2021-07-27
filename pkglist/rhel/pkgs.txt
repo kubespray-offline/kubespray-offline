@@ -2,19 +2,34 @@
 docker-ce
 containerd.io
 
+# python3
+python3
+#python3-devel
+#gcc
+#openssl-devel
+
+# kubespray: required_pkgs
+libselinux-python3
+device-mapper-libs
+nss
+conntrack
+
+# kubespray: common_required_pkgs
+curl
+rsync
+socat
+unzip
+e2fsprogs
+xfsprogs
+ebtables
+bash-completion
+
+# others
 audit
 yum-plugin-versionlock
 firewalld
 gnupg2
 lvm2
-unzip
-
-# python3
-python3
-libselinux-python3
-#python3-devel
-#gcc
-#openssl-devel
 
 # nfs
 #rpcbind

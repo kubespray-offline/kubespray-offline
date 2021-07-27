@@ -1,12 +1,4 @@
 # Docker and dependencies
-apt-transport-https
-ca-certificates
-curl
-gnupg
-gnupg-agent
-software-properties-common
-lsb-release
-
 docker-ce
 docker-ce-cli
 containerd.io
@@ -17,10 +9,29 @@ python3-venv
 python3-selinux
 # python-cryptography
 
-# nfs
-#nfs-common
-#nfs-kernel-server
+# kubespray: required_pkgs
+python-apt
+aufs-tools
+apt-transport-https
+software-properties-common
+conntrack
+
+# kubespray: common_required_pkgs
+curl
+rsync
+socat
+unzip
+e2fsprogs
+xfsprogs
+ebtables
+bash-completion
 
 # Others
 firewalld
 lvm2
+#gnupg-agent
+
+# nfs
+#nfs-common
+#nfs-kernel-server
+
