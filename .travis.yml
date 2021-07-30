@@ -1,0 +1,24 @@
+os: linux
+language: python
+  - "3.7"
+sudo: required
+
+branches:
+  except: /\/feature\//
+
+jobs:
+  include:
+    - dist: focal
+      script: ./ci/travis.sh
+
+    #- dist: bionic
+    #  install:
+    #    - pip install -r ansible/requirements.txt
+    #  env: CONTAINER_ENGINE=docker
+    #  script: ./ci/travis-ansible.sh
+
+    #- dist: bionic
+    #  install:
+    #    - pip install -r ansible/requirements.txt
+    #  env: CONTAINER_ENGINE=cri-o
+    #  script: ./ci/travis-ansible.sh
