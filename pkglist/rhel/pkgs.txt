@@ -16,7 +16,7 @@ conntrack
 gcc
 python3-devel
 libffi-devel
-#openssl-devel
+openssl-devel
 
 # kubespray: common_required_pkgs
 curl
