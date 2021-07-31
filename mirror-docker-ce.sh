@@ -24,12 +24,12 @@ if [ -e /etc/redhat-release ]; then
 else
     # Ubuntu
     wget --mirror --no-parent \
-         -X linux/ubuntu/dists/focal/pool/edge \
-         -X linux/ubuntu/dists/focal/pool/nightly \
-         -X linux/ubuntu/dists/focal/pool/test \
-         -X linux/ubuntu/dists/focal/pool/stable/arm64 \
-         -X linux/ubuntu/dists/focal/pool/stable/ppc64el \
-         -X linux/ubuntu/dists/focal/pool/stable/s390x \
+         -X linux/ubuntu/dists/${VERSION_CODENAME}/pool/edge \
+         -X linux/ubuntu/dists/${VERSION_CODENAME}/pool/nightly \
+         -X linux/ubuntu/dists/${VERSION_CODENAME}/pool/test \
+         -X linux/ubuntu/dists/${VERSION_CODENAME}/pool/stable/arm64 \
+         -X linux/ubuntu/dists/${VERSION_CODENAME}/pool/stable/ppc64el \
+         -X linux/ubuntu/dists/${VERSION_CODENAME}/pool/stable/s390x \
          https://download.docker.com/linux/ubuntu/dists/${VERSION_CODENAME}/   # need last slash for --no-parent
 
     curl -SL https://download.docker.com/linux/ubuntu/ >download.docker.com/linux/ubuntu/gpg
