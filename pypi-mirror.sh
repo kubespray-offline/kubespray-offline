@@ -15,6 +15,7 @@ echo "==> Create pypi mirror for kubespray"
 pip install -U pip
 pypi-mirror download -d outputs/pypi/files -r ${KUBESPRAY_DIR}/requirements.txt
 pypi-mirror download -d outputs/pypi/files pip setuptools wheel
+pypi-mirror download -d outputs/pypi/files pip setuptools==40.9.0 # For RHEL...
 pypi-mirror create -d outputs/pypi/files -m outputs/pypi
 
 
