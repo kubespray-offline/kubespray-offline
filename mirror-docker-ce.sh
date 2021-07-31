@@ -6,6 +6,14 @@ source /etc/os-release
 
 if [ -e /etc/redhat-release ]; then
     type=centos
+
+    # Remove version minor of RHEL
+    if echo "$VERSION_ID" | grep "^8\."; then
+        VERSION_ID=8
+    elif echo "$VERSION_ID" | grep "^7\."; then
+        VERSION_ID=7
+    fi
+
     wget --mirror --no-parent \
          https://download.docker.com/linux/${type}/${VERSION_ID}/x86_64/stable/   # need last slash for --no-parent
 
