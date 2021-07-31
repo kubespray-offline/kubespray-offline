@@ -24,6 +24,9 @@ xfsprogs
 ebtables
 bash-completion
 
+ipvsadm
+ipset
+
 # others
 audit
 yum-plugin-versionlock

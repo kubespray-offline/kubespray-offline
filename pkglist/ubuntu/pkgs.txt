@@ -11,10 +11,18 @@ python3-selinux
 
 # kubespray: required_pkgs
 python-apt
+python2
+python2-minimal
 aufs-tools
 apt-transport-https
 software-properties-common
 conntrack
+
+# compilers (for cffi, etc)
+gcc
+python3-dev
+libffi-dev
+libssl-dev
 
 # kubespray: common_required_pkgs
 curl
@@ -25,6 +33,9 @@ e2fsprogs
 xfsprogs
 ebtables
 bash-completion
+
+ipvsadm
+ipset
 
 # Others
 firewalld
