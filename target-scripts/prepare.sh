@@ -31,6 +31,8 @@ EOF
   fi
 fi
 
+sudo systemctl enable --now docker
+
 # Load images
 cd $BASEDIR/images
 sudo docker load -i docker.io-library-registry-*.tar
