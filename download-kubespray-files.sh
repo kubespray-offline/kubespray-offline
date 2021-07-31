@@ -19,9 +19,13 @@ decide_relative_dir() {
     rdir=$(echo $rdir | sed "s@.*/etcd-.*.tar.gz@kubernetes/etcd@")
     rdir=$(echo $rdir | sed "s@.*/cni-plugins.*.tgz@kubernetes/cni@")
     rdir=$(echo $rdir | sed "s@.*/crictl-.*.tar.gz@kubernetes/cri-tools@")
-    rdir=$(echo $rdir | sed "s@.*/calicoctl-.*@kubernetes/calico@")
-    rdir=$(echo $rdir | sed "s@.*/calico/.*@kubernetes/calico@")
+    rdir=$(echo $rdir | sed "s@.*/\(v.*\)/calicoctl-.*@kubernetes/calico/\1@")
+    if [ "$url" != "$rdir" ]; then
+        echo $rdir
+        return
+    fi
 
+    rdir=$(echo $rdir | sed "s@.*/calico/.*@kubernetes/calico@")
     if [ "$url" != "$rdir" ]; then
         echo $rdir
     else
