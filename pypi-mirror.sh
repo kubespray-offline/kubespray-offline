@@ -9,7 +9,10 @@ fi
 
 source ./.venv/bin/activate
 
+export LANG=C  # It seems required for RHEL/CentOS?
+
 echo "==> Create pypi mirror for kubespray"
+pip install -U pip
 pypi-mirror download -d outputs/pypi/files -r ${KUBESPRAY_DIR}/requirements.txt
 pypi-mirror download -d outputs/pypi/files pip setuptools wheel
 pypi-mirror create -d outputs/pypi/files -m outputs/pypi
