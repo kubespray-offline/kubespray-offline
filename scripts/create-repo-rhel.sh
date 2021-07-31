@@ -17,10 +17,13 @@ else
     RT="sudo dnf download --resolve --alldeps --downloaddir $CACHEDIR"
 fi
 
-YD="yumdownloader --destdir=$CACHEDIR -y"
+#YD="yumdownloader --destdir=$CACHEDIR -y"
 
 echo "==> Downloading: " $PKGS
-$RT $PKGS || (echo "Download error" && exit 1)
+$RT $PKGS || {
+    echo "Download error"
+    exit 1
+}
 
 # create rpms dir
 RPMDIR=outputs/rpms
