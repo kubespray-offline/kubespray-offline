@@ -23,8 +23,8 @@ enabled=0
 gpgcheck=0
 EOF
 
-    # Install docker-ce
-    sudo yum install -y --disablerepo="*" --enablerepo=local-repo docker-ce
+    # Install docker-ce, etc
+    sudo yum install -y --disablerepo="*" --enablerepo=local-repo docker-ce gcc python3-devel libffi-devel openssl-devel || exit 1
   else
     cd $BASEDIR/debs/pkgs
     sudo dpkg -i docker-ce*.deb containerd*.deb || exit 1
