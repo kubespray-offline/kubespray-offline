@@ -12,7 +12,7 @@ cd $BASEDIR
 # Install docker-ce
 if ! command -v docker >/dev/null; then
   if [ -e /etc/redhat-release ]; then
-    cd $BASEDIR/rpms
+    cd $BASEDIR/rpms/local
 
     # Install local yum repo
     cat <<EOF | sudo tee /etc/yum.repos.d/local-repo.repo
@@ -26,7 +26,7 @@ EOF
     # Install docker-ce, etc
     sudo yum install -y --disablerepo="*" --enablerepo=local-repo docker-ce gcc python3-devel libffi-devel openssl-devel || exit 1
   else
-    cd $BASEDIR/debs/pkgs
+    cd $BASEDIR/debs/local/pkgs
     sudo dpkg -i docker-ce*.deb containerd*.deb || exit 1
   fi
 fi

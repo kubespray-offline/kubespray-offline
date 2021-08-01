@@ -20,6 +20,7 @@ if [ -e /etc/redhat-release ]; then
     curl -SL https://download.docker.com/linux/${type}/gpg >download.docker.com/linux/${type}/gpg || exit 1
 
     /bin/rm -rf outputs/rpms/docker-ce
+    mkdir -p outputs/rpms/
     mv download.docker.com/linux/${type} outputs/rpms/docker-ce
 else
     # Ubuntu
@@ -35,6 +36,7 @@ else
     curl -SL https://download.docker.com/linux/ubuntu/gpg >download.docker.com/linux/ubuntu/gpg || exit 1
 
     /bin/rm -rf outputs/debs/docker-ce
+    mkdir -p outputs/debs/
     mv download.docker.com/linux/ubuntu outputs/debs/docker-ce
 fi
 

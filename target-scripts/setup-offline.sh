@@ -13,7 +13,7 @@ setup_yum_repos() {
     cat <<EOF | sudo tee /etc/yum.repos.d/local-repo.repo  # override installed by prepare.sh
 [local-repo]
 name=Local repo
-baseurl=http://localhost:$NGINX_PORT/rpms/ ./
+baseurl=http://localhost:$NGINX_PORT/rpms/local/ ./
 enabled=1
 gpgcheck=0
 EOF
@@ -29,7 +29,7 @@ Acquire::AllowDowngradeToInsecureRepositories "true";
 EOF
 
     cat <<EOF | sudo tee /etc/apt/sources.list.d/local-repo.list
-deb [trusted=yes] http://localhost:$NGINX_PORT/debs/ ./
+deb [trusted=yes] http://localhost:$NGINX_PORT/debs/local/ ./
 EOF
 
     echo "===> Disable default repositories"

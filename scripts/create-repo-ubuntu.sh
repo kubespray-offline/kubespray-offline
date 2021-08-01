@@ -24,7 +24,7 @@ echo "===> Downloading packages: " $PKGS $DEPS
 
 # Create repo
 echo "===> Creating repo"
-DEBDIR=outputs/debs
+DEBDIR=outputs/debs/local
 if [ -e $DEBDIR ]; then
     /bin/rm -rf $DEBDIR
 fi

@@ -26,7 +26,7 @@ $RT $PKGS || {
 }
 
 # create rpms dir
-RPMDIR=outputs/rpms
+RPMDIR=outputs/rpms/local
 if [ -e $RPMDIR ]; then
     /bin/rm -rf $RPMDIR || exit 1
 fi
