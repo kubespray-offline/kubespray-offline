@@ -68,9 +68,9 @@ fi
 
 # Create python3 venv
 if [ ! -e ~/.venv/default ]; then
-    python3 -m venv ./.venv/default
+    python3 -m venv ~/.venv/default
 fi
-source ./.venv/default/bin/activate
+source ~/.venv/default/bin/activate
 
 echo "==> Install python packages"
 pip install -r requirements.txt

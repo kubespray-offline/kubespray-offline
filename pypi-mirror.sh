@@ -7,7 +7,7 @@ if [ ! -e $KUBESPRAY_DIR ]; then
     exit 1
 fi
 
-source ./.venv/bin/activate
+source ~/.venv/default/bin/activate
 
 export LANG=C  # It seems required for RHEL/CentOS?
 
