@@ -10,9 +10,9 @@ if [ ! -d images ] && [ -d ../outputs ]; then
 fi
 
 load_images() {
-  for image in $BASEDIR/images/*.tar; do
+  for image in $BASEDIR/images/*.tar.gz; do
     echo "===> Loading $image"
-    sudo docker load -i $image
+    gunzip -c $image | sudo docker load
   done
 }
 
