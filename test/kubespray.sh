@@ -28,19 +28,22 @@ prepare_kubespray() {
     cd kubespray-test
 
     if [ -e /etc/redhat-release ]; then
-        sudo yum install -y gcc python3-devel libffi-devel openssl-devel || exit 1
+        :
+        #sudo yum install -y gcc python3-devel libffi-devel openssl-devel || exit 1
     else
         sudo apt update
-        sudo apt install -y python3-venv gcc python3-dev libffi-dev libssl-dev
+        #sudo apt install -y python3-venv gcc python3-dev libffi-dev libssl-dev
+        sudo apt install -y python3-venv
     fi
 
     venv
 
     # install ansible
-    pip install -U setuptools # adhoc: update to intermediate version
-    pip install -U pip wheel
-    pip install -U setuptools # update to latest version
-    pip install -r requirements.txt --no-build-isolation || exit 1
+    #pip install -U setuptools # adhoc: update to intermediate version
+    #pip install -U pip wheel
+    #pip install -U setuptools # update to latest version
+    #pip install -r requirements.txt --no-build-isolation || exit 1
+    pip install -r requirements.txt || exit 1
 }
 
 do_kubespray() {
