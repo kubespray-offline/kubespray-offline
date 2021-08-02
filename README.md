@@ -79,13 +79,9 @@ You can configure port number of nginx and private registry in config.sh.
 
 Install required packages and python packages including ansible using local yum/deb repo and PyPI mirror.
 
-For RHEL/CentOS:
-
-    $ sudo yum install -y gcc python3-devel libffi-devel openssl-devel
-
 For Ubuntu:
 
-    $ sudo apt install -y python3-venv gcc python3-dev libffi-dev libssl-dev
+    $ sudo apt install -y python3-venv
 
 Create and activate venv:
 
@@ -93,13 +89,10 @@ Create and activate venv:
     $ python3 -m venv ~/.venv/default
     $ source ~/.venv/default/bin/activate
 
-Update pip, setuptools and wheel then, install ansible:
+Install ansible:
 
-    $ pip install -U setuptools     # adhoc: update to intermediate version
-    $ pip install -U pip wheel
-    $ pip install -U setuptools     # update to latest version
     $ cd [kubespray-dir]
-    $ pip install -r requirements.txt --no-build-isolation   # Install ansible
+    $ pip install -r requirements.txt   # Install ansible
 
 ### Create offline.yml
 
