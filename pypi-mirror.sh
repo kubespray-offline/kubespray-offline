@@ -15,21 +15,23 @@ echo "==> Create pypi mirror for kubespray"
 #set -x
 pip install -U pip
 
-OPTS="-d outputs/pypi/files"
+DEST="-d outputs/pypi/files"
 echo "===> Download requirements"
-pypi-mirror download $OPTS -r ${KUBESPRAY_DIR}/requirements.txt || exit 1
+pypi-mirror download $DEST -r ${KUBESPRAY_DIR}/requirements.txt || exit 1
 
-sed "s/^ansible/#ansible/" ${KUBESPRAY_DIR}/requirements.txt > requirements2.txt
+REQ=requirements.tmp
+sed "s/^ansible/#ansible/" ${KUBESPRAY_DIR}/requirements.txt > $REQ  # Ansible does not provide binary packages
+echo "PyYAML" >> $REQ  # Ansible dependency
 for pyver in 3.6 3.7 3.8 3.9; do
     echo "===> Download binary for python $pyver"
-    pypi-mirror download $OPTS --binary --python-version $pyver -r requirements2.txt || exit 1
-    pypi-mirror download $OPTS --binary --python-version $pyver PyYAML || exit 1
+    pypi-mirror download $DEST --binary --python-version $pyver -r $REQ || exit 1
 done
+/bin/rm $REQ
 
 echo "===> Download pip, setuptools, wheel"
-pypi-mirror download $OPTS pip setuptools wheel || exit 1
-pypi-mirror download $OPTS pip setuptools==40.9.0 || exit 1  # For RHEL...
+pypi-mirror download $DEST pip setuptools wheel || exit 1
+pypi-mirror download $DEST pip setuptools==40.9.0 || exit 1  # For RHEL...
 
-pypi-mirror create -d outputs/pypi/files -m outputs/pypi || exit 1
+pypi-mirror create $DEST -m outputs/pypi || exit 1
 
 echo "pypi-mirror.sh done"
