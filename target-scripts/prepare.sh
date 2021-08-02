@@ -36,5 +36,5 @@ sudo systemctl enable --now docker
 
 # Load images
 cd $BASEDIR/images
-sudo docker load -i docker.io-library-registry-*.tar
-sudo docker load -i docker.io-library-nginx-*.tar
+gunzip -c docker.io-library-registry-*.tar.gz | sudo docker load
+gunzip -c docker.io-library-nginx-*.tar.gz | sudo docker load
