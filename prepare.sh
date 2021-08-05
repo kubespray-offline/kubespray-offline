@@ -36,10 +36,13 @@ if [ -e /etc/redhat-release ]; then
         fi
     fi
 else
+    sudo apt update
+    sudo apt -y install lsb-release curl gpg python3 || exit 1
+
     sources=/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list  # Same as kubespray
     if [ ! -e $sources ]; then
         echo "==> Install docker-ce repo"
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg || exit 1
         echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee $sources
     fi
 
@@ -48,11 +51,11 @@ else
         sudo dpkg -r docker docker-engine docker.io containerd runc
     
         echo "==> Install docker-ce related packages"
-        sudo apt install -y docker-ce docker-ce-cli
+        sudo apt install -y docker-ce docker-ce-cli || exit 1
     fi
     
-    sudo apt install -y python3 python3-pip python3-venv rsync
-    sudo apt install -y gcc python3-dev libffi-dev # pypi-mirror
+    sudo apt install -y python3 python3-pip python3-venv rsync || exit 1
+    sudo apt install -y gcc python3-dev libffi-dev || exit 1 # pypi-mirror
 fi
 
 # Set up docker proxy
