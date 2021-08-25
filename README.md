@@ -90,9 +90,13 @@ Create and activate venv:
     $ python3 -m venv ~/.venv/default
     $ source ~/.venv/default/bin/activate
 
+Extract kubespray:
+
+    $ tar xvzf kubespray-{version}.tar.gz
+    $ cd kubespray-{version}
+
 Install ansible:
 
-    $ cd [kubespray-dir]
     $ pip install -U pip                # update pip
     $ pip install -r requirements.txt   # Install ansible
 
