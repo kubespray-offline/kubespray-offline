@@ -81,6 +81,7 @@ Install required packages and python packages including ansible using local yum/
 
 For Ubuntu:
 
+    $ sudo apt update
     $ sudo apt install -y python3-venv
 
 Create and activate venv:
@@ -92,6 +93,7 @@ Create and activate venv:
 Install ansible:
 
     $ cd [kubespray-dir]
+    $ pip install -U pip                # update pip
     $ pip install -r requirements.txt   # Install ansible
 
 ### Create offline.yml
