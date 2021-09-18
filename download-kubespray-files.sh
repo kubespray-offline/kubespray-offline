@@ -55,8 +55,16 @@ get_url() {
     fi
 }
 
+fix_images_list() {
+    # check roles/download/default/main.yml to decide version
+    snapshot_controller_tag=v4.2.1
+    sed -i "s@\(.*/snapshot-controller:\)@\1${snapshot_controller_tag}@" ${KUBESPRAY_DIR}/contrib/offline/temp/images.list
+}
+
 # execute offline generate_list.sh
 /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
+
+fix_images_list || exit 1
 
 mkdir -p $FILES_DIR
 
