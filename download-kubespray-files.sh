@@ -74,9 +74,3 @@ images=$(cat ${IMAGES_DIR}/images.list)
 for i in $images; do
     get_image $i
 done
-
-# Copy kubespray itself
-if [ ! -e ${KUBESPRAY_TARBALL} ]; then
-    ./get-kubespray.sh
-fi
-cp ${KUBESPRAY_TARBALL} ${FILES_DIR}
