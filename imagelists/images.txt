@@ -1,3 +1,4 @@
 quay.io/calico/pod2daemon-flexvol:v3.18.4
+quay.io/calico/pod2daemon-flexvol:v3.19.2
 registry:2.7.1
 nginx:1.19
