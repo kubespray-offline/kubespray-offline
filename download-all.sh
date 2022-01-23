@@ -6,7 +6,7 @@
 ./download-kubespray-files.sh || exit 1
 ./download-additional-containers.sh || exit 1
 ./create-repo.sh || exit 1
-./mirror-docker-ce.sh || exit 1
+#./mirror-docker-ce.sh || exit 1
 ./copy-target-scripts.sh || exit 1
 
 echo "Done."

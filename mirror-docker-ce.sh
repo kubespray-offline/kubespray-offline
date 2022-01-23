@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Mirror Docker CE repo: 
+# This is deprecated.
+
 source /etc/os-release
 
 download() {
