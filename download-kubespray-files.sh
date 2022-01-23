@@ -62,6 +62,9 @@ fix_images_list() {
 }
 
 # execute offline generate_list.sh
+export containerd_version=1.58
+export host_os=linux
+export image_arch=amd64
 /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
 
 fix_images_list || exit 1
