@@ -1,4 +1,4 @@
-# Docker
+# Docker: not required from kubespray >=2.18.0, but preparation node requires this.
 docker-ce
 containerd.io
 
@@ -7,10 +7,13 @@ python3
 python3-pip
 
 # kubespray: required_pkgs
-libselinux-python3
+#libselinux-python3
+python3-libselinux
 device-mapper-libs
 nss
 conntrack
+container-selinux
+libseccomp
 
 # compilers (for cffi, etc)
 gcc

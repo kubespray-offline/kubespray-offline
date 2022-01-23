@@ -1,4 +1,4 @@
-# Docker and dependencies
+# Docker and dependencies: not required from kubespray >=2.18.0, but preparation node requires this.
 docker-ce
 docker-ce-cli
 containerd.io
@@ -10,13 +10,13 @@ python3-selinux
 # python-cryptography
 
 # kubespray: required_pkgs
-python-apt
-python2
-python2-minimal
+python3-apt
 aufs-tools
 apt-transport-https
 software-properties-common
 conntrack
+apparmor
+libseccomp2
 
 # compilers (for cffi, etc)
 gcc
