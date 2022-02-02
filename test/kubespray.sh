@@ -70,6 +70,7 @@ files_repo: "http://localhost:$NGINX_PORT/files"
 yum_repo: "http://localhost:$NGINX_PORT/rpms"
 ubuntu_repo: "http://localhost:$NGINX_PORT/debs"
 
+# Download URLs: See roles/download/defaults/main.yml of kubespray.
 kubeadm_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubeadm"
 kubectl_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubectl"
 kubelet_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubelet"
@@ -82,23 +83,9 @@ calicoctl_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_ctl_versio
 # If using Calico with kdd
 calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_version }}.tar.gz"
 
-# CentOS/Redhat/AlmaLinux
-## Docker / Containerd
-docker_rh_repo_base_url: "{{ yum_repo }}/docker-ce/\$releasever/\$basearch/stable"
-docker_rh_repo_gpgkey: "{{ yum_repo }}/docker-ce/gpg"
-
-# Ubuntu
-## Docker
-docker_ubuntu_repo_base_url: "{{ ubuntu_repo }}/docker-ce"
-docker_ubuntu_repo_gpgkey: "{{ ubuntu_repo }}/docker-ce/gpg"
-## Containerd
-containerd_ubuntu_repo_base_url: "{{ ubuntu_repo }}/containerd"
-containerd_ubuntu_repo_gpgkey: "{{ ubuntu_repo }}/containerd/gpg"
-#containerd_ubuntu_repo_repokey: 'YOURREPOKEY'
-
-# Force use latest docker (do not downgrade)
-docker_version: latest
-containerd_version: latest
+runc_download_url: "{{ files_repo }}/runc.{{ image_arch }}"
+nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
+containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
 EOF
     
     echo "===> Generate inventory"

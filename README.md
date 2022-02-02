@@ -121,6 +121,7 @@ files_repo: "http://YOUR_HOST:8080/files"
 yum_repo: "http://YOUR_HOST:8080/rpms"
 ubuntu_repo: "http://YOUR_HOST:8080/debs"
 
+# Download URLs: See roles/download/defaults/main.yml of kubespray.
 kubeadm_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubeadm"
 kubectl_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubectl"
 kubelet_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubelet"
@@ -132,6 +133,10 @@ crictl_download_url: "{{ files_repo }}/kubernetes/cri-tools/crictl-{{ crictl_ver
 calicoctl_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}"
 # If using Calico with kdd
 calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_version }}.tar.gz"
+
+runc_download_url: "{{ files_repo }}/runc.{{ image_arch }}"
+nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
+containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
 ```
 
 Then run kubespray ansible playbook as usual.
