@@ -7,10 +7,11 @@ if [ ! -e $KUBESPRAY_DIR ]; then
     exit 1
 fi
 
-if [ ! -e ~/.venv/default ]; then
-    python3 -m venv ~/.venv/default
+VENV_DIR=${VENV_DIR:-~/.venv/default}
+if [ ! -e ${VENV_DIR} ]; then
+    python3 -m venv ${VENV_DIR}
 fi
-source ~/.venv/default/bin/activate
+source ${VENV_DIR}/bin/activate
 
 export LANG=C  # It seems required for RHEL/CentOS?
 
