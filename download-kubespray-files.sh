@@ -49,7 +49,7 @@ get_url() {
 
     if [ ! -e $FILES_DIR/$rdir/$filename ]; then
         echo "==> Download $url"
-        curl -SL $url > $FILES_DIR/$rdir/$filename
+        curl -SL $url > $FILES_DIR/$rdir/$filename || exit 1
     else
         echo "==> Skip $url"
     fi
