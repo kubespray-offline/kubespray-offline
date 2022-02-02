@@ -4,7 +4,7 @@ source ./config.sh
 
 BASEDIR="."
 if [ ! -d images ] && [ -d ../outputs ]; then
-  BASEDIR="../outputs"  # for tests
+    BASEDIR="../outputs"  # for tests
 fi
 BASEDIR=$(cd $BASEDIR; pwd)
 
