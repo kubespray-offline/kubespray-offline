@@ -36,7 +36,35 @@ EOF
     sudo systemctl enable --now docker
 }
 
-install_docker
+# Install containerd
+install_containerd() {
+    # Install runc
+    sudo cp ./files/runc.amd64 /usr/local/bin/runc
+    sudo chmod 755 /usr/local/bin/runc
+    
+    # Install nerdctl
+    tar xvf ./files/nerdctl-*.tar.gz -C /tmp
+    sudo cp /tmp/nerdctl /usr/local/bin
+    
+    # Install containerd
+    sudo tar xvf ./files/containerd-*.tar.gz --strip-components=1 -C /usr/local/bin
+    sudo cp ./containerd.service /etc/systemd/system/
+
+    sudo mkdir -p \
+         /etc/systemd/system/containerd.service.d \
+         /etc/containerd \
+         /var/lib/containerd \
+         /run/containerd
+
+    sudo cp config.toml /etc/containerd/
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now containerd
+EOF
+}
+
+#install_docker
+install_containerd
 
 # Load images
 cd $BASEDIR/images
