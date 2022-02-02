@@ -57,12 +57,12 @@ get_url() {
 
 fix_images_list() {
     # check roles/download/default/main.yml to decide version
-    snapshot_controller_tag=v4.2.1
+    snapshot_controller_tag=${snapshot_controller_tag:-v4.2.1}
     sed -i "s@\(.*/snapshot-controller:\)@\1${snapshot_controller_tag}@" ${KUBESPRAY_DIR}/contrib/offline/temp/images.list
 }
 
 # execute offline generate_list.sh
-export containerd_version=1.58
+export containerd_version=${containerd_version:-1.5.8}
 export host_os=linux
 export image_arch=amd64
 /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
