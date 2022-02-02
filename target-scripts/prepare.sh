@@ -60,6 +60,10 @@ install_containerd() {
 
     sudo systemctl daemon-reload
     sudo systemctl enable --now containerd
+
+    # Install cni plugins
+    sudo mkdir -p /opt/cni/bin
+    sudo tar xvzf ./files/kubernetes/cni/cni-plugins-.*.tgz -C /opt/cni/bin
 }
 
 #install_docker
