@@ -2,7 +2,7 @@
 
 # Kubespray directory
 # If this directory does not exist, kubespray will be downloaded automatically.
-KUBESPRAY_DIR=${KUBESPRAY_DIR:-./kubespray}
+KUBESPRAY_DIR=${KUBESPRAY_DIR:-./cache/kubespray}
 
 # Kubespray version to download
 KUBESPRAY_VERSION=2.18.0
