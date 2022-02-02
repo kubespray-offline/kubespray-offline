@@ -12,7 +12,7 @@ fi
 load_images() {
     for image in $BASEDIR/images/*.tar.gz; do
         echo "===> Loading $image"
-        gunzip -c $image | sudo docker load
+        gunzip -c $image | sudo nerdctl load
     done
 }
 
@@ -29,10 +29,10 @@ push_images() {
         newImage=${LOCAL_REGISTRY}/${newImage}
 
         echo "===> Tag ${image} -> ${newImage}"
-        sudo docker tag ${image} ${newImage}
+        sudo nerdctl tag ${image} ${newImage}
 
         echo "===> Push ${newImage}"
-        sudo docker push ${newImage}
+        sudo nerdctl push ${newImage}
     done
 }
 

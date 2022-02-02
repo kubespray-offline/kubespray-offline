@@ -60,7 +60,6 @@ install_containerd() {
 
     sudo systemctl daemon-reload
     sudo systemctl enable --now containerd
-EOF
 }
 
 #install_docker
@@ -68,5 +67,5 @@ install_containerd
 
 # Load images
 cd $BASEDIR/images
-gunzip -c docker.io-library-registry-*.tar.gz | sudo docker load
-gunzip -c docker.io-library-nginx-*.tar.gz | sudo docker load
+gunzip -c docker.io-library-registry-*.tar.gz | sudo nerdctl load
+gunzip -c docker.io-library-nginx-*.tar.gz | sudo nerdctl load

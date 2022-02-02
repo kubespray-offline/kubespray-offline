@@ -9,7 +9,7 @@ if [ ! -e $REGISTRY_DIR ]; then
     sudo mkdir $REGISTRY_DIR
 fi
 
-sudo docker run -d \
+sudo nerdctl run -d \
     -p ${REGISTRY_PORT}:5000 \
     --restart always \
     --name registry \
