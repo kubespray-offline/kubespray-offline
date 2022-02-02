@@ -13,7 +13,7 @@ if [ ! -e ${VENV_DIR} ]; then
 fi
 source ${VENV_DIR}/bin/activate
 
-export LANG=C  # It seems required for RHEL/CentOS?
+#export LANG=C  # It seems required for RHEL/CentOS?
 
 echo "==> Create pypi mirror for kubespray"
 #set -x
