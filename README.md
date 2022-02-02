@@ -35,8 +35,12 @@ All artifacts are stored in `./outputs` directory.
 
 This script calls all of following scripts.
 
-* prepare.sh
-    - Setup docker, python venv, etc.
+* prepare-docker.sh
+    - Setup docker.
+* prepare-pkgs.sh
+    - Setup python, etc.
+* prepare-venv.sh
+    - Setup python venv, install required python packages.
 * get-kubespray.sh
     - Download and extract kubespray, if KUBESPRAY_DIR does not exist.
 * pypi-mirror.sh
