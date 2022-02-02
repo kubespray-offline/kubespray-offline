@@ -132,23 +132,6 @@ crictl_download_url: "{{ files_repo }}/kubernetes/cri-tools/crictl-{{ crictl_ver
 calicoctl_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}"
 # If using Calico with kdd
 calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_version }}.tar.gz"
-
-# CentOS/Redhat/AlmaLinux
-## Docker / Containerd
-docker_rh_repo_base_url: "{{ yum_repo }}/docker-ce/$releasever/$basearch/stable"
-docker_rh_repo_gpgkey: "{{ yum_repo }}/docker-ce/gpg"
-
-# Ubuntu
-## Docker
-docker_ubuntu_repo_base_url: "{{ ubuntu_repo }}/docker-ce"
-docker_ubuntu_repo_gpgkey: "{{ ubuntu_repo }}/docker-ce/gpg"
-## Containerd
-containerd_ubuntu_repo_base_url: "{{ ubuntu_repo }}/docker-ce"
-containerd_ubuntu_repo_gpgkey: "{{ ubuntu_repo }}/docker-ce/gpg"
-
-# Force use latest docker (do not downgrade)
-docker_version: latest
-containerd_version: latest
 ```
 
 Then run kubespray ansible playbook as usual.
