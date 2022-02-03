@@ -4,6 +4,8 @@ BASEDIR=$(cd $(dirname $0)/..; pwd)
 cd $BASEDIR/outputs
 source ./config.sh
 
+NERDCTL=/usr/local/bin/nerdctl
+
 prepare_servers() {
     #set -x
 
@@ -30,7 +32,7 @@ prepare_servers() {
     for image in $images; do
         if ! grep "^nginx" $image >/dev/null && ! grep "^registry" $image >/dev/null; then  # do not remove running nginx/registry image
             echo "==> Remove image: $image"
-            sudo nerdctl image rm $image
+            sudo $NERDCTL image rm $image
         fi
 
         localImage=$image
@@ -39,7 +41,7 @@ prepare_servers() {
         done
 
         echo "==> Remove image: localhost:$REGISTRY_PORT/$localImage"
-        sudo nerdctl image rm localhost:$REGISTRY_PORT/$localImage
+        sudo $NERDCTL image rm localhost:$REGISTRY_PORT/$localImage
     done
     #set +x
 }

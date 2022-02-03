@@ -10,7 +10,7 @@ BASEDIR=$(cd $BASEDIR; pwd)
 
 NGINX_IMAGE=nginx:1.19
 
-sudo nerdctl run -d \
+sudo /usr/local/bin/nerdctl run -d \
     -p ${NGINX_PORT}:80 \
     --restart always \
     --name nginx \

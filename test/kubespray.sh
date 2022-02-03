@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # My IP address
-MYIP=10.0.2.15
+MYIP=${MYIP:-10.0.2.15}
 
 source /etc/os-release
 

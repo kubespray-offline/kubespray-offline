@@ -9,7 +9,7 @@ if [ ! -e $REGISTRY_DIR ]; then
     sudo mkdir $REGISTRY_DIR
 fi
 
-sudo nerdctl run -d \
+sudo /usr/local/bin/nerdctl run -d \
     -p ${REGISTRY_PORT}:5000 \
     --restart always \
     --name registry \

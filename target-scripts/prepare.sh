@@ -63,13 +63,14 @@ install_containerd() {
 
     # Install cni plugins
     sudo mkdir -p /opt/cni/bin
-    sudo tar xvzf ./files/kubernetes/cni/cni-plugins-.*.tgz -C /opt/cni/bin
+    sudo tar xvzf ./files/kubernetes/cni/cni-plugins-*.tgz -C /opt/cni/bin
 }
 
 #install_docker
 install_containerd
 
 # Load images
+NERDCTL=/usr/local/bin/nerdctl
 cd $BASEDIR/images
-gunzip -c docker.io-library-registry-*.tar.gz | sudo nerdctl load
-gunzip -c docker.io-library-nginx-*.tar.gz | sudo nerdctl load
+gunzip -c docker.io-library-registry-*.tar.gz | sudo $NERDCTL load
+gunzip -c docker.io-library-nginx-*.tar.gz | sudo $NERDCTL load

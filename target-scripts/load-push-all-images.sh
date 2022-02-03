@@ -3,6 +3,7 @@
 source ./config.sh
 
 LOCAL_REGISTRY=${LOCAL_REGISTRY:-"localhost:${REGISTRY_PORT}"}
+NERDCTL=/usr/local/bin/nerdctl
 
 BASEDIR="."
 if [ ! -d images ] && [ -d ../outputs ]; then
@@ -12,7 +13,7 @@ fi
 load_images() {
     for image in $BASEDIR/images/*.tar.gz; do
         echo "===> Loading $image"
-        gunzip -c $image | sudo nerdctl load
+        gunzip -c $image | sudo $NERDCTL load
     done
 }
 
@@ -29,10 +30,10 @@ push_images() {
         newImage=${LOCAL_REGISTRY}/${newImage}
 
         echo "===> Tag ${image} -> ${newImage}"
-        sudo nerdctl tag ${image} ${newImage}
+        sudo $NERDCTL tag ${image} ${newImage}
 
         echo "===> Push ${newImage}"
-        sudo nerdctl push ${newImage}
+        sudo $NERDCTL push ${newImage}
     done
 }
 
