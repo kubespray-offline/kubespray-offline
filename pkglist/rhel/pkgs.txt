@@ -17,6 +17,7 @@ libseccomp
 
 # compilers (for cffi, etc)
 gcc
+annobin
 python3-devel
 libffi-devel
 openssl-devel
