@@ -26,10 +26,11 @@ Vagrant.configure("2") do |config|
     c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2230
   end
 
-  config.vm.define "cent8" do |c|
-    c.vm.hostname = "cent8"
+  config.vm.define "alma8" do |c|
+    c.vm.hostname = "alma8"
     c.vm.network "private_network", ip: "192.168.56.52"
-    c.vm.box = "generic/centos8"
+    #c.vm.box = "almalinux/8"  # disk size is too small...
+    c.vm.box = "bento/almalinux-8"
     c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2231
   end
 

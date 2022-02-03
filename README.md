@@ -18,7 +18,7 @@ This supports:
 
 ## Requirements
 
-- CentOS/RHEL 7/8
+- RHEL 7/8, CentOS 7, AlmaLinux 8
 - Ubuntu 20.04
 
 ## Download offline files
