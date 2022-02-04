@@ -13,8 +13,6 @@ if [ ! -e ${VENV_DIR} ]; then
 fi
 source ${VENV_DIR}/bin/activate
 
-#export LANG=C  # It seems required for RHEL/CentOS?
-
 echo "==> Create pypi mirror for kubespray"
 #set -x
 pip install -U pip python-pypi-mirror
@@ -33,7 +31,12 @@ done
 /bin/rm $REQ
 
 echo "===> Download source packages"
-pip download $DEST --no-binary :all: -r ${KUBESPRAY_DIR}/requirements.txt || exit 1
+pip download $DEST --no-binary :all: -r ${KUBESPRAY_DIR}/requirements.txt
+if [ $? -ne 0 ]; then
+    # LANG=C is required for RHEL 8(?)
+    echo "Failed, retry with LANG=C..."
+    LANG=C pip download $DEST --no-binary :all: -r ${KUBESPRAY_DIR}/requirements.txt
+fi
 
 echo "===> Download pip, setuptools, wheel"
 pip download $DEST pip setuptools wheel || exit 1
