@@ -13,6 +13,17 @@ if [ ! -e ${VENV_DIR} ]; then
 fi
 source ${VENV_DIR}/bin/activate
 
+lang_retriable() {
+    echo "Execute: $*"
+    $*
+    if [ $? -ne 0 ]; then
+        # LANG=C is required for RHEL 8(?)
+        echo "Failed, retry with LANG=C..."
+        LANG=C $* || exit 1
+    fi
+}
+
+
 echo "==> Create pypi mirror for kubespray"
 #set -x
 pip install -U pip python-pypi-mirror
@@ -31,17 +42,12 @@ done
 /bin/rm $REQ
 
 echo "===> Download source packages"
-pip download $DEST --no-binary :all: -r ${KUBESPRAY_DIR}/requirements.txt
-if [ $? -ne 0 ]; then
-    # LANG=C is required for RHEL 8(?)
-    echo "Failed, retry with LANG=C..."
-    LANG=C pip download $DEST --no-binary :all: -r ${KUBESPRAY_DIR}/requirements.txt
-fi
+lang_retriable pip download $DEST --no-binary :all: -r ${KUBESPRAY_DIR}/requirements.txt
 
 echo "===> Download pip, setuptools, wheel"
 pip download $DEST pip setuptools wheel || exit 1
 pip download $DEST pip setuptools==40.9.0 || exit 1  # For RHEL...
 
-pypi-mirror create $DEST -m outputs/pypi || exit 1
+lang_retriable pypi-mirror create $DEST -m outputs/pypi
 
 echo "pypi-mirror.sh done"
