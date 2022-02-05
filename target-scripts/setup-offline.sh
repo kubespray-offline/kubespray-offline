@@ -13,7 +13,7 @@ setup_yum_repos() {
     cat <<EOF | sudo tee /etc/yum.repos.d/local-repo.repo  # override installed by prepare.sh
 [local-repo]
 name=Local repo
-baseurl=http://localhost:$NGINX_PORT/rpms/local/ ./
+baseurl=http://localhost:$NGINX_PORT/rpms/local/
 enabled=1
 gpgcheck=0
 EOF
