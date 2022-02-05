@@ -39,7 +39,7 @@ This script calls all of following scripts.
     - Setup docker.
 * prepare-pkgs.sh
     - Setup python, etc.
-* prepare-venv.sh
+* prepare-py.sh
     - Setup python venv, install required python packages.
 * get-kubespray.sh
     - Download and extract kubespray, if KUBESPRAY_DIR does not exist.
