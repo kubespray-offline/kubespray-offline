@@ -58,17 +58,19 @@ do_kubespray() {
     fi
 
     echo "===> Generate offline config"
-    REGISTRY=localhost:$REGISTRY_PORT
     cat <<EOF >inventory/mycluster/group_vars/all/offline.yml
-# Registry overrides
-kube_image_repo: "$REGISTRY"
-gcr_image_repo: "$REGISTRY"
-docker_image_repo: "$REGISTRY"
-quay_image_repo: "$REGISTRY"
+registry_host: "localhost:$REGISTRY_PORT"
+http_server: "http://localhost:$NGINX_PORT"
 
-files_repo: "http://localhost:$NGINX_PORT/files"
-yum_repo: "http://localhost:$NGINX_PORT/rpms"
-ubuntu_repo: "http://localhost:$NGINX_PORT/debs"
+files_repo: "{{ http_server }}/files"
+yum_repo: "{{ http_server }}/rpms"
+ubuntu_repo: "{{ http_server }}/debs"
+
+# Registry overrides
+kube_image_repo: "{{ registry_host }}"
+gcr_image_repo: "{{ registry_host }}"
+docker_image_repo: "{{ registry_host }}"
+quay_image_repo: "{{ registry_host }}"
 
 # Download URLs: See roles/download/defaults/main.yml of kubespray.
 kubeadm_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubeadm"

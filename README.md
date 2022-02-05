@@ -115,15 +115,18 @@ Create and place offline.yml file to your group_vars/all/offline.yml of your inv
 You need to change `YOUR_HOST` with your registry/nginx host IP.
 
 ```yaml
-# Registry overrides
-kube_image_repo: "YOUR_HOST:35000"
-gcr_image_repo: "YOUR_HOST:35000"
-docker_image_repo: "YOUR_HOST:35000"
-quay_image_repo: "YOUR_HOST:35000"
+registry_host: "YOUR_HOST:35000"
+http_server: "http://YOUR_HOST:8080/"
 
-files_repo: "http://YOUR_HOST:8080/files"
-yum_repo: "http://YOUR_HOST:8080/rpms"
-ubuntu_repo: "http://YOUR_HOST:8080/debs"
+files_repo: "{{ http_server }}/files"
+yum_repo: "{{ http_server }}/rpms"
+ubuntu_repo: "{{ http_server }}/debs"
+
+# Registry overrides
+kube_image_repo: "{{ registry_host }}"
+gcr_image_repo: "{{ registry_host }}"
+docker_image_repo: "{{ registry_host }}"
+quay_image_repo: "{{ registry_host }}"
 
 # Download URLs: See roles/download/defaults/main.yml of kubespray.
 kubeadm_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubeadm"
