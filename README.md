@@ -63,8 +63,8 @@ Copy all contents in `outputs` directory to target node (which runs ansible).
 Then run following scripts in `outputs` directory. 
 
 * prepare.sh
-    - Install docker-ce from local files.
-    - Load nginx and registry images to docker.
+    - Install containerd from local files.
+    - Load nginx and registry images to containerd.
 * start-nginx.sh
     - Start nginx container.
 * setup-offline.sh
@@ -72,7 +72,7 @@ Then run following scripts in `outputs` directory.
 * start-registry.sh
     - Start docker private registry container.
 * load-push-images.sh
-    - Load all container images to docker.
+    - Load all container images to containerd.
     - Tag and push them to the private registry.
 
 You can configure port number of nginx and private registry in config.sh.
@@ -87,6 +87,10 @@ For Ubuntu:
 
     $ sudo apt update
     $ sudo apt install -y python3-venv
+
+For RHEL:
+
+    $ sudo yum install -y python3 gcc python3-devel libffi-devel openssl-devel
 
 Create and activate venv:
 
