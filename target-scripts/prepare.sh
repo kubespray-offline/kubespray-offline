@@ -39,14 +39,17 @@ EOF
 # Install containerd
 install_containerd() {
     # Install runc
+    echo "==> Install runc"
     sudo cp ./files/runc.amd64 /usr/local/bin/runc
     sudo chmod 755 /usr/local/bin/runc
     
     # Install nerdctl
+    echo "==> Install nerdctl"
     tar xvf ./files/nerdctl-*.tar.gz -C /tmp
     sudo cp /tmp/nerdctl /usr/local/bin
     
     # Install containerd
+    echo "==> Install containerd"
     sudo tar xvf ./files/containerd-*.tar.gz --strip-components=1 -C /usr/local/bin
     sudo cp ./containerd.service /etc/systemd/system/
 
@@ -58,10 +61,12 @@ install_containerd() {
 
     sudo cp config.toml /etc/containerd/
 
+    echo "==> Start containerd"
     sudo systemctl daemon-reload
     sudo systemctl enable --now containerd
 
     # Install cni plugins
+    echo "==> Install CNI plugins"
     sudo mkdir -p /opt/cni/bin
     sudo tar xvzf ./files/kubernetes/cni/cni-plugins-*.tgz -C /opt/cni/bin
 }
@@ -70,6 +75,7 @@ install_containerd() {
 install_containerd
 
 # Load images
+echo "==> Load registry, nginx images"
 NERDCTL=/usr/local/bin/nerdctl
 cd $BASEDIR/images
 gunzip -c docker.io-library-registry-*.tar.gz | sudo $NERDCTL load
