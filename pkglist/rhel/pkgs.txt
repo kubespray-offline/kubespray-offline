@@ -20,6 +20,8 @@ gcc
 annobin
 python3-devel
 libffi-devel
+openssl
+openssl-libs
 openssl-devel
 
 # kubespray: common_required_pkgs
