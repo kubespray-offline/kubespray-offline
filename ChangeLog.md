@@ -1,6 +1,6 @@
 # ChangeLogs
 
-## v2.18.0-0 - 2021/02/05
+## v2.18.0-0 - 2021/02/06
 
 - Support Kubespray 2.18.0
 - Use containerd instead of Docker
