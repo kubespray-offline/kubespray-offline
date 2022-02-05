@@ -6,7 +6,8 @@ source ./config.sh
 setup_yum_repos() {
     echo "===> Disable all yumrepositories"
     for repo in /etc/yum.repos.d/*.repo; do
-        sudo sed -i "s/^enabled=.*/enabled=0/" $repo
+        #sudo sed -i "s/^enabled=.*/enabled=0/" $repo
+        sudo mv "${repo}" "${repo}.original"
     done
         
     echo "===> Setup local yum repository"
