@@ -4,5 +4,6 @@ RUN apt update \
     && apt install -y sudo tzdata \
     && apt clean all
 
-COPY prepare.sh requirements.txt /root
-RUN cd /root && ./prepare.sh
+COPY prepare-*.sh requirements.txt /root
+RUN cd /root && ./prepare-pkgs.sh
+RUN cd /root && ./prepare-docker.sh

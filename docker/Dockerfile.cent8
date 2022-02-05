@@ -1,6 +1,0 @@
-FROM centos:8
-
-RUN yum install -y sudo dnf 'dnf-command(download)' && yum clean all
-
-COPY prepare.sh requirements.txt /root
-RUN cd /root && ./prepare.sh
