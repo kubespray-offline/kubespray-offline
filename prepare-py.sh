@@ -11,6 +11,10 @@ if [ ! -e ${VENV_DIR} ]; then
 fi
 source ${VENV_DIR}/bin/activate
 
+# see https://github.com/pypa/pip/issues/10219
+export LANG=en_US.UTF-8
+export LC_ALL=$LANG
+
 echo "==> Update pip, etc"
 pip install -U pip setuptools
 
