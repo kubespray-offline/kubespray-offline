@@ -1,0 +1,6 @@
+# RHEL8 specific
+
+# resolve version conflict...
+dnf-plugins-core
+yum-utils
+

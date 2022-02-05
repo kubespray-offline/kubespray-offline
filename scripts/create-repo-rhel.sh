@@ -2,8 +2,13 @@
 
 . /etc/os-release
 
+VERSION_MAJOR=$VERSION_ID
+if [[ ${VERSION_MAJOR} =~ ^8 ]]; then
+    VERSION_MAJOR=8
+fi
+
 # packages
-PKGS=$(cat pkglist/rhel/*.txt pkglist/rhel/${VERSION_ID}/*.txt | grep -v "^#" | sort | uniq)
+PKGS=$(cat pkglist/rhel/*.txt pkglist/rhel/${VERSION_MAJOR}/*.txt | grep -v "^#" | sort | uniq)
 
 CACHEDIR=cache/cache-rpms
 mkdir -p $CACHEDIR
