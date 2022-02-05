@@ -93,8 +93,12 @@ EOF
     cat inventory/mycluster/hosts.yaml
     
     echo "===> Execute kubespray"
-    ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
+    ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml || exit 1
 }
 
 prepare_kubespray
 do_kubespray
+
+mkdir ~/.kube
+sudo cat /etc/kubernetes/admin.conf > ~/.kube/config
+chmod 600 ~/.kube/config
