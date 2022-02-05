@@ -1,6 +1,6 @@
-# Docker: not required from kubespray >=2.18.0, but preparation node requires this.
-docker-ce
-containerd.io
+# Do not require docker anymore
+#docker-ce
+#containerd.io
 
 # python3
 python3

@@ -1,7 +1,7 @@
-# Docker and dependencies: not required from kubespray >=2.18.0, but preparation node requires this.
-docker-ce
-docker-ce-cli
-containerd.io
+# Do not require docker anymore
+#docker-ce
+#docker-ce-cli
+#containerd.io
 
 # python3 for ansible
 python3
