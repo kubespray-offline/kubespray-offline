@@ -1,9 +1,13 @@
 #!/bin/bash
 
+if [ $# -ne 1 ]; then
+    echo "usage: $0 <target>"
+    exit 1
+fi
+target=$1
+
 OPTS=""
 #OPTS="--progress=plain --no-cache=true"
 
-for i in alma8 ubuntu2004; do
-    echo "===> build $i"
-    docker build -f Dockerfile.$i -t kubespray-offline-$i:latest $OPTS ..
-done
+echo "===> build $targe"
+docker build -f Dockerfile.$target -t kubespray-offline-$target:latest $OPTS ..
