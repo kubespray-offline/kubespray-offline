@@ -15,11 +15,11 @@ source ${VENV_DIR}/bin/activate
 
 lang_retriable() {
     echo "Execute: $*"
-    $*
+    # LANG=C is required for RHEL 8(?)
+    LANG=C $*
     if [ $? -ne 0 ]; then
-        # LANG=C is required for RHEL 8(?)
-        echo "Failed, retry with LANG=C..."
-        LANG=C $* || exit 1
+        echo "Failed, retry without LANG..."
+        $* || exit 1
     fi
 }
 
