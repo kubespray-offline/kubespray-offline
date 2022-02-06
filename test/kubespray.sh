@@ -101,7 +101,12 @@ EOF
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root offline-repo.yml || exit 1
 
     echo "===> Execute kubespray"
-    ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml || exit 1
+    # Hack #8339
+    PULL_CMD="/usr/local/bin/nerdctl -n k8s.io pull --quiet --insecure-registry"
+    ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root \
+        -e "image_pull_command='$PULL_CMD'" -e "image_pull_command_on_localhost='$PULL_CMD'" \
+        cluster.yml \
+        || exit 1
 }
 
 venv

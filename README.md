@@ -166,4 +166,13 @@ Then execute `offline-repo.yml` playbook.
 
 ### Run kubespray
 
-Run kubespray ansible playbook as usual.
+Run kubespray ansible playbook.
+
+For Kubespray 2.18, you need to override `image_pull_command` and `image_pull_command_on_localhost`
+to allow insecure registry for nerdctl.
+          
+    # Example  
+    $ PULL_CMD="/usr/local/bin/nerdctl -n k8s.io pull --quiet --insecure-registry"
+    $ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root \
+        -e "image_pull_command='$PULL_CMD'" -e "image_pull_command_on_localhost='$PULL_CMD'" \
+        cluster.yml
