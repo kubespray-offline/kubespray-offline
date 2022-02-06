@@ -1,12 +1,10 @@
 # Set UTF-8 locale for pip.
 # see https://github.com/pypa/pip/issues/10219
-if locale -a | grep en_US.UTF-8 >/dev/null; then
-    export LANG=en_US.UTF-8
-elif locale -a | grep en_US.utf8 >/dev/null; then
-    export LANG=en_US.utf8
-elif locale -a | grep C.utf8 >/dev/null; then
-    export LANG=C.utf8
-else
-    export LANG=C.UTF-8
-fi
+export LANG=C.UTF-8
+for i in en_US.UTF-8 en_US.utf8 C.utf8; do
+    if locale -a | grep $i >/dev/null; then
+        export LANG=$i
+        break
+    fi
+done
 export LC_ALL=$LANG
