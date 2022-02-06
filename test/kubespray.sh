@@ -51,6 +51,9 @@ do_kubespray() {
     
     cd $BASEDIR/outputs/kubespray-test
 
+    # copy offline repo playboo
+    cp -r $BASEDIR/outputs/playbook/* ./
+
     set -x
     pwd
     if [ ! -d inventory/mycluster ]; then
@@ -94,6 +97,9 @@ EOF
     CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $MYIP || exit 1
     cat inventory/mycluster/hosts.yaml
     
+    echo "===> Execute offline repo playbook"
+    ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root offline-repo.yml || exit 1
+
     echo "===> Execute kubespray"
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml || exit 1
 }
