@@ -9,6 +9,7 @@ if [ ! -e $REGISTRY_DIR ]; then
     sudo mkdir $REGISTRY_DIR
 fi
 
+echo "===> Start registry"
 sudo /usr/local/bin/nerdctl run -d \
     -p ${REGISTRY_PORT}:5000 \
     --restart always \
