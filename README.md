@@ -62,7 +62,7 @@ This script calls all of following scripts.
 Copy all contents in `outputs` directory to target node (which runs ansible).
 Then run following scripts in `outputs` directory. 
 
-* prepare.sh
+* setup-container.sh
     - Install containerd from local files.
     - Load nginx and registry images to containerd.
 * start-nginx.sh

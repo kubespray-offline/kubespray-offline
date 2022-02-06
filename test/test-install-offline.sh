@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./prepare.sh || exit 1
+./prepare-test.sh || exit 1
 ./kubespray.sh || exit 1
 
 echo "Done"
