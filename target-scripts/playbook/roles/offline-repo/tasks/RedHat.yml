@@ -1,7 +1,8 @@
 - name: Install offline yum repo
   yum_repository:
     file: offline
-    name: Offline repo
+    name: offline-repo
+    description: Offline repo for kubespray
     baseurl: "{{ yum_repo }}/local"
     enabled: yes
     gpgcheck: no

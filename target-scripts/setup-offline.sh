@@ -16,8 +16,8 @@ setup_yum_repos() {
         
     echo "===> Setup local yum repository"
     cat <<EOF | sudo tee /etc/yum.repos.d/offline.repo
-[local-repo]
-name=Local repo
+[offline-repo]
+name=Offline repo
 baseurl=http://localhost:$NGINX_PORT/rpms/local/
 enabled=1
 gpgcheck=0
