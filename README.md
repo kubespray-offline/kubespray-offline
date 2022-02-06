@@ -146,4 +146,19 @@ nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible
 containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
 ```
 
-Then run kubespray ansible playbook as usual.
+### Deploy offline repo configurations
+
+Deploy offline repo configurations which use your yum_repo/ubuntu_repo to all target nodes using ansible.
+
+First, copy offline setup playbook to kubespray directory. 
+
+    $ cp -r ${outputs_dir}/playbook ${kubespray_dir}
+
+Then execute `offline-repo.yml` playbook.
+
+    $ cd ${kubespray_dir}
+    $ ansible-playbook -i ${your_inventory_file} offline-repo.yml
+
+### Run kubespray
+
+Run kubespray ansible playbook as usual.
