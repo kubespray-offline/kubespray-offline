@@ -59,8 +59,11 @@ do_kubespray() {
 
     echo "===> Generate offline config"
     cat <<EOF >inventory/mycluster/group_vars/all/offline.yml
-registry_host: "localhost:$REGISTRY_PORT"
 http_server: "http://$MYIP:$NGINX_PORT"
+registry_host: "$MYIP:$REGISTRY_PORT"
+
+containerd_insecure_registries:
+  - "{{ registry_host }}"
 
 files_repo: "{{ http_server }}/files"
 yum_repo: "{{ http_server }}/rpms"

@@ -117,8 +117,11 @@ Create and place offline.yml file to your group_vars/all/offline.yml of your inv
 You need to change `YOUR_HOST` with your registry/nginx host IP.
 
 ```yaml
-registry_host: "YOUR_HOST:35000"
 http_server: "http://YOUR_HOST:8080/"
+registry_host: "YOUR_HOST:35000"
+
+containerd_insecure_registries:
+  - "{{ registry_host }}"
 
 files_repo: "{{ http_server }}/files"
 yum_repo: "{{ http_server }}/rpms"
