@@ -1,0 +1,2 @@
+yum_repo: http://localhost:35000/rpms
+ubuntu_repo: http://localhost:35000/debs

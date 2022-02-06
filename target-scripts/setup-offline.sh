@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# Setup offline repo for ansible node.
+
 source ./config.sh
 
 # setup yum/deb repository
 setup_yum_repos() {
-    sudo /bin/rm /etc/yum.repos.d/local-repo.repo
+    sudo /bin/rm /etc/yum.repos.d/offline.repo
 
     echo "===> Disable all yumrepositories"
     for repo in /etc/yum.repos.d/*.repo; do
@@ -13,7 +15,7 @@ setup_yum_repos() {
     done
         
     echo "===> Setup local yum repository"
-    cat <<EOF | sudo tee /etc/yum.repos.d/local-repo.repo  # override installed by prepare.sh
+    cat <<EOF | sudo tee /etc/yum.repos.d/offline.repo
 [local-repo]
 name=Local repo
 baseurl=http://localhost:$NGINX_PORT/rpms/local/
@@ -31,7 +33,7 @@ Acquire::AllowInsecureRepositories "true";
 Acquire::AllowDowngradeToInsecureRepositories "true";
 EOF
 
-    cat <<EOF | sudo tee /etc/apt/sources.list.d/local-repo.list
+    cat <<EOF | sudo tee /etc/apt/sources.list.d/offline.list
 deb [trusted=yes] http://localhost:$NGINX_PORT/debs/local/ ./
 EOF
 

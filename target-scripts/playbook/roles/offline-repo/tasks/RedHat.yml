@@ -1,0 +1,7 @@
+- name: Install offline yum repo
+  yum_repository:
+    file: offline
+    name: Offline repo
+    baseurl: "{{ yum_repo }}"
+    enabled: yes
+    gpgcheck: no
