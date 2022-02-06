@@ -21,6 +21,9 @@ prepare_servers() {
     # setup local repositories
     ./setup-offline.sh || exit 1
 
+    # setup python
+    ./setup-py.sh || exit 1
+
     # start private registry
     ./start-registry.sh || exit 1
 

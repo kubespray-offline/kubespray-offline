@@ -69,6 +69,8 @@ Then run following scripts in `outputs` directory.
     - Start nginx container.
 * setup-offline.sh
     - Setup yum/deb repo config and PyPI mirror config to use local nginx server.
+* setup-py.sh
+    - Install python3 and venv from local repo.
 * start-registry.sh
     - Start docker private registry container.
 * load-push-images.sh

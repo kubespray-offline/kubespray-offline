@@ -9,13 +9,15 @@ BASEDIR=$(cd $(dirname $0)/..; pwd)
 source $BASEDIR/config.sh
 source $BASEDIR/outputs/config.sh
 
+VENV_DIR=${VENV_DIR:-~/.venv/default}
+
 cd $BASEDIR/outputs
 
 venv() {
-    if [ ! -d ~/.venv/default ]; then
-        python3 -m venv ~/.venv/default || exit 1
+    if [ ! -d ${VENV_DIR} ]; then
+        python3 -m venv ${VENV_DIR} || exit 1
     fi
-    source ~/.venv/default/bin/activate
+    source ${VENV_DIR}/bin/activate
 }
 
 prepare_kubespray() {
@@ -26,16 +28,6 @@ prepare_kubespray() {
         mv kubespray-${KUBESPRAY_VERSION} kubespray-test
     fi
     cd kubespray-test
-
-    if [ -e /etc/redhat-release ]; then
-        sudo yum install -y --disablerepo=* --enablerepo=offline-repo python3 gcc python3-devel libffi-devel openssl-devel || exit 1
-    else
-        sudo apt update
-        #sudo apt install -y python3-venv gcc python3-dev libffi-dev libssl-dev
-        sudo apt install -y python3-venv
-    fi
-
-    venv
 
     # install ansible
     #pip install -U setuptools # adhoc: update to intermediate version
@@ -103,6 +95,7 @@ EOF
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml || exit 1
 }
 
+venv
 prepare_kubespray
 do_kubespray
 
