@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # My IP address
+for ip in $(hostname -I); do
+    if [[ $ip =~ ^192\. ]]; then
+        MYIP=$ip
+    fi
+done
 MYIP=${MYIP:-10.0.2.15}
+echo "MYIP = $MYIP"
 
 source /etc/os-release
 
