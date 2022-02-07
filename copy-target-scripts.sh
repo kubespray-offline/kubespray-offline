@@ -1,3 +1,3 @@
 #!/bin/bash
 echo "==> Copy target scripts"
-/bin/cp -f target-scripts/* outputs/
+/bin/cp -f -r target-scripts/* outputs/
