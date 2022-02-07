@@ -15,7 +15,7 @@
 
 - name: Install offline apt repo
   apt_repository:
-    repo: deb [trusted=yes] {{ ubuntu_repo }}
+    repo: deb [trusted=yes] {{ ubuntu_repo }}/local/ ./
     filename: offline
     state: present
     update_cache: yes

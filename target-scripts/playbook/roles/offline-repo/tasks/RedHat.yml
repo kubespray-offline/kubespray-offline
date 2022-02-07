@@ -2,6 +2,6 @@
   yum_repository:
     file: offline
     name: Offline repo
-    baseurl: "{{ yum_repo }}"
+    baseurl: "{{ yum_repo }}/local"
     enabled: yes
     gpgcheck: no
