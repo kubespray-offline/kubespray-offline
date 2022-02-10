@@ -6,8 +6,8 @@ if [ $# -ne 1 ]; then
 fi
 target=$1
 
-OPTS=""
+OPTS="--build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy"
 #OPTS="--progress=plain --no-cache=true"
 
-echo "===> build $targe"
+echo "===> build $target"
 docker build -f Dockerfile.$target -t kubespray-offline-$target:latest $OPTS ..
