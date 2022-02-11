@@ -12,3 +12,7 @@ KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
 # These values must be matched as kubespray/roles/kubespray-defaults/defaults/main.yml
 containerd_version=1.5.8
 snapshot_controller_tag=v4.2.1
+
+# container runtime for preparation node
+docker=docker
+#docker=/usr/local/bin/nerdctl

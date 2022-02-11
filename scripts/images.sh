@@ -13,10 +13,10 @@ get_image() {
 
     if [ ! -e $IMAGES_DIR/$zipname ]; then
         echo "==> Pull $image"
-        sudo docker pull $image || exit 1
+        sudo $docker pull $image || exit 1
 
         echo "==> Save $image"
-        sudo docker save -o $IMAGES_DIR/$tarname $image
+        sudo $docker save -o $IMAGES_DIR/$tarname $image
         sudo chown $(whoami) $IMAGES_DIR/$tarname
         chmod 0644 $IMAGES_DIR/$tarname
         gzip -v $IMAGES_DIR/$tarname
