@@ -8,8 +8,8 @@ fi
 get_image() {
     image=$1
 
-    tarname="$(echo ${image} | sed s@"/"@"-"@g | sed s/":"/"-"/g)".tar
-    zipname="$(echo ${image} | sed s@"/"@"-"@g | sed s/":"/"-"/g)".tar.gz
+    tarname="$(echo ${image} | sed s@"/"@"_"@g | sed s/":"/"-"/g)".tar
+    zipname="$(echo ${image} | sed s@"/"@"_"@g | sed s/":"/"-"/g)".tar.gz
 
     if [ ! -e $IMAGES_DIR/$zipname ]; then
         echo "==> Pull $image"
