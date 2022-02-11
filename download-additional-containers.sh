@@ -2,6 +2,8 @@
 
 echo "==> Pull additional container images"
 
+source ./config.sh
+source scripts/common.sh
 source scripts/images.sh
 
 cat imagelists/*.txt | sed "s/#.*$//g" | sort -u > $IMAGES_DIR/additional-images.list

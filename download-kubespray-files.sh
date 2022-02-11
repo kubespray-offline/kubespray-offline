@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source config.sh
+source ./config.sh
+source scripts/common.sh
 source scripts/images.sh
 
 if [ ! -e $KUBESPRAY_DIR ]; then

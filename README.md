@@ -25,9 +25,11 @@ This supports:
 
 Note: You must execute this process on same OS of k8s target nodes.
 
-Before download offline files, check and edit configurations in config.sh.
+Before download offline files, check and edit configurations in `config.sh`.
 
-Download all files:
+If you don't have docker installed, run `install-docker.sh` to install Docker CE.
+
+Then, download all files:
 
     $ ./download-all.sh
 
@@ -35,8 +37,6 @@ All artifacts are stored in `./outputs` directory.
 
 This script calls all of following scripts.
 
-* prepare-docker.sh
-    - Setup docker.
 * prepare-pkgs.sh
     - Setup python, etc.
 * prepare-py.sh
