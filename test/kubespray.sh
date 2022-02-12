@@ -34,9 +34,16 @@ prepare_kubespray() {
     if [ ! -d kubespray-test ]; then
         tar xvzf $BASEDIR/outputs/files/${KUBESPRAY_TARBALL}
         mv kubespray-${KUBESPRAY_VERSION} kubespray-test
+
+        # apply patches
+        pwd
+        for patch in $BASEDIR/outputs/patches/${KUBESPRAY_VERSION}/*.patch; do
+            echo "===> Apply patch: $patch"
+            (cd kubespray-test && patch -p1 < $patch)
+        done
     fi
     cd kubespray-test
-
+    
     # install ansible
     #pip install -U setuptools # adhoc: update to intermediate version
     #pip install -U pip wheel
@@ -108,11 +115,11 @@ EOF
 
     echo "===> Execute kubespray"
     # Hack #8339
-    PULL_CMD="/usr/local/bin/nerdctl -n k8s.io pull --quiet --insecure-registry"
+    #PULL_CMD="/usr/local/bin/nerdctl -n k8s.io pull --quiet --insecure-registry"
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root \
-        -e "image_pull_command='$PULL_CMD'" -e "image_pull_command_on_localhost='$PULL_CMD'" \
         cluster.yml \
         || exit 1
+        #-e "image_pull_command='$PULL_CMD'" -e "image_pull_command_on_localhost='$PULL_CMD'" \
 }
 
 venv
