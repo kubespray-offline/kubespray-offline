@@ -74,6 +74,8 @@ registry_host: "$INSTALLER_IP:$REGISTRY_PORT"
 containerd_insecure_registries:
   - "{{ registry_host }}"
 
+nerdctl_extra_flags: " --insecure-registry"
+
 files_repo: "{{ http_server }}/files"
 yum_repo: "{{ http_server }}/rpms"
 ubuntu_repo: "{{ http_server }}/debs"
