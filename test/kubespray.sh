@@ -71,8 +71,7 @@ do_kubespray() {
 http_server: "http://$INSTALLER_IP:$NGINX_PORT"
 registry_host: "$INSTALLER_IP:$REGISTRY_PORT"
 
-containerd_insecure_registries:
-  - "{{ registry_host }}"
+containerd_insecure_registries: "{{ { registry_host: 'http://' + registry_host } }}"
 
 nerdctl_extra_flags: " --insecure-registry"
 
