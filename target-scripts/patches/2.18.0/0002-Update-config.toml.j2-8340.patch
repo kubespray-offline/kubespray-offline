@@ -1,0 +1,76 @@
+From dda557ed23a533e6dc3a1ab6d329e66b7d7ab687 Mon Sep 17 00:00:00 2001
+From: Choi Yongbeom <59861163+mircyb@users.noreply.github.com>
+Date: Wed, 5 Jan 2022 19:56:33 +0900
+Subject: [PATCH] Update config.toml.j2 (#8340)
+
+* Update config.toml.j2
+
+i think this commit code is not completed works
+
+exam registry address : a.com:5000
+
+insecure registry must be http://a.com:5000
+
+but this code add insecure a.com:5000 (without http://)
+
+If there is no http, containerd accesses with https even if insecure_skip_verify = true
+
+solution is code edit
+
+* Update config.toml.j2
+
+* Update containerd.yml
+
+* Update containerd.yml
+
+* Update containerd.yml
+
+* Update config.toml.j2
+---
+ inventory/sample/group_vars/all/containerd.yml            | 5 +++--
+ .../container-engine/containerd/templates/config.toml.j2  | 8 +++++---
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/inventory/sample/group_vars/all/containerd.yml b/inventory/sample/group_vars/all/containerd.yml
+index ece0feb4..78ed6636 100644
+--- a/inventory/sample/group_vars/all/containerd.yml
++++ b/inventory/sample/group_vars/all/containerd.yml
+@@ -33,10 +33,11 @@
+ ## An obvious use case is allowing insecure-registry access to self hosted registries.
+ ## Can be ipaddress and domain_name.
+ ## example define mirror.registry.io or 172.19.16.11:5000
++## set "name": "url". insecure url must be started http://
+ ## Port number is also needed if the default HTTPS port is not used.
+ # containerd_insecure_registries:
+-#   - mirror.registry.io
+-#   - 172.19.16.11:5000
++#   "localhost": "http://127.0.0.1"
++#   "172.19.16.11:5000": "http://172.19.16.11:5000"
+ 
+ # containerd_registries:
+ #   "docker.io": "https://registry-1.docker.io"
+diff --git a/roles/container-engine/containerd/templates/config.toml.j2 b/roles/container-engine/containerd/templates/config.toml.j2
+index 0bc24984..463c5aca 100644
+--- a/roles/container-engine/containerd/templates/config.toml.j2
++++ b/roles/container-engine/containerd/templates/config.toml.j2
+@@ -54,12 +54,14 @@ oom_score = {{ containerd_oom_score }}
+         [plugins."io.containerd.grpc.v1.cri".registry.mirrors."{{ registry }}"]
+           endpoint = ["{{ ([ addr ] | flatten ) | join('","') }}"]
+ {% endfor %}
+-{% for addr in containerd_insecure_registries %}
+-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."{{ addr }}"]
++{% if containerd_insecure_registries is defined and containerd_insecure_registries|length>0 %}
++{% for registry, addr in containerd_insecure_registries.items() %}
++        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."{{ registry }}"]
+           endpoint = ["{{ ([ addr ] | flatten ) | join('","') }}"]
+-        [plugins."io.containerd.grpc.v1.cri".registry.configs."{{ addr }}".tls]
++        [plugins."io.containerd.grpc.v1.cri".registry.configs."{{ registry }}".tls]
+           insecure_skip_verify = true
+ {% endfor %}
++{% endif %}
+ {% for registry in containerd_registry_auth if registry['registry'] is defined %}
+ {% if (registry['username'] is defined and registry['password'] is defined) or registry['auth'] is defined %}
+       [plugins."io.containerd.grpc.v1.cri".registry.configs."{{ registry['registry'] }}".auth]
+-- 
+2.35.1
+

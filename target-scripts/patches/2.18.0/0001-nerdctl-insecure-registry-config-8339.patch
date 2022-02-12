@@ -1,0 +1,78 @@
+From 24f1402a142bfd72c5c0a624fdeef0b30c43c490 Mon Sep 17 00:00:00 2001
+From: Choi Yongbeom <59861163+mircyb@users.noreply.github.com>
+Date: Wed, 5 Jan 2022 18:14:33 +0900
+Subject: [PATCH] nerdctl insecure registry config (#8339)
+
+* Update prep_download.yml
+
+nerdctl insecure registry config
+
+* Update prep_download.yml
+
+* Update prep_download.yml
+
+apply conversations advice
+
+* Update prep_download.yml
+
+* Update prep_download.yml
+
+* Update prep_download.yml
+
+* Update prep_download.yml
+
+* Update prep_download.yml
+
+* Update prep_download.yml
+
+* Update main.yml
+
+* Update main.yml
+
+* Update prep_download.yml
+
+* Update prep_download.yml
+---
+ roles/download/defaults/main.yml       | 3 +++
+ roles/download/tasks/prep_download.yml | 4 ++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/roles/download/defaults/main.yml b/roles/download/defaults/main.yml
+index eecee3f5..a0cf9dbe 100644
+--- a/roles/download/defaults/main.yml
++++ b/roles/download/defaults/main.yml
+@@ -48,6 +48,9 @@ download_delegate: "{% if download_localhost %}localhost{% else %}{{ groups['kub
+ # Arch of Docker images and needed packages
+ image_arch: "{{host_architecture | default('amd64')}}"
+ 
++# Nerdctl insecure flag set
++nerdctl_extra_flags: '{%- if containerd_insecure_registries is defined and containerd_insecure_registries|length>0 -%}\" --insecure-registry"{%- else -%}{%- endif -%}'
++
+ # Versions
+ kubeadm_version: "{{ kube_version }}"
+ etcd_version: v3.5.0
+diff --git a/roles/download/tasks/prep_download.yml b/roles/download/tasks/prep_download.yml
+index 6fc84bc0..342f20c8 100644
+--- a/roles/download/tasks/prep_download.yml
++++ b/roles/download/tasks/prep_download.yml
+@@ -16,7 +16,7 @@
+ - name: prep_download | Set image pull/info command for containerd
+   set_fact:
+     image_info_command: "{{ bin_dir }}/nerdctl -n k8s.io images --format '{% raw %}{{ '{{' }} .Repository {{ '}}' }}:{{ '{{' }} .Tag {{ '}}' }}{% endraw %}' 2>/dev/null | grep -v ^:$ | tr '\n' ','"
+-    image_pull_command: "{{ bin_dir }}/nerdctl -n k8s.io pull --quiet"
++    image_pull_command: "{{ bin_dir }}/nerdctl -n k8s.io pull --quiet{{ nerdctl_extra_flags }}"
+   when: container_manager == 'containerd'
+ 
+ - name: prep_download | Set image pull/info command for crio
+@@ -34,7 +34,7 @@
+ - name: prep_download | Set image pull/info command for containerd on localhost
+   set_fact:
+     image_info_command_on_localhost: "{{ bin_dir }}/nerdctl -n k8s.io images --format '{% raw %}{{ '{{' }} .Repository {{ '}}' }}:{{ '{{' }} .Tag {{ '}}' }}{% endraw %}' 2>/dev/null | grep -v ^:$ | tr '\n' ','"
+-    image_pull_command_on_localhost: "{{ bin_dir }}/nerdctl -n k8s.io pull --quiet"
++    image_pull_command_on_localhost: "{{ bin_dir }}/nerdctl -n k8s.io pull --quiet{{ nerdctl_extra_flags }}"
+   when: container_manager_on_localhost == 'containerd'
+ 
+ - name: prep_download | Set image pull/info command for crio on localhost
+-- 
+2.35.1
+
