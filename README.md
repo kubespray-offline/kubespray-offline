@@ -105,6 +105,11 @@ Extract kubespray:
     $ tar xvzf kubespray-{version}.tar.gz
     $ cd kubespray-{version}
 
+For Kubespray 2.18.0, you need to apply patch files.
+All the files are placed in `outputs/patches/2.18.0` directory.
+
+    $ patch -p1 < {patch_file}
+
 Install ansible:
 
     $ pip install -U pip                # update pip
@@ -120,8 +125,10 @@ You need to change `YOUR_HOST` with your registry/nginx host IP.
 http_server: "http://YOUR_HOST:8080/"
 registry_host: "YOUR_HOST:35000"
 
-containerd_insecure_registries:
-  - "{{ registry_host }}"
+containerd_insecure_registries: # Kubespray #8340
+  "YOUR_HOST:35000": "http://YOUR_HOST:35000"
+
+nerdctl_extra_flags: " --insecure-registry"  # Kubespray #8339
 
 files_repo: "{{ http_server }}/files"
 yum_repo: "{{ http_server }}/rpms"
@@ -168,11 +175,5 @@ Then execute `offline-repo.yml` playbook.
 
 Run kubespray ansible playbook.
 
-For Kubespray 2.18, you need to override `image_pull_command` and `image_pull_command_on_localhost`
-to allow insecure registry for nerdctl.
-          
     # Example  
-    $ PULL_CMD="/usr/local/bin/nerdctl -n k8s.io pull --quiet --insecure-registry"
-    $ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root \
-        -e "image_pull_command='$PULL_CMD'" -e "image_pull_command_on_localhost='$PULL_CMD'" \
-        cluster.yml
+    $ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
