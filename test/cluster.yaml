@@ -1,0 +1,28 @@
+# To use this, run 'INVENTORY=cluster.yaml ./kubespray.sh'
+all:
+  hosts:
+    master:
+      ansible_host: 192.168.56.61
+      ip: 192.168.56.61
+      access_ip: 192.168.56.61
+    worker:
+      ansible_host: 192.168.56.62
+      ip: 192.168.56.62
+      access_ip: 192.168.56.62
+  children:
+    kube_control_plane:
+      hosts:
+        master:
+    kube_node:
+      hosts:
+        master:
+        worker:
+    etcd:
+      hosts:
+        master:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
+    calico_rr:
+      hosts: {}

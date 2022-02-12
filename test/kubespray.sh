@@ -3,11 +3,13 @@
 # My IP address
 for ip in $(hostname -I); do
     if [[ $ip =~ ^192\. ]]; then
-        MYIP=$ip
+        INSTALLER_IP=$ip
     fi
 done
-MYIP=${MYIP:-10.0.2.15}
-echo "MYIP = $MYIP"
+INSTALLER_IP=${INSTALLER_IP:-10.0.2.15}
+echo "INSTALLER_IP = $INSTALLER_IP"
+
+IPS=${IPS:-${INSTALLER_IP}}
 
 source /etc/os-release
 
@@ -17,7 +19,7 @@ source $BASEDIR/outputs/config.sh
 
 VENV_DIR=${VENV_DIR:-~/.venv/default}
 
-cd $BASEDIR/outputs
+cd $BASEDIR/test
 
 venv() {
     if [ ! -d ${VENV_DIR} ]; then
@@ -28,9 +30,9 @@ venv() {
 
 prepare_kubespray() {
     # extract kubespray
-    cd $BASEDIR/outputs
+    cd $BASEDIR/test
     if [ ! -d kubespray-test ]; then
-        tar xvzf ./files/${KUBESPRAY_TARBALL}
+        tar xvzf $BASEDIR/outputs/files/${KUBESPRAY_TARBALL}
         mv kubespray-${KUBESPRAY_VERSION} kubespray-test
     fi
     cd kubespray-test
@@ -46,7 +48,7 @@ prepare_kubespray() {
 do_kubespray() {
     venv
     
-    cd $BASEDIR/outputs/kubespray-test
+    cd $BASEDIR/test/kubespray-test
 
     # copy offline repo playboo
     cp -r $BASEDIR/outputs/playbook/* ./
@@ -59,8 +61,8 @@ do_kubespray() {
 
     echo "===> Generate offline config"
     cat <<EOF >inventory/mycluster/group_vars/all/offline.yml
-http_server: "http://$MYIP:$NGINX_PORT"
-registry_host: "$MYIP:$REGISTRY_PORT"
+http_server: "http://$INSTALLER_IP:$NGINX_PORT"
+registry_host: "$INSTALLER_IP:$REGISTRY_PORT"
 
 containerd_insecure_registries:
   - "{{ registry_host }}"
@@ -92,11 +94,15 @@ runc_download_url: "{{ files_repo }}/runc.{{ image_arch }}"
 nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
 containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
 EOF
-    
-    echo "===> Generate inventory"
-    CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $MYIP || exit 1
+
+    if [ -e "$BASEDIR/test/$INVENTORY" ]; then
+        cp "$BASEDIR/test/$INVENTORY" inventory/mycluster/hosts.yaml
+    else
+        echo "===> Generate inventory"
+        CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $IPS || exit 1
+    fi
     cat inventory/mycluster/hosts.yaml
-    
+
     echo "===> Execute offline repo playbook"
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root offline-repo.yml || exit 1
 
