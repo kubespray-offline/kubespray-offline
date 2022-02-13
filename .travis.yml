@@ -9,4 +9,4 @@ branches:
 jobs:
   include:
     - dist: focal
-      script: ./ci/travis.sh
+      script: ./ci/ci.sh
