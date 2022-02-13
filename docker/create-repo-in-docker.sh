@@ -12,4 +12,8 @@ VOLUMES="-v ${ROOT}:${WORKDIR} -v /var/run/docker.sock:/var/run/docker.sock"
 
 CMD="cd ${WORKDIR} && ./create-repo.sh"
 
-docker run -it --rm ${VOLUMES} kubespray-offline-$target:latest /bin/bash -c "${CMD}"
+OPTS=
+if [[ -t 1 ]]; then
+    OPTS=$"OPTS -it"
+fi
+docker run ${OPTS} --rm ${VOLUMES} kubespray-offline-$target:latest /bin/bash -c "${CMD}"
