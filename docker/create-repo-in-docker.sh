@@ -14,6 +14,6 @@ CMD="cd ${WORKDIR} && ./create-repo.sh"
 
 OPTS=
 if [[ -t 1 ]]; then
-    OPTS=$"OPTS -it"
+    OPTS="$OPTS -it"
 fi
 docker run ${OPTS} --rm ${VOLUMES} kubespray-offline-$target:latest /bin/bash -c "${CMD}"
