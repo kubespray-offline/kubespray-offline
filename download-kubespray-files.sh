@@ -50,7 +50,7 @@ get_url() {
 
     if [ ! -e $FILES_DIR/$rdir/$filename ]; then
         echo "==> Download $url"
-        curl -SL $url > $FILES_DIR/$rdir/$filename || exit 1
+        curl --location --show-error --fail --output $FILES_DIR/$rdir/$filename $url || exit 1
     else
         echo "==> Skip $url"
     fi
