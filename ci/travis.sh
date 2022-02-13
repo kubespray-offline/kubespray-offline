@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./prepare-docker.sh || exit 1
+./install-docker.sh || exit 1
 ./prepare-pkgs.sh || exit 1
 ./prepare-py.sh || exit 1
 ./get-kubespray.sh || exit 1
