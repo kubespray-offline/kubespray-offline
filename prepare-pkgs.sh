@@ -24,6 +24,9 @@ if [ -e /etc/redhat-release ]; then
     fi
 else
     $sudo apt update
+    if [ "$1" == "--upgrade" ]; then
+        $sudo apt upgrade
+    fi
     $sudo apt -y install lsb-release curl gpg python3 || exit 1
     $sudo apt install -y python3 python3-pip python3-venv rsync || exit 1
     $sudo apt install -y gcc python3-dev libffi-dev || exit 1 # pypi-mirror
