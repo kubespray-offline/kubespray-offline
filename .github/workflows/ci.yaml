@@ -21,6 +21,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Cache outputs
+        uses: actions/cache@v2
+        with:
+          path: outputs/
+          key: ${{ runner.os }}-outputs
+
       - name: Install docker
         run: ./install-docker.sh
       - name: Prepare packages
@@ -35,7 +41,19 @@ jobs:
         run: ./download-kubespray-files.sh
       - name: Download additional containers
         run: ./download-additional-containers.sh
-      - name: Create repo
-        run: ./create-repo.sh
+      #- name: Create repo
+      #  run: ./create-repo.sh
+      - name: Create container image for create repo
+        run: (cd docker && ./build-image.sh ubuntu2004)
+      - name: Create repo in container
+        run: (cd docker && ./create-repo-in-docker.sh ubuntu2004)
       - name: Copy target scripts
         run: ./copy-target-scripts.sh
+      - name: Show outputs directory size
+        run: du outputs
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: outputs
+          path: outputs/
