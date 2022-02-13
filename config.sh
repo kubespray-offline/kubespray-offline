@@ -5,7 +5,7 @@
 KUBESPRAY_DIR=${KUBESPRAY_DIR:-./cache/kubespray}
 
 # Kubespray version to download
-KUBESPRAY_VERSION=2.18.0
+KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.18.0}
 KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
 
 # Used in download-kuberspray-files.sh

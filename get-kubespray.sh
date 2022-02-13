@@ -4,14 +4,28 @@ source config.sh
 
 mkdir -p ./cache
 
+remove_kubespray_cache_dir() {
+    if [ ${KUBESPRAY_DIR} = "./cache/kubespray" ] && [ -d ${KUBESPRAY_DIR} ]; then
+        /bin/rm -rf ${KUBESPRAY_DIR}
+    fi
+}
+
+if [ $KUBESPRAY_VERSION == "master" ]; then
+    remove_kubespray_cache_dir
+    echo "===> Checkout kubespray master"
+    if [ ! -d ${KUBESPRAY_DIR} ]; then
+        git clone https://github.com/kubernetes-sigs/kubespray.git ${KUBESPRAY_DIR}
+    fi
+    exit 0
+fi
+
+
 if [ ! -e outputs/files/${KUBESPRAY_TARBALL} ]; then
     echo "===> Download ${KUBESPRAY_TARBALL}"
     mkdir -p outputs/files/
     curl -SL https://github.com/kubernetes-sigs/kubespray/archive/refs/tags/v${KUBESPRAY_VERSION}.tar.gz >outputs/files/${KUBESPRAY_TARBALL} || exit 1
 
-    if [ ${KUBESPRAY_DIR} = "./cache/kubespray" ] && [ -d ${KUBESPRAY_DIR} ]; then
-        /bin/rm -rf ${KUBESPRAY_DIR}
-    fi
+    remove_kubespray_cache_dir
 fi
 
 if [ ! -d ${KUBESPRAY_DIR} ]; then
