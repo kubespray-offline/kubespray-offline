@@ -12,6 +12,14 @@ fi
 FILES_DIR=outputs/files
 
 # Decide relative directory of file from URL
+#
+# kubernetes/vx.x.x        : kubeadm/kubectl/kubelet
+# kubernetes/etcd          : etcd
+# kubernetes/cni           : CNI plugins
+# kubernetes/cri-tools     : crictl
+# kubernetes/calico/vx.x.x : calico
+# kubernetes/calico        : calicoctl
+#
 decide_relative_dir() {
     local url=$1
     local rdir
