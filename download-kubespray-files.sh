@@ -71,12 +71,16 @@ fix_images_list() {
 }
 
 # execute offline generate_list.sh
-export containerd_version=${containerd_version:-1.5.8}
-export host_os=linux
-export image_arch=amd64
+if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
+    export containerd_version=${containerd_version:-1.5.8}
+    export host_os=linux
+    export image_arch=amd64
+fi
 /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
 
-fix_images_list || exit 1
+if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
+    fix_images_list || exit 1
+fi
 
 mkdir -p $FILES_DIR
 
