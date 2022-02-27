@@ -17,6 +17,7 @@ BASEDIR=$(cd $(dirname $0)/..; pwd)
 source $BASEDIR/config.sh
 source $BASEDIR/outputs/config.sh
 
+KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
 VENV_DIR=${VENV_DIR:-~/.venv/default}
 
 cd $BASEDIR/test

@@ -2,6 +2,8 @@
 
 source config.sh
 
+KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
+
 mkdir -p ./cache
 
 remove_kubespray_cache_dir() {
