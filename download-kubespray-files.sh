@@ -64,23 +64,23 @@ get_url() {
     fi
 }
 
-fix_images_list() {
-    # check roles/download/default/main.yml to decide version
-    snapshot_controller_tag=${snapshot_controller_tag:-v4.2.1}
-    sed -i "s@\(.*/snapshot-controller:\)@\1${snapshot_controller_tag}@" ${KUBESPRAY_DIR}/contrib/offline/temp/images.list
+# execute offline generate_list.sh
+generate_list() {
+    if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
+        export containerd_version=${containerd_version:-1.5.8}
+        export host_os=linux
+        export image_arch=amd64
+    fi
+    /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
+
+    if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
+        # check roles/download/default/main.yml to decide version
+        snapshot_controller_tag=${snapshot_controller_tag:-v4.2.1}
+        sed -i "s@\(.*/snapshot-controller:\)@\1${snapshot_controller_tag}@" ${KUBESPRAY_DIR}/contrib/offline/temp/images.list || exit 1
+    fi
 }
 
-# execute offline generate_list.sh
-if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
-    export containerd_version=${containerd_version:-1.5.8}
-    export host_os=linux
-    export image_arch=amd64
-fi
-/bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
-
-if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
-    fix_images_list || exit 1
-fi
+generate_list
 
 mkdir -p $FILES_DIR
 
