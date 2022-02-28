@@ -5,9 +5,12 @@ RUN apt update \
     && apt clean all
 
 RUN mkdir /root/scripts
-COPY prepare-*.sh requirements.txt /root/
-COPY scripts/* /root/scripts/
 
-RUN cd /root && ./prepare-pkgs.sh
+COPY prepare-*.sh /root/
+RUN cd /root && ./prepare-pkgs.sh && apt clean all
+
+COPY install-*.sh /root/
+RUN cd /root && ./install-docker.sh && apt clean all
+
+#COPY requirements.txt /root/
 #RUN cd /root && ./prepare-py.sh
-RUN cd /root && ./install-docker.sh || exit 0  # ignore error

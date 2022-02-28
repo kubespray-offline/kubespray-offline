@@ -1,11 +1,14 @@
 FROM almalinux:8
 
-RUN yum install -y sudo dnf 'dnf-command(download)' && yum clean all
+RUN dnf install -y sudo dnf 'dnf-command(download)' && dnf clean all
 
 RUN mkdir /root/scripts
-COPY prepare-*.sh requirements.txt /root/
-COPY scripts/* /root/scripts/
 
-RUN cd /root && ./prepare-pkgs.sh
+COPY prepare-*.sh /root/
+RUN cd /root && ./prepare-pkgs.sh && dnf clean all
+
+COPY install-*.sh /root/
+RUN cd /root && ./install-docker.sh && dnf clean all
+
+#COPY requirements.txt /root/
 #RUN cd /root && ./prepare-py.sh
-RUN cd /root && ./install-docker.sh || exit 0  # ignore error

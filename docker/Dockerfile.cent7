@@ -3,9 +3,12 @@ FROM centos:7
 RUN yum install -y sudo && yum clean all
 
 RUN mkdir /root/scripts
-COPY prepare-*.sh requirements.txt /root/
-COPY scripts/* /root/scripts/
 
-RUN cd /root && ./prepare-pkgs.sh
+COPY prepare-*.sh /root/
+RUN cd /root && ./prepare-pkgs.sh && yum clean all
+
+COPY install-*.sh /root/
+RUN cd /root && ./install-docker.sh && yum clean all
+
+#COPY requirements.txt /root/
 #RUN cd /root && ./prepare-py.sh
-RUN cd /root && ./install-docker.sh || exit 0  # ignore error
