@@ -104,7 +104,7 @@ nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible
 containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
 EOF
 
-    if [ -e "$BASEDIR/test/$INVENTORY" ]; then
+    if [ -n "$INVENTORY" ] && [ -e "$BASEDIR/test/$INVENTORY" ]; then
         cp "$BASEDIR/test/$INVENTORY" inventory/mycluster/hosts.yaml
     else
         echo "===> Generate inventory"
