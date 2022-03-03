@@ -37,7 +37,7 @@ prepare_kubespray() {
         mv kubespray-${KUBESPRAY_VERSION} kubespray-test
 
         # apply patches
-        pwd
+        sleep 1 # avoid annoying patch error in shared folders.
         for patch in $BASEDIR/outputs/patches/${KUBESPRAY_VERSION}/*.patch; do
             echo "===> Apply patch: $patch"
             (cd kubespray-test && patch -p1 < $patch)
