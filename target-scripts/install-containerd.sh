@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ENABLE_DOWNLOAD=${ENABLE_DOWNLOAD:-false}
+
 if [ ! -e files ]; then
     mkdir -p files
 fi
@@ -7,22 +9,28 @@ fi
 # download files, if not found
 download() {
     url=$1
+    dir=$2
+
     filename=$(basename $1)
-    if [ ! -e ./files/$filename ]; then
+    mkdir -p ./files/$dir
+
+    if [ ! -e ./files/$dir/$filename ]; then
         echo "==> download $url"
-        (cd ./files/ && curl -SLO $1)
+        (cd ./files/$dir && curl -SLO $1)
     fi
 }
 
-RUNC_VERSION=1.0.3
-CONTAINERD_VERSION=1.5.8
-NERDCTL_VERSION=0.15.0
-CNI_VERSION=1.0.1
+if $ENABLE_DOWNLOAD; then
+    RUNC_VERSION=1.0.3
+    CONTAINERD_VERSION=1.5.8
+    NERDCTL_VERSION=0.15.0
+    CNI_VERSION=1.0.1
 
-download https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64
-download https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz
-download https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VERSION}/nerdctl-${NERDCTL_VERSION}-linux-amd64.tar.gz
-download https://github.com/containernetworking/plugins/releases/download/v${CNI_VERSION}/cni-plugins-linux-amd64-v${CNI_VERSION}.tgz
+    download https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64
+    download https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz
+    download https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VERSION}/nerdctl-${NERDCTL_VERSION}-linux-amd64.tar.gz
+    download https://github.com/containernetworking/plugins/releases/download/v${CNI_VERSION}/cni-plugins-linux-amd64-v${CNI_VERSION}.tgz kubernetes/cni
+fi
 
 # Install runc
 echo "==> Install runc"
