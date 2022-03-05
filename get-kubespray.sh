@@ -12,11 +12,11 @@ remove_kubespray_cache_dir() {
     fi
 }
 
-if [ $KUBESPRAY_VERSION == "master" ]; then
+if [ $KUBESPRAY_VERSION == "master" ] || [[ $KUBESPRAY_VERSION =~ ^release- ]]; then
     remove_kubespray_cache_dir
-    echo "===> Checkout kubespray master"
+    echo "===> Checkout kubespray branch : $KUBESPRAY_VERSION"
     if [ ! -d ${KUBESPRAY_DIR} ]; then
-        git clone https://github.com/kubernetes-sigs/kubespray.git ${KUBESPRAY_DIR}
+        git clone -b $KUBESPRAY_VERSION https://github.com/kubernetes-sigs/kubespray.git ${KUBESPRAY_DIR}
     fi
     exit 0
 fi
