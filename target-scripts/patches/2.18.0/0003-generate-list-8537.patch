@@ -1,0 +1,129 @@
+diff --git a/contrib/offline/README.md b/contrib/offline/README.md
+index 3f3b8f9e..c5b44564 100644
+--- a/contrib/offline/README.md
++++ b/contrib/offline/README.md
+@@ -28,16 +28,19 @@ manage-offline-container-images.sh   register
+ 
+ This script generates the list of downloaded files and the list of container images by `roles/download/defaults/main.yml` file.
+ 
+-Run this script will generates three files, all downloaded files url in files.list, all container images in images.list, all component version in generate.sh.
++Run this script will execute `generate_list.yml` playbook in kubespray root directory and generate four files,
++all downloaded files url in files.list, all container images in images.list, jinja2 templates in *.template.
+ 
+ ```shell
+-bash generate_list.sh
++./generate_list.sh
+ tree temp
+ temp
+ ├── files.list
+-├── generate.sh
+-└── images.list
+-0 directories, 3 files
++├── files.list.template
++├── images.list
++└── images.list.template
++0 directories, 5 files
+ ```
+ 
+-In some cases you may want to update some component version, you can edit `generate.sh` file, then run `bash generate.sh | grep 'https' > files.list` to update file.list or run `bash generate.sh | grep -v 'https'> images.list` to update images.list.
++In some cases you may want to update some component version, you can declare version variables in ansible inventory file or group_vars,
++then run `./generate_list.sh -i [inventory_file]` to update file.list and images.list.
+diff --git a/contrib/offline/generate_list.sh b/contrib/offline/generate_list.sh
+old mode 100644
+new mode 100755
+index 7d77d813..a379caba
+--- a/contrib/offline/generate_list.sh
++++ b/contrib/offline/generate_list.sh
+@@ -5,53 +5,26 @@ CURRENT_DIR=$(cd $(dirname $0); pwd)
+ TEMP_DIR="${CURRENT_DIR}/temp"
+ REPO_ROOT_DIR="${CURRENT_DIR%/contrib/offline}"
+ 
+-: ${IMAGE_ARCH:="amd64"}
+-: ${ANSIBLE_SYSTEM:="linux"}
+-: ${ANSIBLE_ARCHITECTURE:="x86_64"}
+ : ${DOWNLOAD_YML:="roles/download/defaults/main.yml"}
+-: ${KUBE_VERSION_YAML:="roles/kubespray-defaults/defaults/main.yaml"}
+ 
+ mkdir -p ${TEMP_DIR}
+ 
+-# ARCH used in convert {%- if image_arch != 'amd64' -%}-{{ image_arch }}{%- endif -%} to {{arch}}
+-if [ "${IMAGE_ARCH}" != "amd64" ]; then ARCH="${IMAGE_ARCH}"; fi
+-
+-cat > ${TEMP_DIR}/generate.sh << EOF
+-arch=${ARCH}
+-image_arch=${IMAGE_ARCH}
+-ansible_system=${ANSIBLE_SYSTEM}
+-ansible_architecture=${ANSIBLE_ARCHITECTURE}
+-EOF
+-
+-# generate all component version by $DOWNLOAD_YML
+-grep 'kube_version:' ${REPO_ROOT_DIR}/${KUBE_VERSION_YAML} \
+-| sed 's/: /=/g' >> ${TEMP_DIR}/generate.sh
+-grep '_version:' ${REPO_ROOT_DIR}/${DOWNLOAD_YML} \
+-| sed 's/: /=/g;s/{{/${/g;s/}}/}/g' | tr -d ' ' >> ${TEMP_DIR}/generate.sh
+-sed -i 's/kube_major_version=.*/kube_major_version=${kube_version%.*}/g' ${TEMP_DIR}/generate.sh
+-sed -i 's/crictl_version=.*/crictl_version=${kube_version%.*}.0/g' ${TEMP_DIR}/generate.sh
+-
+-# generate all download files url
++# generate all download files url template
+ grep 'download_url:' ${REPO_ROOT_DIR}/${DOWNLOAD_YML} \
+-| sed 's/: /=/g;s/ //g;s/{{/${/g;s/}}/}/g;s/|lower//g;s/^.*_url=/echo /g' >> ${TEMP_DIR}/generate.sh
++    | sed 's/^.*_url: //g;s/\"//g' > ${TEMP_DIR}/files.list.template
+ 
+-# generate all images list
+-grep -E '_repo:|_tag:' ${REPO_ROOT_DIR}/${DOWNLOAD_YML} \
+-| sed "s#{%- if image_arch != 'amd64' -%}-{{ image_arch }}{%- endif -%}#{{arch}}#g" \
+-| sed 's/: /=/g;s/{{/${/g;s/}}/}/g' | tr -d ' ' >> ${TEMP_DIR}/generate.sh
++# generate all images list template
+ sed -n '/^downloads:/,/download_defaults:/p' ${REPO_ROOT_DIR}/${DOWNLOAD_YML} \
+-| sed -n "s/repo: //p;s/tag: //p" | tr -d ' ' | sed 's/{{/${/g;s/}}/}/g' \
+-| sed 'N;s#\n# #g' | tr ' ' ':' | sed 's/^/echo /g' >> ${TEMP_DIR}/generate.sh
++    | sed -n "s/repo: //p;s/tag: //p" | tr -d ' ' \
++    | sed 'N;s#\n# #g' | tr ' ' ':' | sed 's/\"//g' > ${TEMP_DIR}/images.list.template
+ 
+-# special handling for https://github.com/kubernetes-sigs/kubespray/pull/7570
+-sed -i 's#^coredns_image_repo=.*#coredns_image_repo=${kube_image_repo}$(if printf "%s\\n%s\\n" v1.21 ${kube_version%.*} | sort --check=quiet --version-sort; then echo -n /coredns/coredns;else echo -n /coredns; fi)#' ${TEMP_DIR}/generate.sh
+-sed -i 's#^coredns_image_tag=.*#coredns_image_tag=$(if printf "%s\\n%s\\n" v1.21 ${kube_version%.*} | sort --check=quiet --version-sort; then echo -n ${coredns_version};else echo -n ${coredns_version/v/}; fi)#' ${TEMP_DIR}/generate.sh
+-
+-# add kube-* images to images list
++# add kube-* images to images list template
+ KUBE_IMAGES="kube-apiserver kube-controller-manager kube-scheduler kube-proxy"
+-echo "${KUBE_IMAGES}" | tr ' ' '\n' | xargs -L1 -I {} \
+-echo 'echo ${kube_image_repo}/{}:${kube_version}' >> ${TEMP_DIR}/generate.sh
++for i in $KUBE_IMAGES; do
++    echo "{{ kube_image_repo }}/$i:{{ kube_version }}" >> ${TEMP_DIR}/images.list.template
++done
++
++# run ansible to expand templates
++/bin/cp ${CURRENT_DIR}/generate_list.yml ${REPO_ROOT_DIR}
+ 
+-# print files.list and images.list
+-bash ${TEMP_DIR}/generate.sh | grep 'https' | sort > ${TEMP_DIR}/files.list
+-bash ${TEMP_DIR}/generate.sh | grep -v 'https' | sort > ${TEMP_DIR}/images.list
++(cd ${REPO_ROOT_DIR} && ansible-playbook $* generate_list.yml && /bin/rm generate_list.yml) || exit 1
+diff --git a/contrib/offline/generate_list.yml b/contrib/offline/generate_list.yml
+new file mode 100644
+index 00000000..50cd83ac
+--- /dev/null
++++ b/contrib/offline/generate_list.yml
+@@ -0,0 +1,20 @@
++---
++- hosts: localhost
++  become: false
++
++  roles:
++    # Just load default variables from roles.
++    - role: kubespray-defaults
++      when: false
++    - role: download
++      when: false
++
++  tasks:
++    - name: Generate files.list and images.list files from templates
++      template:
++        src: ./contrib/offline/temp/{{ item }}.list.template
++        dest: ./contrib/offline/temp/{{ item }}.list
++        mode: 0644
++      with_items:
++        - files
++        - images
