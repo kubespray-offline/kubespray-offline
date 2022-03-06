@@ -80,6 +80,13 @@ generate_list() {
     #fi
 }
 
+VENV_DIR=${VENV_DIR:-~/.venv/default}
+if [ ! -e ${VENV_DIR} ]; then
+    echo "No ${VENV_DIR}, abort."
+    exit 1
+fi
+source ${VENV_DIR}/bin/activate
+
 generate_list
 
 mkdir -p $FILES_DIR
