@@ -1,5 +1,6 @@
 #!/bin/bash
 
+CURRENT_DIR=$(cd $(dirname $0); pwd)
 source config.sh
 
 KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
@@ -35,4 +36,14 @@ if [ ! -d ${KUBESPRAY_DIR} ]; then
     tar xzf outputs/files/${KUBESPRAY_TARBALL}
 
     mv kubespray-${KUBESPRAY_VERSION} ${KUBESPRAY_DIR}
+
+    sleep 1  # ad hoc, for vagrant shared directory
+
+    # Apply patches
+    for patch in ${CURRENT_DIR}/target-scripts/patches/${KUBESPRAY_VERSION}/*.patch; do
+      echo "===> Apply patch $patch"
+      (cd $KUBESPRAY_DIR && patch -p1 < $patch) || exit 1
+    done
 fi
+
+echo "Done."
