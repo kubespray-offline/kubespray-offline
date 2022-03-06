@@ -31,19 +31,13 @@ venv() {
 
 prepare_kubespray() {
     # extract kubespray
-    cd $BASEDIR/test
-    if [ ! -d kubespray-test ]; then
-        tar xvzf $BASEDIR/outputs/files/${KUBESPRAY_TARBALL}
-        mv kubespray-${KUBESPRAY_VERSION} kubespray-test
+    cd $BASEDIR/outputs
+    ./extract-kubespray.sh || exit 1
 
-        # apply patches
-        sleep 1 # avoid annoying patch error in shared folders.
-        for patch in $BASEDIR/outputs/patches/${KUBESPRAY_VERSION}/*.patch; do
-            echo "===> Apply patch: $patch"
-            (cd kubespray-test && patch -p1 < $patch)
-        done
-    fi
-    cd kubespray-test
+    [ -e $BASEDIR/test/kubespray-test ] && /bin/rm -rf $BASEDIR/test/kubespray-test
+    mv kubespray-${KUBESPRAY_VERSION} $BASEDIR/test/kubespray-test
+
+    cd $BASEDIR/test/kubespray-test
     
     # install ansible
     #pip install -U setuptools # adhoc: update to intermediate version

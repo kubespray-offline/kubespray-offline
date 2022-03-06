@@ -76,6 +76,8 @@ Then run following scripts in `outputs` directory.
 * load-push-images.sh
     - Load all container images to containerd.
     - Tag and push them to the private registry.
+* extract-kubespray.sh
+    - Extract kubespray tarball and apply all patches.
 
 You can configure port number of nginx and private registry in config.sh.
 
@@ -100,15 +102,10 @@ Create and activate venv:
     $ python3 -m venv ~/.venv/default
     $ source ~/.venv/default/bin/activate
 
-Extract kubespray:
+Extract kubespray and apply patches:
 
-    $ tar xvzf kubespray-{version}.tar.gz
+    $ ./extract-kubespray.sh
     $ cd kubespray-{version}
-
-For Kubespray 2.18.0, you need to apply patch files.
-All the files are placed in `outputs/patches/2.18.0` directory.
-
-    $ patch -p1 < {patch_file}
 
 Install ansible:
 
