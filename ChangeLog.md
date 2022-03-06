@@ -1,11 +1,11 @@
 # ChangeLogs
 
-## v2.18.0-1 - 2021/02/12
+## v2.18.0-1 - 2022/02/12
 
 - Add #8339, #8340 patches for kubespray 2.18.0
 - Rename prepare-docker.sh to install-docker.sh, remove it from download-all.sh. 
 
-## v2.18.0-0 - 2021/02/06
+## v2.18.0-0 - 2022/02/06
 
 - Support Kubespray 2.18.0
 - Use containerd instead of Docker
