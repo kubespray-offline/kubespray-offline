@@ -12,7 +12,7 @@ NGINX_IMAGE=nginx:1.19
 
 echo "===> Start nginx"
 sudo /usr/local/bin/nerdctl run -d \
-    -p ${NGINX_PORT}:80 \
+    --network host \
     --restart always \
     --name nginx \
     -v ${BASEDIR}:/usr/share/nginx/html \

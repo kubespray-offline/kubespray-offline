@@ -11,7 +11,8 @@ fi
 
 echo "===> Start registry"
 sudo /usr/local/bin/nerdctl run -d \
-    -p ${REGISTRY_PORT}:5000 \
+    --network host \
+    -e REGISTRY_HTTP_ADDR=0.0.0.0:${REGISTRY_PORT} \
     --restart always \
     --name registry \
     -v $REGISTRY_DIR:/var/lib/registry \
