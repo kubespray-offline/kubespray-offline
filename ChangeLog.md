@@ -1,8 +1,14 @@
 # ChangeLogs
 
+## v2.18.0-2 - 2022/03/06
+
+- Runs nginx and local registries using host network mode. (#3)
+- Add #8537 patch for kubespray 2.18.0.
+- Add extract-kubespray.sh.
+
 ## v2.18.0-1 - 2022/02/12
 
-- Add #8339, #8340 patches for kubespray 2.18.0
+- Add #8339, #8340 patches for kubespray 2.18.0.
 - Rename prepare-docker.sh to install-docker.sh, remove it from download-all.sh. 
 
 ## v2.18.0-0 - 2022/02/06
