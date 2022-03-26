@@ -1,5 +1,9 @@
 # ChangeLogs
 
+## v2.18.1-0 - 2022/03/26
+
+- Update kubespray 2.18.1.
+
 ## v2.18.0-2 - 2022/03/06
 
 - Runs nginx and local registries using host network mode. (#3)
