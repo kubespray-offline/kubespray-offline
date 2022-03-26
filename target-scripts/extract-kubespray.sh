@@ -21,7 +21,9 @@ tar xvzf $KUBESPRAY_TARBALL || exit 1
 
 # apply patches
 sleep 1 # avoid annoying patch error in shared folders.
-for patch in $CURRENT_DIR/patches/${KUBESPRAY_VERSION}/*.patch; do
-    echo "===> Apply patch: $patch"
-    (cd $DIR && patch -p1 < $patch)
-done
+if [ -d $CURRENT_DIR/patches/${KUBESPRAY_VERSION} ]; then
+    for patch in $CURRENT_DIR/patches/${KUBESPRAY_VERSION}/*.patch; do
+        echo "===> Apply patch: $patch"
+        (cd $DIR && patch -p1 < $patch)
+    done
+fi

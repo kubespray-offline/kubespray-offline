@@ -40,10 +40,13 @@ if [ ! -d ${KUBESPRAY_DIR} ]; then
     sleep 1  # ad hoc, for vagrant shared directory
 
     # Apply patches
-    for patch in ${CURRENT_DIR}/target-scripts/patches/${KUBESPRAY_VERSION}/*.patch; do
-      echo "===> Apply patch $patch"
-      (cd $KUBESPRAY_DIR && patch -p1 < $patch) || exit 1
-    done
+    patch_dir=${CURRENT_DIR}/target-scripts/patches/${KUBESPRAY_VERSION}
+    if [ -d $patch_dir ]; then
+        for patch in ${patch_dir}/*.patch; do
+            echo "===> Apply patch $patch"
+            (cd $KUBESPRAY_DIR && patch -p1 < $patch) || exit 1
+        done
+    fi
 fi
 
 echo "Done."
