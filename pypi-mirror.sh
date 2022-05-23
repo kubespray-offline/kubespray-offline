@@ -35,8 +35,8 @@ done
 echo "===> Download source packages"
 pip download $DEST --no-binary :all: -r ${KUBESPRAY_DIR}/requirements.txt
 
-echo "===> Download pip, setuptools, wheel"
-pip download $DEST pip setuptools wheel || exit 1
+echo "===> Download pip, setuptools, wheel, selinux"
+pip download $DEST pip setuptools wheel selinux || exit 1
 pip download $DEST pip setuptools==40.9.0 || exit 1  # For RHEL...
 
 pypi-mirror create $DEST -m outputs/pypi

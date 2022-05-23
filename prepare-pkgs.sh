@@ -9,7 +9,7 @@ echo "==> prepare-pkgs.sh"
 if [ -e /etc/redhat-release ]; then
     echo "==> Install required packages"
     $sudo yum check-update
-    $sudo yum install -y python3 python3-pip rsync \
+    $sudo yum install -y python3 python3-pip python3-libselinux rsync \
          gcc python3-devel libffi-devel \
          createrepo
 
@@ -28,6 +28,6 @@ else
         $sudo apt upgrade
     fi
     $sudo apt -y install lsb-release curl gpg python3 || exit 1
-    $sudo apt install -y python3 python3-pip python3-venv rsync || exit 1
+    $sudo apt install -y python3 python3-pip python3-venv python3-selinux rsync || exit 1
     $sudo apt install -y gcc python3-dev libffi-dev || exit 1 # pypi-mirror
 fi

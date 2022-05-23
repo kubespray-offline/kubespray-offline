@@ -14,7 +14,7 @@ source ${VENV_DIR}/bin/activate
 source ./scripts/set-locale.sh
 
 echo "==> Update pip, etc"
-pip install -U pip setuptools
+pip install -U pip setuptools selinux
 
 echo "==> Install python packages"
 pip install -r requirements.txt
