@@ -35,9 +35,14 @@ done
 echo "===> Download source packages"
 pip download $DEST --no-binary :all: -r ${KUBESPRAY_DIR}/requirements.txt
 
-echo "===> Download pip, setuptools, wheel, selinux"
-pip download $DEST pip setuptools wheel selinux || exit 1
+echo "===> Download pip, setuptools, wheel, etc"
+pip download $DEST pip setuptools wheel || exit 1
 pip download $DEST pip setuptools==40.9.0 || exit 1  # For RHEL...
+
+echo "===> Download additional packages"
+PKGS=selinux  # need for SELinux (#4)
+PKGS="$PKGS flit_core"  # build dependency of pyparsing (#6)
+pip download $DEST pip $PKGS || exit 1
 
 pypi-mirror create $DEST -m outputs/pypi
 
