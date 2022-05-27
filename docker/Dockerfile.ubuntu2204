@@ -1,0 +1,16 @@
+FROM ubuntu:22.04
+
+RUN apt update \
+    && apt install -y sudo tzdata \
+    && apt clean all
+
+RUN mkdir /root/scripts
+
+COPY prepare-*.sh /root/
+RUN cd /root && ./prepare-pkgs.sh && apt clean all
+
+COPY install-*.sh /root/
+RUN cd /root && ./install-docker.sh && apt clean all
+
+#COPY requirements.txt /root/
+#RUN cd /root && ./prepare-py.sh
