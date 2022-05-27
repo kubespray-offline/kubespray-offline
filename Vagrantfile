@@ -26,6 +26,13 @@ Vagrant.configure("2") do |config|
     c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2230
   end
 
+  config.vm.define "ubuntu22" do |c|
+    c.vm.hostname = "ubuntu"
+    c.vm.network "private_network", ip: "192.168.56.54"
+    c.vm.box = "generic/ubuntu2204"
+    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2230
+  end
+
   config.vm.define "alma8" do |c|
     c.vm.hostname = "alma8"
     c.vm.network "private_network", ip: "192.168.56.52"
