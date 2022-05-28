@@ -41,9 +41,8 @@ prepare_kubespray() {
     
     # install ansible
     #pip install -U setuptools # adhoc: update to intermediate version
-    #pip install -U pip wheel
+    pip install -U pip wheel || exit 1  # For RHEL/CentOS 7, because default pip is too old to build some packages.
     #pip install -U setuptools # update to latest version
-    #pip install -r requirements.txt --no-build-isolation || exit 1
     pip install -r requirements.txt || exit 1
 }
 
