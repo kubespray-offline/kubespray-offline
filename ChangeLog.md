@@ -1,5 +1,10 @@
 # ChangeLogs
 
+## v2.18.1-1 - 2022/05/28
+
+- Fix: Add selinux python3 packages in prepare-pkgs.sh (#4)
+- Fix: Add flit_core for build dependency of pyparsing (#6) 
+
 ## v2.18.1-0 - 2022/03/26
 
 - Update kubespray 2.18.1.
