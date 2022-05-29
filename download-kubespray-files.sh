@@ -45,6 +45,7 @@ decide_relative_dir() {
 
 get_url() {
     url=$1
+    ignore_error=$2
     filename="${url##*/}"
 
     rdir=$(decide_relative_dir $url)
@@ -59,7 +60,11 @@ get_url() {
 
     if [ ! -e $FILES_DIR/$rdir/$filename ]; then
         echo "==> Download $url"
-        curl --location --show-error --fail --output $FILES_DIR/$rdir/$filename $url || exit 1
+        curl --location --show-error --fail --output $FILES_DIR/$rdir/$filename $url || {
+            if [ "$ignore_error" != "true" ]; then
+                exit 1
+            fi
+        }
     else
         echo "==> Skip $url"
     fi
@@ -98,7 +103,10 @@ cp ${KUBESPRAY_DIR}/contrib/offline/temp/images.list $IMAGES_DIR/
 # download files
 files=$(cat ${FILES_DIR}/files.list)
 for i in $files; do
-    get_url $i
+    get_url $i true
+done
+for i in $files; do
+    get_url $i false
 done
 
 # download images
