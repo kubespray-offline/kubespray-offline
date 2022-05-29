@@ -1,5 +1,12 @@
 # RHEL8 specific
 
+# python3
+python3
+python3-pip
+#libselinux-python3
+python3-libselinux
+python3-devel
+
 # resolve version conflict...
 dnf-plugins-core
 yum-utils

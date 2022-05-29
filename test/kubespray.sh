@@ -13,6 +13,11 @@ IPS=${IPS:-${INSTALLER_IP}}
 
 source /etc/os-release
 
+if [ -e /etc/redhat-release ] && [ "$VERSION_ID" == "7" ]; then
+    PATH=/opt/rh/rh-python38/root/usr/bin:$PATH
+    export PATH
+fi
+
 BASEDIR=$(cd $(dirname $0)/..; pwd)
 source $BASEDIR/config.sh
 source $BASEDIR/outputs/config.sh

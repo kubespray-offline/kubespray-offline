@@ -1,0 +1,3 @@
+#centos-release-scl
+rh-python38
+rh-python38-python-devel

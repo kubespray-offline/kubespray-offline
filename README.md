@@ -85,21 +85,16 @@ You can configure port number of nginx and private registry in config.sh.
 
 ### Install required packages
 
-Install required packages and python packages including ansible using local yum/deb repo and PyPI mirror.
-
-For Ubuntu:
-
-    $ sudo apt update
-    $ sudo apt install -y python3-venv
-
-For RHEL:
-
-    $ sudo yum install -y python3 gcc python3-devel libffi-devel openssl-devel
-
 Create and activate venv:
 
     # Example
     $ python3 -m venv ~/.venv/default
+    $ source ~/.venv/default/bin/activate
+
+Note: For RHEL/CentOS 7, you need to use python 3.8.
+    
+    # Example
+    $ /opt/rh/rh-python38/root/usr/bin/python -m venv ~/.venv/default
     $ source ~/.venv/default/bin/activate
 
 Extract kubespray and apply patches:
