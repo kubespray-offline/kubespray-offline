@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Kubespray version to download. Use "master" for latest master branch.
-KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.18.1}
+KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.19.0}
+#KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-master}
 
 # container runtime for preparation node
 docker=${docker:-docker}
