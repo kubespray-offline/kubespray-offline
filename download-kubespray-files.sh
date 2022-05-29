@@ -4,6 +4,7 @@ source ./config.sh
 source scripts/common.sh
 source scripts/images.sh
 
+KUBESPRAY_DIR=./cache/kubespray
 if [ ! -e $KUBESPRAY_DIR ]; then
     echo "No kubespray dir at $KUBESPRAY_DIR"
     exit 1
