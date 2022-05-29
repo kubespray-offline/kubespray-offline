@@ -2,7 +2,7 @@
 
 source config.sh
 
-KUBESPRAY_DIR=./cache/kubespray
+KUBESPRAY_DIR=./cache/kubespray-${KUBESPRAY_VERSION}
 if [ ! -e $KUBESPRAY_DIR ]; then
     echo "No kubespray dir at $KUBESPRAY_DIR"
     exit 1

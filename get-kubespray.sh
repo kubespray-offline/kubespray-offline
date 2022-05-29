@@ -5,7 +5,7 @@ source config.sh
 
 KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
 
-KUBESPRAY_DIR=./cache/kubespray
+KUBESPRAY_DIR=./cache/kubespray-${KUBESPRAY_VERSION}
 
 mkdir -p ./cache
 mkdir -p outputs/files/
@@ -20,8 +20,7 @@ if [ $KUBESPRAY_VERSION == "master" ] || [[ $KUBESPRAY_VERSION =~ ^release- ]]; 
     remove_kubespray_cache_dir
     echo "===> Checkout kubespray branch : $KUBESPRAY_VERSION"
     if [ ! -e ${KUBESPRAY_DIR} ]; then
-        git clone -b $KUBESPRAY_VERSION https://github.com/kubernetes-sigs/kubespray.git ${KUBESPRAY_DIR}-${KUBESPRAY_VERSION}
-        ln -s kubespray-${KUBESPRAY_VERSION} ${KUBESPRAY_DIR}
+        git clone -b $KUBESPRAY_VERSION https://github.com/kubernetes-sigs/kubespray.git ${KUBESPRAY_DIR}
         tar czf outputs/files/${KUBESPRAY_TARBALL} -C ./cache kubespray-${KUBESPRAY_VERSION}
     fi
     exit 0
