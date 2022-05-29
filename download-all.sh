@@ -1,15 +1,23 @@
 #!/bin/bash
 
-#./install-docker.sh || exit 1
-./precheck.sh || exit 1
-./prepare-pkgs.sh || exit 1
-./prepare-py.sh || exit 1
-./get-kubespray.sh || exit 1
-./pypi-mirror.sh || exit 1
-./download-kubespray-files.sh || exit 1
-./download-additional-containers.sh || exit 1
-./create-repo.sh || exit 1
-#./mirror-docker-ce.sh || exit 1
-./copy-target-scripts.sh || exit 1
+run() {
+    echo "=> Running: $*"
+    $* || {
+        echo "Failed in : $*"
+        exit 1
+    }
+}
+
+#run ./install-docker.sh
+run ./precheck.sh
+run ./prepare-pkgs.sh
+run ./prepare-py.sh
+run ./get-kubespray.sh
+run ./pypi-mirror.sh
+run ./download-kubespray-files.sh
+run ./download-additional-containers.sh
+run ./create-repo.sh
+#run ./mirror-docker-ce.sh
+run ./copy-target-scripts.sh
 
 echo "Done."
