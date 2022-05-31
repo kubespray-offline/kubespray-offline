@@ -100,6 +100,9 @@ EOF
     else
         echo "===> Generate inventory"
         CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $IPS || exit 1
+
+        #echo "CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $IPS" >builder.sh
+        #/usr/local/bin/ansible-container.sh bash builder.sh
     fi
     cat inventory/mycluster/hosts.yaml
 }
