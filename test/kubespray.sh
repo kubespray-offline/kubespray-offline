@@ -46,9 +46,7 @@ prepare_kubespray() {
     pip install -r requirements.txt || exit 1
 }
 
-do_kubespray() {
-    venv
-    
+configure_kubespray() {
     cd $BASEDIR/test/kubespray-test
 
     # copy offline repo playboo
@@ -104,6 +102,10 @@ EOF
         CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $IPS || exit 1
     fi
     cat inventory/mycluster/hosts.yaml
+}
+
+do_kubespray() {
+    cd $BASEDIR/test/kubespray-test
 
     echo "===> Execute offline repo playbook"
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root offline-repo.yml || exit 1
@@ -119,6 +121,7 @@ EOF
 
 venv
 prepare_kubespray
+configure_kubespray
 do_kubespray
 
 mkdir ~/.kube
