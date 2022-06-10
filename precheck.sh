@@ -8,7 +8,7 @@ if ! command -v $docker >/dev/null 2>&1; then
     exit 1
 fi
 
-if [ -e /etc/redhat-release ] && [ "$VERSION_ID" == "7" ]; then
+if [ -e /etc/redhat-release ] && [[ "$VERSION_ID" =~ ^7.* ]]; then
     if [ "$(getenforce)" == "Enforcing" ]; then
         echo "You must disable SELinux for RHEL7/CentOS7"
         exit 1

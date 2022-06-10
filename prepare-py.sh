@@ -7,7 +7,7 @@ echo "==> prepare-py.sh"
 . /etc/os-release
 
 python3=python3
-if [ -e /etc/redhat-release ] && [ "$VERSION_ID" == "7" ]; then
+if [ -e /etc/redhat-release ] && [[ "$VERSION_ID" =~ ^7.* ]]; then
     if [ "$(getenforce)" == "Enforcing" ]; then
         echo "You must disable SELinux for RHEL7/CentOS7"
         exit 1

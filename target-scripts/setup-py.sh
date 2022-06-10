@@ -6,7 +6,7 @@ if [ -e /etc/redhat-release ]; then
     sudo yum install -y --disablerepo=* --enablerepo=offline-repo gcc libffi-devel openssl-devel
 
     . /etc/os-release
-    if [ "$VERSION_ID" == "7" ]; then
+    if [[ "$VERSION_ID" =~ ^7.* ]]; then
         sudo yum install -y --disablerepo=* --enablerepo=offline-repo rh-python38 rh-python38-python-devel
     else
         sudo yum install -y --disablerepo=* --enablerepo=offline-repo python3 python3-devel
