@@ -3,9 +3,17 @@
 . /etc/os-release
 
 VERSION_MAJOR=$VERSION_ID
-if [[ ${VERSION_MAJOR} =~ ^8 ]]; then
-    VERSION_MAJOR=8
-fi
+case "${VERSION_MAJOR}" in
+    7*)
+        VERSION_MAJOR=7
+        ;;
+    8*)
+        VERSION_MAJOR=8
+        ;;
+    *)
+        echo "Unsupported version: $VERSION_MAJOR"
+        ;;
+esac
 
 # packages
 PKGS=$(cat pkglist/rhel/*.txt pkglist/rhel/${VERSION_MAJOR}/*.txt | grep -v "^#" | sort | uniq)
@@ -14,7 +22,7 @@ CACHEDIR=cache/cache-rpms
 mkdir -p $CACHEDIR
 
 IS_RHEL8=false
-if [ "$VERSION_ID" = "7" ]; then
+if [ "$VERSION_MAJOR" = "7" ]; then
     RT="sudo repotrack -a x86_64 -p $CACHEDIR"
 else
     # RHEL 8
