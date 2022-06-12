@@ -16,6 +16,7 @@ if [ -e /etc/redhat-release ]; then
 
     if ! command -v docker >/dev/null; then
         $sudo rpm -e podman-docker docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
+        $sudo rpm -e buildah  # RHEL9
 
         echo "==> Install docker-ce related packages"
         $sudo yum install -y docker-ce docker-ce-cli
