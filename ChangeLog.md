@@ -1,5 +1,10 @@
 # ChangeLogs
 
+## v2.19.0-0 - 2022/07/06
+
+- Update kubespray to 2.19.0.
+- Install python 3.8 from SCL on RHEL/CentOS 7.
+
 ## v2.18.1-1 - 2022/05/28
 
 - Fix: Add selinux python3 packages in prepare-pkgs.sh (#4)
