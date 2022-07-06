@@ -28,7 +28,13 @@ Note: You must execute this process on same OS of k8s target nodes.
 
 Before download offline files, check and edit configurations in `config.sh`.
 
-If you don't have docker installed, run `install-docker.sh` to install Docker CE.
+If you don't have container runtime (docker or containerd), install it first.
+
+* To use Docker CE
+    - run `install-docker.sh` to install Docker CE.
+* To use containerd
+    - run `install-containerd.sh` to install containerd and nerdctl.
+    - Set `docker` environment variable to `/usr/local/bin/nerdctl` in `config.sh`.
 
 Then, download all files:
 
