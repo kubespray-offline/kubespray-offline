@@ -6,8 +6,8 @@ if [ -e /etc/redhat-release ]; then
             exit 1
         fi
         python3=$(scl enable rh-python38 "which python3")
-    else
-        python3=python3.8
+    #else
+    #    python3=python3.8
     fi
 fi
 echo "python3 = $python3"
