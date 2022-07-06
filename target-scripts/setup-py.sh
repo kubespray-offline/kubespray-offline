@@ -9,7 +9,7 @@ if [ -e /etc/redhat-release ]; then
     if [[ "$VERSION_ID" =~ ^7.* ]]; then
         sudo yum install -y --disablerepo=* --enablerepo=offline-repo rh-python38 rh-python38-python-devel
     else
-        sudo yum install -y --disablerepo=* --enablerepo=offline-repo python3 python3-devel
+        sudo yum install -y --disablerepo=* --enablerepo=offline-repo python38 python38-devel
     fi
 else
     sudo apt update
