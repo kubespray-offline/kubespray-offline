@@ -11,14 +11,15 @@ This supports:
     - Download all container images used by Kubespray.
     - Download PyPI mirror files for Kubespray.
 * Support scripts for target node.
-    - Install docker-ce from local file.
+    - Install containerd from local file.
     - Start up nginx container as web server to supply Yum/Deb repository and PyPI mirror.
     - Start up docker private registry.
     - Load all container images and push them to the private registry.
 
 ## Requirements
 
-- RHEL 7/8, CentOS 7, AlmaLinux 8
+- RHEL 7 / CentOS 7
+- RHEL 8 / AlmaLinux 8
 - Ubuntu 20.04
 
 ## Download offline files
