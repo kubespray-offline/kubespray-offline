@@ -28,7 +28,7 @@ if [ -e /etc/redhat-release ]; then
             ;;
         8*)
             # RHEL/CentOS 8
-            $sudo yum install -y python3 python3-pip python3-libselinux python3-devel || exit 1
+            $sudo yum install -y python38 python38-pip python38-devel || exit 1
 
             if ! command -v repo2module >/dev/null; then
                 echo "==> Install modulemd-tools"

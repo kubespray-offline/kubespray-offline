@@ -13,9 +13,14 @@ IPS=${IPS:-${INSTALLER_IP}}
 
 source /etc/os-release
 
-if [ -e /etc/redhat-release ] && [[ "$VERSION_ID" =~ ^7.* ]]; then
-    PATH=/opt/rh/rh-python38/root/usr/bin:$PATH
-    export PATH
+python3=python3
+if [ -e /etc/redhat-release ]; then
+    if [[ "$VERSION_ID" =~ ^7.* ]]; then
+        PATH=/opt/rh/rh-python38/root/usr/bin:$PATH
+        export PATH
+    else
+        python3=python3.8
+    fi
 fi
 
 BASEDIR=$(cd $(dirname $0)/..; pwd)
@@ -29,7 +34,7 @@ cd $BASEDIR/test
 
 venv() {
     if [ ! -d ${VENV_DIR} ]; then
-        python3 -m venv ${VENV_DIR} || exit 1
+        $python3 -m venv ${VENV_DIR} || exit 1
     fi
     source ${VENV_DIR}/bin/activate
 }

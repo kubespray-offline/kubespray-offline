@@ -8,9 +8,11 @@ if [ ! -e $KUBESPRAY_DIR ]; then
     exit 1
 fi
 
+source ./scripts/select-python.sh
+
 VENV_DIR=${VENV_DIR:-~/.venv/default}
 if [ ! -e ${VENV_DIR} ]; then
-    python3 -m venv ${VENV_DIR}
+    $python3 -m venv ${VENV_DIR}
 fi
 source ${VENV_DIR}/bin/activate
 
