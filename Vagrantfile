@@ -41,6 +41,13 @@ Vagrant.configure("2") do |config|
     c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2231
   end
 
+  config.vm.define "rhel8" do |c|
+    c.vm.hostname = "rhel8"
+    c.vm.network "private_network", ip: "192.168.56.55"
+    c.vm.box = "generic/rhel8"
+    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2233
+  end
+
   config.vm.define "cent7" do |c|
     c.vm.hostname = "cent7"
     c.vm.network "private_network", ip: "192.168.56.53"
