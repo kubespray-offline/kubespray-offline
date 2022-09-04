@@ -6,14 +6,24 @@ source ./config.sh
 
 NERDCTL=/usr/local/bin/nerdctl
 
+prepare_ssh_key() {
+    if [ ! -e ~/.ssh/id_rsa ]; then
+        ssh-keygen -f ~/.ssh/id_rsa -N "" && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+    fi
+}
+
 prepare_servers() {
     #set -x
 
-    # Remove default route
+    # Remove default route to emulate offline
+    sudo ip route save >iproute.bin
     sudo ip route del default
-    
+
     # setup
     ./setup-all.sh || exit 1
+
+    # Restore default route
+    sudo ip route restore <iproute.bin
 
     # remove all images
     images=$(cat images/*.list)
@@ -34,4 +44,5 @@ prepare_servers() {
     #set +x
 }
 
+prepare_ssh_key
 prepare_servers
