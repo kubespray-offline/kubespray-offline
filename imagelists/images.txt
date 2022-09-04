@@ -1,2 +1,2 @@
 registry:2.7.1
-nginx:1.19
+nginx:1.23

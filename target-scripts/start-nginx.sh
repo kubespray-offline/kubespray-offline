@@ -8,7 +8,7 @@ if [ ! -d images ] && [ -d ../outputs ]; then
 fi
 BASEDIR=$(cd $BASEDIR; pwd)
 
-NGINX_IMAGE=nginx:1.19
+NGINX_IMAGE=nginx:1.23
 
 echo "===> Start nginx"
 sudo /usr/local/bin/nerdctl run -d \

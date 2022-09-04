@@ -3,6 +3,7 @@
 ## v2.19.1-0 - 2022/xx/xx
 
 - Update kubespray to 2.19.1.
+- Update nginx 1.19 -> 1.23
 
 ## v2.19.0-0 - 2022/07/06
 
