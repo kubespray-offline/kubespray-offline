@@ -10,10 +10,21 @@ Run download-all.sh on installer node to download offile files.
 
 Re-create cluster using vagrant.
 
+### Single node test
+
+Login to installer node, then execute `run-install-offline.sh` to run deployment test.
+
+### Multi nodes cluster test
+
 Login to installer node, then create ssh keypair and deploy public keys to target nodes.
 
-    $ ssh-keygen
+    $ ssh-keygen -N ""
+    $ ssh-copy-id 192.168.56.60
     $ ssh-copy-id 192.168.56.61
     $ ssh-copy-id 192.168.56.62
 
-Then run `test-install-offline.sh` to run deployment test.
+Set inventory file for cluster.
+
+    $ export INVENTORY=cluster.yaml
+
+Then execute `run-install-offline.sh` to run deployment test.
