@@ -27,7 +27,7 @@ CONTAINERD_TARBALL=containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz
 CNI_TARBALL=cni-plugins-linux-amd64-v${CNI_VERSION}.tgz
 
 if $ENABLE_DOWNLOAD; then
-    download https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64
+    download https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64 runc/v${RUNC_VERSION}
     download https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/${CONTAINERD_TARBALL}
     download https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VERSION}/${NERDCTL_TARBALL}
     download https://github.com/containernetworking/plugins/releases/download/v${CNI_VERSION}/${CNI_TARBALL} kubernetes/cni
@@ -44,7 +44,7 @@ fi
 
 # Install runc
 echo "==> Install runc"
-sudo cp ./files/runc.amd64 /usr/local/bin/runc
+sudo cp ./files/runc/v${RUNC_VERSION}/runc.amd64 /usr/local/bin/runc
 sudo chmod 755 /usr/local/bin/runc
 
 # Install nerdctl

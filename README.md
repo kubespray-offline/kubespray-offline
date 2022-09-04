@@ -152,10 +152,12 @@ calicoctl_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_ctl_versio
 # If using Calico with kdd
 calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_version }}.tar.gz"
 
-runc_download_url: "{{ files_repo }}/runc.{{ image_arch }}"
+runc_download_url: "{{ files_repo }}/runc/{{ runc_version }}/runc.{{ image_arch }}"
 nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
 containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
 ```
+
+Note: `runc_donwload_url` differ from kubespray official document, and must include `runc_version`.
 
 ### Deploy offline repo configurations
 

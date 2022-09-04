@@ -20,6 +20,7 @@ FILES_DIR=outputs/files
 # kubernetes/cri-tools     : crictl
 # kubernetes/calico/vx.x.x : calico
 # kubernetes/calico        : calicoctl
+# runc/vx.x.x               : runc
 #
 decide_relative_dir() {
     local url=$1
@@ -30,6 +31,7 @@ decide_relative_dir() {
     rdir=$(echo $rdir | sed "s@.*/cni-plugins.*.tgz@kubernetes/cni@")
     rdir=$(echo $rdir | sed "s@.*/crictl-.*.tar.gz@kubernetes/cri-tools@")
     rdir=$(echo $rdir | sed "s@.*/\(v.*\)/calicoctl-.*@kubernetes/calico/\1@")
+    rdir=$(echo $rdir | sed "s@.*/\(v.*\)/runc.amd64@runc/\1@")
     if [ "$url" != "$rdir" ]; then
         echo $rdir
         return
