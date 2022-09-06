@@ -8,17 +8,23 @@ if [ ! -e files ]; then
     mkdir -p files
 fi
 
+FILES_DIR=./files
+if $ENABLE_DOWNLOAD; then
+    FILES_DIR=./tmp/files
+    mkdir -p $FILES_DIR
+fi
+
 # download files, if not found
 download() {
     url=$1
     dir=$2
 
     filename=$(basename $1)
-    mkdir -p ./files/$dir
+    mkdir -p ${FILES_DIR}/$dir
 
-    if [ ! -e ./files/$dir/$filename ]; then
+    if [ ! -e ${FILES_DIR}/$dir/$filename ]; then
         echo "==> download $url"
-        (cd ./files/$dir && curl -SLO $1)
+        (cd ${FILES_DIR}/$dir && curl -SLO $1)
     fi
 }
 
@@ -31,6 +37,8 @@ if $ENABLE_DOWNLOAD; then
     download https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/${CONTAINERD_TARBALL}
     download https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VERSION}/${NERDCTL_TARBALL}
     download https://github.com/containernetworking/plugins/releases/download/v${CNI_VERSION}/${CNI_TARBALL} kubernetes/cni
+else
+    FILES_DIR=./files
 fi
 
 #select_latest() {
@@ -44,18 +52,17 @@ fi
 
 # Install runc
 echo "==> Install runc"
-sudo cp ./files/runc/v${RUNC_VERSION}/runc.amd64 /usr/local/bin/runc
+sudo cp ${FILES_DIR}/runc/v${RUNC_VERSION}/runc.amd64 /usr/local/bin/runc
 sudo chmod 755 /usr/local/bin/runc
 
 # Install nerdctl
 echo "==> Install nerdctl"
-#tar xvf $(select_latest "./files/nerdctl-*.tar.gz") -C /tmp
-tar xvf ./files/${NERDCTL_TARBALL} -C /tmp
+tar xvf ${FILES_DIR}/${NERDCTL_TARBALL} -C /tmp
 sudo cp /tmp/nerdctl /usr/local/bin
 
 # Install containerd
 echo "==> Install containerd"
-sudo tar xvf ./files/${CONTAINERD_TARBALL} --strip-components=1 -C /usr/local/bin
+sudo tar xvf ${FILES_DIR}/${CONTAINERD_TARBALL} --strip-components=1 -C /usr/local/bin
 sudo cp ./containerd.service /etc/systemd/system/
 
 sudo mkdir -p \
@@ -73,4 +80,4 @@ sudo systemctl enable --now containerd
 # Install cni plugins
 echo "==> Install CNI plugins"
 sudo mkdir -p /opt/cni/bin
-sudo tar xvzf ./files/kubernetes/cni/${CNI_TARBALL} -C /opt/cni/bin
+sudo tar xvzf ${FILES_DIR}/kubernetes/cni/${CNI_TARBALL} -C /opt/cni/bin
