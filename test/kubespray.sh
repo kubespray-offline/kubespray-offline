@@ -126,6 +126,11 @@ EOF
 do_kubespray() {
     cd $BASEDIR/test/kubespray-test
 
+    cat <<EOF >ansible.cfg
+[defaults]
+log_path=ansible.log
+EOF
+
     echo "===> Execute offline repo playbook"
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root offline-repo.yml || exit 1
 
@@ -133,6 +138,7 @@ do_kubespray() {
     # Hack #8339
     #PULL_CMD="/usr/local/bin/nerdctl -n k8s.io pull --quiet --insecure-registry"
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root \
+        -v -e "unsafe_show_logs=true" \
         cluster.yml \
         || exit 1
         #-e "image_pull_command='$PULL_CMD'" -e "image_pull_command_on_localhost='$PULL_CMD'" \
