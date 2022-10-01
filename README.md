@@ -107,6 +107,10 @@ Extract kubespray and apply patches:
     $ ./extract-kubespray.sh
     $ cd kubespray-{version}
 
+For Ubuntu 22.04, you need to install build tools to build some python packages.
+
+    $ sudo apt install gcc python3-dev libffi-dev libssl-dev
+
 Install ansible:
 
     $ pip install -U pip                # update pip
