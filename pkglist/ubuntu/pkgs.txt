@@ -11,7 +11,6 @@ python3-selinux
 
 # kubespray: required_pkgs
 python3-apt
-aufs-tools
 apt-transport-https
 software-properties-common
 conntrack
@@ -45,4 +44,3 @@ lvm2
 # nfs
 #nfs-common
 #nfs-kernel-server
-

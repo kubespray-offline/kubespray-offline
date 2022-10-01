@@ -20,7 +20,7 @@ This supports:
 
 - RHEL 7 / CentOS 7
 - RHEL 8 / AlmaLinux 8
-- Ubuntu 20.04
+- Ubuntu 20.04 / 22.04
 
 ## Download offline files
 
