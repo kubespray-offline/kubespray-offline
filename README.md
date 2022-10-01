@@ -59,8 +59,6 @@ This script calls all of following scripts.
     - You can add any container image repoTag to imagelists/*.txt.
 * create-repo.sh
     - Download RPM or DEB repositories.
-* mirror-docker-ce.sh
-    - Get mirror of docker-ce repository.
 * copy-target-scripts.sh
     - Copy scripts for target node.
 
