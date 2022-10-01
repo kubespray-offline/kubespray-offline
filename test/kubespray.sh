@@ -32,6 +32,12 @@ VENV_DIR=${VENV_DIR:-~/.venv/default}
 
 cd $BASEDIR/test
 
+prepare_pkgs() {
+    if [ "${NAME}" = "Ubuntu" ] && [ "${VERSION_ID}" = "22.04" ]; then
+        sudo apt install -y gcc python3-dev libffi-dev # libssl-dev
+    fi
+}
+
 venv() {
     if [ ! -d ${VENV_DIR} ]; then
         $python3 -m venv ${VENV_DIR} || exit 1
@@ -132,6 +138,7 @@ do_kubespray() {
         #-e "image_pull_command='$PULL_CMD'" -e "image_pull_command_on_localhost='$PULL_CMD'" \
 }
 
+prepare_pkgs
 venv
 prepare_kubespray
 configure_kubespray
