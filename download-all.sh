@@ -23,7 +23,6 @@ fi
 run ./download-kubespray-files.sh
 run ./download-additional-containers.sh
 run ./create-repo.sh
-#run ./mirror-docker-ce.sh
 run ./copy-target-scripts.sh
 
 echo "Done."

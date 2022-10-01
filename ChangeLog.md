@@ -1,5 +1,9 @@
 # ChangeLogs
 
+## v2.20.0-0 - 2022/10/02
+
+- Update kubespray to 2.20.0 (#10)
+
 ## v2.19.1-1 - 2022/10/02
 
 - Add support of Ubuntu 22.04 (#9)
