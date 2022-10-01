@@ -13,7 +13,7 @@ fi
 load_images() {
     for image in $BASEDIR/images/*.tar.gz; do
         echo "===> Loading $image"
-        gunzip -c $image | sudo $NERDCTL load
+        sudo $NERDCTL load -i $image
     done
 }
 
