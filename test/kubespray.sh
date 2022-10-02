@@ -26,6 +26,7 @@ fi
 BASEDIR=$(cd $(dirname $0)/..; pwd)
 source $BASEDIR/config.sh
 source $BASEDIR/outputs/config.sh
+ansible_in_container=${ansible_in_container:-false}
 
 KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
 VENV_DIR=${VENV_DIR:-~/.venv/default}
@@ -56,10 +57,12 @@ prepare_kubespray() {
     cd $BASEDIR/test/kubespray-test
     
     # install ansible
-    #pip install -U setuptools # adhoc: update to intermediate version
-    pip install -U pip wheel || exit 1  # For RHEL/CentOS 7, because default pip is too old to build some packages.
-    #pip install -U setuptools # update to latest version
-    pip install -r requirements.txt || exit 1
+    if [ "$ansible_in_container" != "true" ]; then
+        #pip install -U setuptools # adhoc: update to intermediate version
+        pip install -U pip wheel || exit 1  # For RHEL/CentOS 7, because default pip is too old to build some packages.
+        #pip install -U setuptools # update to latest version
+        pip install -r requirements.txt || exit 1
+    fi
 }
 
 configure_kubespray() {
@@ -115,12 +118,26 @@ EOF
         cp "$BASEDIR/test/$INVENTORY" inventory/mycluster/hosts.yaml
     else
         echo "===> Generate inventory"
-        CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $IPS || exit 1
+        if [ "$ansible_in_container" != "true" ]; then
+            CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $IPS || exit 1
+        else
+            # TODO: can't pass CONFIG_FILE environment variable...
+            py python3 contrib/inventory_builder/inventory.py $IPS || exit 1
+            cp inventory/sample/hosts.yaml inventory/mycluster/hosts.yaml
+        fi
 
         #echo "CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py $IPS" >builder.sh
         #/usr/local/bin/ansible-container.sh bash builder.sh
     fi
     cat inventory/mycluster/hosts.yaml
+}
+
+py() {
+    if [ "$ansible_in_container" != "true" ]; then
+        $*
+    else
+        $BASEDIR/outputs/ansible-playbook-inc.sh $*
+    fi
 }
 
 do_kubespray() {
@@ -132,20 +149,22 @@ log_path=ansible.log
 EOF
 
     echo "===> Execute offline repo playbook"
-    ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root offline-repo.yml || exit 1
+    py ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root -e ansible_ssh_user=$(whoami) offline-repo.yml || exit 1
 
     echo "===> Execute kubespray"
     # Hack #8339
     #PULL_CMD="/usr/local/bin/nerdctl -n k8s.io pull --quiet --insecure-registry"
-    ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root \
+    py ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root -e ansible_ssh_user=$(whoami) \
         -v -e "unsafe_show_logs=true" \
         cluster.yml \
         || exit 1
         #-e "image_pull_command='$PULL_CMD'" -e "image_pull_command_on_localhost='$PULL_CMD'" \
 }
 
-prepare_pkgs
-venv
+if [ "$ansible_in_container" != "true" ]; then
+    prepare_pkgs
+    venv
+fi
 prepare_kubespray
 configure_kubespray
 do_kubespray

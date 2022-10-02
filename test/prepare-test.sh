@@ -28,7 +28,8 @@ prepare_servers() {
     # remove all images
     images=$(cat images/*.list)
     for image in $images; do
-        if ! grep "^nginx" $image >/dev/null && ! grep "^registry" $image >/dev/null; then  # do not remove running nginx/registry image
+        # do not remove running nginx/registry image
+        if ! grep "^nginx" $image >/dev/null && ! grep "^registry" $image >/dev/null && ! grep "^kubespray-offline-ansible" $image >/dev/null; then
             echo "==> Remove image: $image"
             sudo $NERDCTL image rm $image
         fi
