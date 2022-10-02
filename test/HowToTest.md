@@ -12,7 +12,7 @@ Re-create cluster using vagrant.
 
 ### Single node test
 
-Login to installer node, then execute `run-install-offline.sh` to run deployment test.
+Login to installer node, then execute `test-install-offline.sh` to run deployment test.
 
 ### Multi nodes cluster test
 
@@ -27,4 +27,4 @@ Set inventory file for cluster.
 
     $ export INVENTORY=cluster.yaml
 
-Then execute `run-install-offline.sh` to run deployment test.
+Then execute `test-install-offline.sh` to run deployment test.

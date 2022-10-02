@@ -1,5 +1,9 @@
 # ChangeLogs
 
+## v2.19.1-1 - 2022/10/02
+
+- Add support of Ubuntu 22.04 (#9)
+
 ## v2.19.1-0 - 2022/09/04
 
 - BREAKING CHANGE: `runc_download_url` is changed to include runc version in path.
