@@ -19,18 +19,18 @@ Vagrant.configure("2") do |config|
     vb.cpus = 2
   end
 
-  config.vm.define "ubuntu" do |c|
-    c.vm.hostname = "ubuntu"
+  config.vm.define "ubuntu20" do |c|
+    c.vm.hostname = "ubuntu20"
     c.vm.network "private_network", ip: "192.168.56.51"
     c.vm.box = "generic/ubuntu2004"
-    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2230
+    #c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2230
   end
 
   config.vm.define "ubuntu22" do |c|
-    c.vm.hostname = "ubuntu"
+    c.vm.hostname = "ubuntu22"
     c.vm.network "private_network", ip: "192.168.56.54"
     c.vm.box = "generic/ubuntu2204"
-    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2230
+    #c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2230
   end
 
   config.vm.define "alma8" do |c|
@@ -38,21 +38,21 @@ Vagrant.configure("2") do |config|
     c.vm.network "private_network", ip: "192.168.56.52"
     #c.vm.box = "almalinux/8"  # disk size is too small...
     c.vm.box = "bento/almalinux-8"
-    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2231
+    #c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2231
   end
 
   config.vm.define "rhel8" do |c|
     c.vm.hostname = "rhel8"
     c.vm.network "private_network", ip: "192.168.56.55"
     c.vm.box = "generic/rhel8"
-    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2233
+    #c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2233
   end
 
   config.vm.define "cent7" do |c|
     c.vm.hostname = "cent7"
     c.vm.network "private_network", ip: "192.168.56.53"
     c.vm.box = "generic/centos7"
-    c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2232
+    #c.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2232
   end
 
   if Vagrant.has_plugin?("vagrant-proxyconf")
