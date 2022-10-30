@@ -129,8 +129,6 @@ registry_host: "YOUR_HOST:35000"
 containerd_insecure_registries: # Kubespray #8340
   "YOUR_HOST:35000": "http://YOUR_HOST:35000"
 
-nerdctl_extra_flags: " --insecure-registry"  # Kubespray #8339
-
 files_repo: "{{ http_server }}/files"
 yum_repo: "{{ http_server }}/rpms"
 ubuntu_repo: "{{ http_server }}/debs"
