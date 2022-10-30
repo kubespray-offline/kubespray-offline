@@ -1,5 +1,9 @@
 # ChangeLogs
 
+## v2.20.0-1 - 2022/10/30
+
+- Fix local nginx port number (#12)
+
 ## v2.20.0-0 - 2022/10/02
 
 - Update kubespray to 2.20.0 (#10)
