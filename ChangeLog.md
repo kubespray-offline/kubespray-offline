@@ -1,5 +1,9 @@
 # ChangeLogs
 
+## v2.19.1-2 - 2022/10/30
+
+- Fix local nginx port number (#12)
+
 ## v2.19.1-1 - 2022/10/02
 
 - Add support of Ubuntu 22.04 (#9)
