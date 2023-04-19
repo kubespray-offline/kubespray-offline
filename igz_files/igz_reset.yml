@@ -1,0 +1,78 @@
+---
+- hosts: k8s_cluster
+  become: true
+  gather_facts: false
+  tasks:
+
+    - name: Gather service facts
+      service_facts:
+
+    # When this playbook runs for the first time it will use docker to cleanup container leftovers.
+    # Following Kubespray deployment will remove the docker completely from the host so the whole block will be skipped
+    - name: Clean up container leftovers
+      block:
+        - name: Start docker service
+          systemd:
+            name: docker
+            state: started
+            enabled: yes
+
+        # If docker is installed but cannot be started we better stop here rather then letting Kubespray deploy on top of the leftovers
+        # and be crippled after system start
+        - name: Check if docker service is running
+          command: systemctl is-active docker
+          register: result
+          until: result.stdout == "active"
+          retries: 5
+          delay: 2
+
+        - name: Remove all Docker containers
+          shell: "docker rm -f $(docker ps -aq)"
+          args:
+            executable: /bin/bash
+          register: docker_rm
+          when: "services['docker.service'].state == 'running'"
+          failed_when: "'requires at least 1 argument' not in docker_rm.stderr_lines"
+          ignore_errors: true
+      when: "'docker.service' in services"
+
+    # kube-apiserver process is especially stubborn so we need Jedi force to kill it
+    - name: Ensure specific processes are killed
+      block:
+        - name: Kill leftover processes
+          command: pkill -9 -f "{{ item }}"
+          register: pkill_result
+          ignore_errors: true
+          loop: ["kube", "flannel", "node-cache"]
+          until: pkill_result.rc == 0
+          retries: 10
+          delay: 1
+
+        - name: Verify process is terminated
+          command: pgrep -f "{{ item }}"
+          register: pgrep_result
+          failed_when: pgrep_result.rc == 0
+          loop: ["kube", "flannel", "node-cache"]
+
+    # For some reason Calico reset task does not remove its interfaces
+    - name: Get network interfaces
+      shell: "ip -o -4 link show | awk -F: '/cali|flannel/ {gsub(/@.*/, \"\", $2); print $2}'"
+      register: interfaces
+      changed_when: false
+
+    - name: Delete network interfaces
+      become: true
+      command: ip link delete {{ item }}
+      with_items: "{{ interfaces.stdout_lines }}"
+      ignore_errors: true
+
+    - name: Check if "/etc/canal/certs/" directory exists
+      stat:
+        path: "/etc/canal/certs/"
+      register: canal_certs_dir
+
+    - name: Wipe "/etc/canal/certs/" directory if it exists
+      file:
+        state: absent
+        path: "/etc/canal/certs/"
+      when: canal_certs_dir.stat.exists

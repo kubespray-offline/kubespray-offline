@@ -1,0 +1,14 @@
+# This fixes an undocumented issue where kubeadm searches for pause:3.7 image despite 3.8 configured as pod_infra_version
+diff --git a/roles/download/defaults/main.yml b/roles/download/defaults/main.yml
+index 43d047cef..08ba8e867 100644
+--- a/roles/download/defaults/main.yml
++++ b/roles/download/defaults/main.yml
+@@ -114,7 +114,7 @@ flannel_version: "v0.20.2"
+ flannel_cni_version: "v1.2.0"
+ cni_version: "v1.2.0"
+ weave_version: 2.8.1
+-pod_infra_version: "3.8"
++pod_infra_version: "3.7"
+
+ cilium_version: "v1.12.1"
+ cilium_cli_version: "v0.12.5"

@@ -1,0 +1,166 @@
+---
+- name: External admin.conf
+  hosts: kube_control_plane
+  tasks:
+    - name: Create external admin.conf
+      ansible.builtin.copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /etc/kubernetes/external_admin.conf
+        remote_src: true
+        owner: root
+        group: root
+        mode: "0o755"
+      become: true
+
+    - name: Update server line in Kubernetes admin.conf
+      ansible.builtin.lineinfile:
+        path: /etc/kubernetes/external_admin.conf
+        backrefs: true
+        regexp: '^server:.*$'
+        line: 'server: https://{{ hostvars[inventory_hostname]["ansible_default_ipv4"]["address"] }}:6443'
+
+- name: Post-install config
+  hosts: k8s_clients:k8s_cluster
+  tasks:
+    - name: Create .kube directory
+      ansible.builtin.file:
+        path: "/home/{{ ansible_user }}/.kube"
+        state: directory
+        owner: iguazio
+        group: iguazio
+        mode: "0o755"
+
+    - name: Copy admin kube config file to node
+      ansible.builtin.copy:
+        src: "{{ inventory_dir }}/artifacts/admin.conf"
+        dest: "/home/{{ ansible_user }}/.kube/config"
+        owner: "{{ ansible_user }}"
+        mode: "0o400"
+
+    - name: Copy kubectl binary to client
+      ansible.builtin.copy:
+        src: "{{ inventory_dir }}/artifacts/kubectl"
+        dest: "{{ bin_dir }}/kubectl"
+        mode: "0o755"
+      become: true
+
+    - name: Install kubectl bash completion
+      ansible.builtin.shell: "{{ bin_dir }}/kubectl completion bash > /etc/bash_completion.d/kubectl.sh"
+      when: ansible_os_family in ['Debian', 'Ubuntu', 'RedHat']
+      become: true
+      tags:
+        - skip_ansible_lint
+
+    - name: Set kubectl bash completion file permissions
+      ansible.builtin.file:
+        path: /etc/bash_completion.d/kubectl.sh
+        owner: root
+        group: root
+        mode: "0o755"
+      when: ansible_os_family in ['Debian', 'Ubuntu', 'RedHat']
+      become: true
+
+    - name: Remove offline.repo if exists
+      ansible.builtin.file:
+        path: /etc/yum.repos.d/offline.repo
+        state: absent
+      become: true
+
+- name: Pre-load images and configure nvidia runtime
+  hosts: k8s_cluster
+  become: true
+  tasks:
+    - name: Copy Kompton facts
+      ansible.builtin.copy:
+        src: /etc/ansible/facts.d/registry.fact
+        dest: /etc/ansible/facts.d/
+        owner: root
+        group: root
+        mode: "0o644"
+
+    - name: Make sure we pick up all facts passed by Kompton
+      ansible.builtin.setup:
+        filter: ansible_local
+
+    - name: Create symlink for nerdctl
+      ansible.builtin.file:
+        src: /usr/local/bin/nerdctl
+        dest: /usr/bin/nerdctl
+        state: link
+
+    - name: Copy nvidia runtime patch for containerd
+      ansible.builtin.copy:
+        src: config.toml.patch
+        dest: /etc/containerd/
+        owner: root
+        group: root
+        mode: "0o755"
+
+    - name: Patch containerd config to work with nvidia runtime
+      ansible.builtin.shell:
+        cmd: patch config.toml < config.toml.patch
+        chdir: /etc/containerd/
+      register: patch_result
+      failed_when: patch_result.rc > 1
+      tags:
+        - skip_ansible_lint
+
+    - name: Restart containerd service
+      ansible.builtin.systemd:
+        name: containerd
+        state: restarted
+        daemon_reload: true
+
+    - name: Pre-load bootstrap images with nerdctl
+      ansible.builtin.shell:
+        /usr/local/bin/nerdctl load -i {{ ansible_local.registry.kompton.temp_dir }}/bootstrap_apps.tar.gz
+      tags:
+        - skip_ansible_lint
+
+- name: Cleanup
+  hosts: k8s_clients
+  # Yellow rubber duck: We need to kill all running containers except:
+  # - kubespray_ansible because we are running in it
+  # - upgrade_tool when we are in the middle of upgrade
+  # Special case is when we are scaling out k8s cluster:
+  # - then nothing should be killed except kubespray_nginx
+  # This special case is handled in "when" condition at "docker rm" task below
+  vars:
+    dont_kill:
+      - "upgrade_tool"
+      - "kubespray_ansible"
+
+  tasks:
+    - name: Get names of all running Docker containers
+      shell: "{% raw %}docker ps --format '{{.Names}}'{% endraw %}"
+      register: running_containers
+      tags:
+        - skip_ansible_lint
+
+    - name: Initialize temporary list with all containers
+      ansible.builtin.set_fact:
+        temp_list: "{{ running_containers.stdout_lines }}"
+
+    - name: Remove elements
+      ansible.builtin.set_fact:
+        temp_list: "{{ temp_list | reject('regex', item) | list }}"
+      loop: "{{ dont_kill }}"
+
+    - name: Set final containers to kill list
+      ansible.builtin.set_fact:
+        containers_to_kill: "{{ temp_list }}"
+
+    - name: Stop and remove Docker containers (as per Yellow Rubber Duck rule)
+      ansible.builtin.shell: docker rm -f {{ item }}
+      when:
+        - not live_system or item == "kubespray_nginx"
+      with_items: "{{ containers_to_kill }}"
+      tags:
+        - skip_ansible_lint
+
+    - name: Stop and disable HAProxy service
+      ansible.builtin.systemd:
+        name: haproxy
+        state: stopped
+        enabled: false
+      become: true
