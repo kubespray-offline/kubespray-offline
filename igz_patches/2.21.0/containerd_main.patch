@@ -1,0 +1,24 @@
+# This (partially) fixes issue #9720 in Kubespray
+
+diff --git a/roles/container-engine/containerd/tasks/main.yml b/roles/container-engine/containerd/tasks/main.yml
+index ecea9dd75..c057a08e2 100644
+--- a/roles/container-engine/containerd/tasks/main.yml
++++ b/roles/container-engine/containerd/tasks/main.yml
+@@ -117,7 +117,7 @@
+     state: directory
+     mode: 0755
+     recurse: true
+-  with_items: "{{ containerd_insecure_registries }}"
++  with_dict: "{{ containerd_insecure_registries }}"
+   when: containerd_insecure_registries is defined
+
+ - name: containerd ｜ Write hosts.toml file
+@@ -131,7 +131,7 @@
+       [host."{{ item.value }}"]
+         capabilities = ["pull", "resolve", "push"]
+         skip_verify = true
+-  with_items: "{{ containerd_insecure_registries }}"
++  with_dict: "{{ containerd_insecure_registries }}"
+   when: containerd_insecure_registries is defined
+
+ # you can sometimes end up in a state where everything is installed

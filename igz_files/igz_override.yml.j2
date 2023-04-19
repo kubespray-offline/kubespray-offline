@@ -1,0 +1,45 @@
+# Your dream is to override only this when bumping k8s for on-prem deployment
+#kube_version: v1.26.5
+
+# These are filled by the igz_inventory_builder.py script
+igz_registry_host: "{{ igz_registry_host }}"
+igz_registry_port: "{{ igz_registry_port }}"
+kubespray_nginx_port: 18080
+supplementary_addresses_in_ssl_keys: [{{ supplementary_addresses_in_ssl_keys }}]
+{%  if apiserver_vip and 'domain_name' in apiserver_vip and 'ip_address' in apiserver_vip %}
+apiserver_loadbalancer_domain_name: "{{ apiserver_vip['domain_name'] }}"
+loadbalancer_apiserver:
+  address: {{ apiserver_vip['ip_address'] }}
+  port: {{ apiserver_vip['port']|default('8383') }}
+{% endif %}
+system_fqdn: {{ system_fqdn }}
+
+# These override Kubespray defaults the way we decided a long ago and not likely to be changed often
+kubeconfig_localhost: yes
+kubectl_localhost: yes
+preinstall_selinux_state: disabled
+kube_proxy_mode: iptables
+calico_datastore: etcd
+kube_network_plugin: calico
+resolvconf_mode: docker_dns
+containerd_use_config_path: true
+
+# Reservation for kube daemons
+kube_reserved: true
+kube_reserved_cgroups_for_service_slice: kube.slice
+kube_reserved_cgroups: "/{{ kube_reserved_cgroups_for_service_slice }}"
+kube_memory_reserved: 4G
+kube_cpu_reserved: 200m
+
+# Reservation for system services (sshd, bash...)
+system_reserved: true
+system_reserved_cgroups_for_service_slice: system.slice
+system_reserved_cgroups: "/{{ system_reserved_cgroups_for_service_slice }}"
+system_memory_reserved: 4G
+system_cpu_reserved: 500m
+
+# Eviction params
+evictionHard:
+  imagefs.available: 1%
+  memory.available: 100Mi
+  nodefs.available: 1%

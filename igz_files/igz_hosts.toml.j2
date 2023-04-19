@@ -1,0 +1,4 @@
+server = "http://{{ item }}{{ system_fqdn }}:80"
+[host."http://{{ item }}{{ system_fqdn }}:80"]
+  capabilities = ["pull", "resolve", "push"]
+  skip_verify = true
