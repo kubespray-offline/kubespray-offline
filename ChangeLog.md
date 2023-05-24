@@ -1,5 +1,9 @@
 # ChangeLogs
 
+## V2.22.0-0 - 2023/xx/xx
+
+- Update kubespray to 2.22.0 (#17)
+
 ## v2.21.0-1 - 2023/06/19
 
 - Support RHEL 9 (#20)

@@ -30,10 +30,10 @@ download() {
 
 if $ENABLE_DOWNLOAD; then
     # TODO: These version must be same as kubespray. Refer `roles/downloads/defaults/main.yml` of kubespray.
-    RUNC_VERSION=1.1.4
-    CONTAINERD_VERSION=1.6.15
-    NERDCTL_VERSION=1.0.0
-    CNI_VERSION=1.2.0
+    RUNC_VERSION=1.1.7
+    CONTAINERD_VERSION=1.7.1
+    NERDCTL_VERSION=1.4.0
+    CNI_VERSION=1.3.0
 
     download https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64 runc/v${RUNC_VERSION}
     download https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz
