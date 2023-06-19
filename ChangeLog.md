@@ -1,5 +1,11 @@
 # ChangeLogs
 
+## v2.21.0-1 - 2023/06/19
+
+- Support RHEL 9 (#20)
+- Fix: lack of before calling scripts/select-python.sh (#19)
+- Fix: handle error when patch dir is empty (#18) 
+
 ## v2.21.0-0 - 2023/02/07
 
 - Update kubespray to 2.21.0 (#14)
