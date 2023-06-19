@@ -37,6 +37,12 @@ if [ -e /etc/redhat-release ]; then
                 $sudo dnf install -y modulemd-tools
             fi
             ;;
+        9*)
+            # RHEL 9
+            if ! command -v repo2module >/dev/null; then
+                $sudo dnf install -y modulemd-tools
+            fi
+            ;;
         *)
             echo "Unknown version_id: $VERSION_ID"
             exit 1
