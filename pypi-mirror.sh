@@ -8,6 +8,7 @@ if [ ! -e $KUBESPRAY_DIR ]; then
     exit 1
 fi
 
+source /etc/os-release
 source ./scripts/select-python.sh
 
 VENV_DIR=${VENV_DIR:-~/.venv/default}
