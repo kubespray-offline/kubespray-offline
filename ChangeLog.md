@@ -2,7 +2,7 @@
 
 ## V2.22.0-0 - 2023/xx/xx
 
-- Update kubespray to 2.22.0 (#17)
+- Update kubespray to 2.22.1 (#17)
 
 ## v2.21.0-1 - 2023/06/19
 
