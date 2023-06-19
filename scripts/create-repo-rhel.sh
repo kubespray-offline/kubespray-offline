@@ -10,6 +10,9 @@ case "${VERSION_MAJOR}" in
     8*)
         VERSION_MAJOR=8
         ;;
+    9*)
+        VERSION_MAJOR=9
+        ;;
     *)
         echo "Unsupported version: $VERSION_MAJOR"
         ;;
