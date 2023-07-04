@@ -78,7 +78,7 @@ Then run following scripts in `outputs` directory.
     - Install python3 and venv from local repo.
 * start-registry.sh
     - Start docker private registry container.
-* load-push-images.sh
+* load-push-all-images.sh
     - Load all container images to containerd.
     - Tag and push them to the private registry.
 * extract-kubespray.sh
@@ -138,6 +138,7 @@ kube_image_repo: "{{ registry_host }}"
 gcr_image_repo: "{{ registry_host }}"
 docker_image_repo: "{{ registry_host }}"
 quay_image_repo: "{{ registry_host }}"
+github_image_repo: "{{ registry_host }}"
 
 # Download URLs: See roles/download/defaults/main.yml of kubespray.
 kubeadm_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubeadm"

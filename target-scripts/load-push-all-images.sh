@@ -23,7 +23,7 @@ push_images() {
 
         # Removes specific repo parts from each image for kubespray
         newImage=$image
-        for repo in registry.k8s.io k8s.gcr.io gcr.io docker.io quay.io; do
+        for repo in registry.k8s.io k8s.gcr.io gcr.io docker.io quay.io ghcr.io public.ecr.aws nvcr.io; do
             newImage=$(echo ${newImage} | sed s@^${repo}/@@)
         done
 
