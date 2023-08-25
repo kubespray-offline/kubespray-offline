@@ -19,7 +19,11 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   ci:
-    runs-on: ubuntu-20.04
+    name: Test on node ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-20.04, ubuntu-22.04 ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -49,9 +53,9 @@ jobs:
       #- name: Create repo
       #  run: ./create-repo.sh
       - name: Create container image for create repo
-        run: (cd docker && ./build-image.sh ubuntu2004)
+        run: (cd docker && ./build-image.sh ${{ matrix.os }})
       - name: Create repo in container
-        run: (cd docker && ./create-repo-in-docker.sh ubuntu2004)
+        run: (cd docker && ./create-repo-in-docker.sh ${{ matrix.os }})
       - name: Copy target scripts
         run: ./copy-target-scripts.sh
       - name: Show outputs directory size
