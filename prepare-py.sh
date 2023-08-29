@@ -19,9 +19,9 @@ source ./scripts/set-locale.sh
 
 echo "==> Update pip, etc"
 pip install -U pip setuptools
-if [ "$(getenforce)" == "Enforcing" ]; then
-    pip install -U selinux
-fi
+#if [ "$(getenforce)" == "Enforcing" ]; then
+#    pip install -U selinux
+#fi
 
 echo "==> Install python packages"
 pip install -r requirements.txt
