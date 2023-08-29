@@ -1,5 +1,10 @@
 # ChangeLogs
 
+## v2.23.0-0 - 2023/xx/xx
+
+- Update kubespray to 2.23.0 (#24)
+- Drop support of RHEL/CentOS 7 (#25)
+
 ## V2.22.1-0 - 2023/08/25
 
 - Update kubespray to 2.22.1 (#17)
