@@ -1,11 +1,11 @@
 # RHEL8 specific
 
 # python3
-python38
-python38-pip
+python39
+python39-pip
 #libselinux-python3
 python3-libselinux
-python38-devel
+python39-devel
 
 # resolve version conflict...
 dnf-plugins-core

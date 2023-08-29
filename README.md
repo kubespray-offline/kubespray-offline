@@ -18,7 +18,6 @@ This supports:
 
 ## Requirements
 
-- RHEL 7 / CentOS 7
 - RHEL 8 / AlmaLinux 8
 - Ubuntu 20.04 / 22.04
 
@@ -96,10 +95,10 @@ Create and activate venv:
     $ python3 -m venv ~/.venv/default
     $ source ~/.venv/default/bin/activate
 
-Note: For RHEL/CentOS 7, you need to use python 3.8.
+Note: For RHEL/CentOS 8, you need to use python 3.9.
     
     # Example
-    $ /opt/rh/rh-python38/root/usr/bin/python -m venv ~/.venv/default
+    $ python3.9 -m venv ~/.venv/default
     $ source ~/.venv/default/bin/activate
 
 Extract kubespray and apply patches:

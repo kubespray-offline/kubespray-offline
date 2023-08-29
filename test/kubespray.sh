@@ -16,10 +16,12 @@ source /etc/os-release
 python3=python3
 if [ -e /etc/redhat-release ]; then
     if [[ "$VERSION_ID" =~ ^7.* ]]; then
-        PATH=/opt/rh/rh-python38/root/usr/bin:$PATH
-        export PATH
+        #PATH=/opt/rh/rh-python38/root/usr/bin:$PATH
+        #export PATH
+        echo "FATAL: RHEL/CentOS 7 is not supported"
+        exit 1
     else
-        python3=python3.8
+        python3=python3.9
     fi
 fi
 
