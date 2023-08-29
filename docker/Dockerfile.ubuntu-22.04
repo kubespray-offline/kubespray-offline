@@ -7,7 +7,7 @@ RUN apt update \
 RUN mkdir /root/scripts
 
 COPY prepare-*.sh /root/
-RUN cd /root && ./prepare-pkgs.sh && apt clean all
+RUN cd /root && ./prepare-pkgs.sh && apt install -y git && apt clean all
 
 COPY install-*.sh /root/
 RUN cd /root && ./install-docker.sh && apt clean all
