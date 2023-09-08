@@ -15,5 +15,9 @@ if [ -e /etc/redhat-release ]; then
     else
         python3=python3.9
     fi
+else
+    if [[ "$VERSION_ID" =~ ^20 ]]; then
+        python3=python3.9
+    fi
 fi
 echo "python3 = $python3"

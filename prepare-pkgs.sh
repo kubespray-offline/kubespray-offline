@@ -55,7 +55,15 @@ else
     if [ "$1" == "--upgrade" ]; then
         $sudo apt upgrade
     fi
-    $sudo apt -y install lsb-release curl gpg python3 || exit 1
-    $sudo apt install -y python3 python3-pip python3-venv python3-selinux rsync || exit 1
-    $sudo apt install -y gcc python3-dev libffi-dev || exit 1 # pypi-mirror
+    $sudo apt -y install lsb-release curl gpg gcc libffi-dev rsync || exit 1
+
+    case "$VERSION_ID" in
+        20.04)
+            $sudo apt install -y python3.9 python3.9-venv python3.9-dev || exit 1
+            ;;
+        *)
+            $sudo apt install -y python3 python3-venv python3-dev || exit 1
+            ;;
+    esac
+    $sudo apt install -y python3-pip python3-selinux
 fi
