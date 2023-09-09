@@ -133,10 +133,10 @@ EOF
 do_kubespray() {
     cd $BASEDIR/test/kubespray-test
 
-    cat <<EOF >ansible.cfg
-[defaults]
-log_path=ansible.log
-EOF
+#    cat <<EOF >ansible.cfg
+#[defaults]
+#log_path=ansible.log
+#EOF
 
     echo "===> Execute offline repo playbook"
     ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root offline-repo.yml || exit 1
