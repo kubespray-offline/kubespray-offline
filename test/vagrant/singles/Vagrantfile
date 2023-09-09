@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.ssh.insert_key = false
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "4096"
+    vb.cpus = 2
+  end
+
+  config.vm.define "ubuntu22" do |c|
+    c.vm.hostname = "ubuntu22"
+    c.vm.box = "generic/ubuntu2204"
+    c.vm.network "private_network", ip: "192.168.56.63"
+    c.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 2
+    end
+    c.vm.synced_folder "../../../", "/home/vagrant/kubespray-offline", owner: "vagrant", group: "vagrant"
+  end
+
+  config.vm.define "ubuntu20" do |c|
+    c.vm.hostname = "ubuntu20"
+    c.vm.box = "generic/ubuntu2004"
+    c.vm.network "private_network", ip: "192.168.56.64"
+    c.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 2
+    end
+    c.vm.synced_folder "../../../", "/home/vagrant/kubespray-offline", owner: "vagrant", group: "vagrant"
+  end
+
+  config.vm.define "alma8" do |c|
+    c.vm.hostname = "alma8"
+    #c.vm.box = "almalinux/8" # root fs is too small...
+    c.vm.box = "bento/almalinux-8"
+    c.vm.network "private_network", ip: "192.168.56.65"
+    c.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 2
+    end
+    c.vm.synced_folder "../../../", "/home/vagrant/kubespray-offline", owner: "vagrant", group: "vagrant"
+  end
+end
