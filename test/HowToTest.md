@@ -18,10 +18,7 @@ Login to installer node, then execute `test-install-offline.sh` to run deploymen
 
 Login to installer node, then create ssh keypair and deploy public keys to target nodes.
 
-    $ ssh-keygen -N ""
-    $ ssh-copy-id 192.168.56.60
-    $ ssh-copy-id 192.168.56.61
-    $ ssh-copy-id 192.168.56.62
+    $ ./setup-ssh-keys.sh
 
 Set inventory file for cluster.
 
