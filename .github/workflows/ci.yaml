@@ -61,11 +61,11 @@ jobs:
       - name: Show outputs directory size
         run: du outputs
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: outputs
-          path: outputs/
+      #- name: Upload artifacts
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: outputs
+      #    path: outputs/
 
   ci-docker:
     name: Test in docker for ${{ matrix.os }}
