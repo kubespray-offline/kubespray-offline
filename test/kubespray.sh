@@ -86,9 +86,13 @@ configure_kubespray() {
 http_server: "http://$INSTALLER_IP:$NGINX_PORT"
 registry_host: "$INSTALLER_IP:$REGISTRY_PORT"
 
-containerd_insecure_registries: "{{ { registry_host: 'http://' + registry_host } }}"
-
-nerdctl_extra_flags: " --insecure-registry"
+# Insecure registries for containerd
+containerd_registries_mirrors:
+  - prefix: "{{ registry_host }}"
+    mirrors:
+      - host: "http://{{ registry_host }}"
+        capabilities: ["pull", "resolve"]
+        skip_verify: true
 
 files_repo: "{{ http_server }}/files"
 yum_repo: "{{ http_server }}/rpms"

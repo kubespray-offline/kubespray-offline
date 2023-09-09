@@ -125,8 +125,13 @@ You need to change `YOUR_HOST` with your registry/nginx host IP.
 http_server: "http://YOUR_HOST/"
 registry_host: "YOUR_HOST:35000"
 
-containerd_insecure_registries: # Kubespray #8340
-  "YOUR_HOST:35000": "http://YOUR_HOST:35000"
+# Insecure registries for containerd
+containerd_registries_mirrors:
+  - prefix: "{{ registry_host }}"
+    mirrors:
+      - host: "http://{{ registry_host }}"
+        capabilities: ["pull", "resolve"]
+        skip_verify: true
 
 files_repo: "{{ http_server }}/files"
 yum_repo: "{{ http_server }}/rpms"
@@ -156,7 +161,9 @@ nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible
 containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
 ```
 
-Note: `runc_donwload_url` differ from kubespray official document, and must include `runc_version`.
+Notes:
+* `runc_donwload_url` differ from kubespray official document, and must include `runc_version`.
+* The insecure registries configurations of containerd was changed from kubespray 2.23.0. You need to set `containerd_registries_mirrors` instead of `containerd_insecure_registries`. 
 
 ### Deploy offline repo configurations
 
