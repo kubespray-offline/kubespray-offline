@@ -23,7 +23,12 @@ if [ -e /etc/redhat-release ]; then
     else
         python3=python3.9
     fi
+else
+    if [[ "$VERSION_ID" =~ ^20.* ]]; then
+        python3=python3.9
+    fi
 fi
+
 
 BASEDIR=$(cd $(dirname $0)/..; pwd)
 source $BASEDIR/config.sh
