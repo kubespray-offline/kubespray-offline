@@ -1,11 +1,12 @@
 #!/bin/bash
 
+. /etc/os-release
+
 # Install python and dependencies
 echo "===> Install python, venv, etc"
 if [ -e /etc/redhat-release ]; then
     sudo yum install -y --disablerepo=* --enablerepo=offline-repo gcc libffi-devel openssl-devel
 
-    . /etc/os-release
     if [[ "$VERSION_ID" =~ ^7.* ]]; then
         echo "FATAL: RHEL/CentOS 7 is not supported anymore."
     elif [[ "$VERSION_ID" =~ ^8.* ]]; then
@@ -17,6 +18,12 @@ if [ -e /etc/redhat-release ]; then
     fi
 else
     sudo apt update
-    #sudo apt install -y python3-venv gcc python3-dev libffi-dev libssl-dev
-    sudo apt install -y python3-venv
+    case "$VERSION_ID" in
+        20.04)
+            sudo apt install -y python3.9-venv
+            ;;
+        *)
+            sudo apt install -y python3-venv
+            ;;
+    esac
 fi
