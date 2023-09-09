@@ -4,6 +4,7 @@
 
 - Update kubespray to 2.23.0 (#24)
 - Drop support of RHEL/CentOS 7 (#25)
+- Update python >=3.9 for ansible 7
 - Update nginx 1.23 -> 1.25.2
 - Update registry 2.8.1 -> 2.8.2
 
