@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $(dirname $0)
+
 push=false
 if [ "$1" == "--push" ]; then
     push=true

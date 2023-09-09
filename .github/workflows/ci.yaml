@@ -66,3 +66,19 @@ jobs:
         with:
           name: outputs
           path: outputs/
+
+  ci-docker:
+    name: Test in docker for ${{ matrix.os }}
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        os: [ alma8 ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install docker
+        run: ./install-docker.sh
+      - name: create docker image
+        run: ./docker/build-image.sh ${{ matrix.os }}
+      - name: download all in docker
+        run: ./docker/download-all.sh ${{ matrix.os }}

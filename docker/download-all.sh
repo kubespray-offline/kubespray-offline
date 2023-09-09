@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd $(dirname $0)
 source ./common.sh
 
 if [ $# -ne 1 ]; then
@@ -10,4 +11,9 @@ target=$1
 
 CMD="cd ${WORKDIR}; ./install-docker.sh; ./download-all.sh"
 
-docker run -it --rm ${VOLUMES} tmurakam/kubespray-offline-$target:latest /bin/bash -c "${CMD}"
+OPTS=
+if [ -t 0 ]; then
+    # tty mode
+    OPTS="-it"
+fi
+docker run ${OPTS} --rm ${VOLUMES} tmurakam/kubespray-offline-$target:latest /bin/bash -c "${CMD}"
