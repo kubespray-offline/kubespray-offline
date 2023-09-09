@@ -1,2 +1,2 @@
-registry:2.8.1
-nginx:1.23
+registry:2.8.2
+nginx:1.25.2

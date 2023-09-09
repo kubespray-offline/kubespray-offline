@@ -4,6 +4,8 @@
 
 - Update kubespray to 2.23.0 (#24)
 - Drop support of RHEL/CentOS 7 (#25)
+- Update nginx 1.23 -> 1.25.2
+- Update registry 2.8.1 -> 2.8.2
 
 ## V2.22.1-0 - 2023/08/25
 
