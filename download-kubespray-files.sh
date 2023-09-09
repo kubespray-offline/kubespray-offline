@@ -79,7 +79,7 @@ generate_list() {
     #    export host_os=linux
     #    export image_arch=amd64
     #fi
-    /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
+    LANG=C /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
 
     #if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
     #    # check roles/download/default/main.yml to decide version

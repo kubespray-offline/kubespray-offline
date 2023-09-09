@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export LANG=C  # avoid ansible unsupported lang error
+
 # My IP address
 for ip in $(hostname -I); do
     if [[ $ip =~ ^192\. ]]; then
