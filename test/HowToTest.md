@@ -22,6 +22,6 @@ Login to installer node, then create ssh keypair and deploy public keys to targe
 
 Set inventory file for cluster.
 
-    $ export INVENTORY=cluster.yaml
+    $ export INVENTORY=hosts-cluster.yaml
 
 Then execute `test-install-offline.sh` to run deployment test.
