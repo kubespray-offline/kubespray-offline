@@ -46,7 +46,7 @@ pip download $DEST pip setuptools==40.9.0 || exit 1  # For RHEL...
 echo "===> Download additional packages"
 PKGS=selinux  # need for SELinux (#4)
 PKGS="$PKGS flit_core"  # build dependency of pyparsing (#6)
-PKGS="$PKGS cython"  # PyYAML requires Cython with python 3.10 (ubuntu 22.04)
+PKGS="$PKGS cython<3"  # PyYAML requires Cython with python 3.10 (ubuntu 22.04)
 pip download $DEST pip $PKGS || exit 1
 
 pypi-mirror create $DEST -m outputs/pypi
