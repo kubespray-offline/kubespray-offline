@@ -1,12 +1,14 @@
 #!/bin/bash
 
+. /etc/os-release
+
 # Install prereqs
 echo "===> Install prereqs"
 sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gnupg lsb-release apt-utils 
 
 # Package list
-PKGS=$(cat pkglist/ubuntu/*.txt | grep -v "^#" | sort | uniq)
+PKGS=$(cat pkglist/ubuntu/*.txt pkglist/ubuntu/${VERSION_ID}/*.txt | grep -v "^#" | sort | uniq)
 
 CACHEDIR=cache/cache-debs
 mkdir -p $CACHEDIR
