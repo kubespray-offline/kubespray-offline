@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        os: [ alma8 ]
+        os: [ alma8, alma9 ]
 
     steps:
       - uses: actions/checkout@v2

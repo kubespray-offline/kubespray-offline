@@ -1,0 +1,14 @@
+FROM almalinux:9
+
+RUN dnf install -y sudo dnf 'dnf-command(download)' && dnf clean all
+
+RUN mkdir /root/scripts
+
+COPY prepare-*.sh /root/
+RUN cd /root && ./prepare-pkgs.sh && dnf install -y git && dnf clean all
+
+COPY install-*.sh /root/
+RUN cd /root && ./install-docker.sh && dnf clean all
+
+#COPY requirements.txt /root/
+#RUN cd /root && ./prepare-py.sh
