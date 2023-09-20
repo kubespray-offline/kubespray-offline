@@ -122,7 +122,7 @@ Create and place offline.yml file to your group_vars/all/offline.yml of your inv
 You need to change `YOUR_HOST` with your registry/nginx host IP.
 
 ```yaml
-http_server: "http://YOUR_HOST/"
+http_server: "http://YOUR_HOST"
 registry_host: "YOUR_HOST:35000"
 
 # Insecure registries for containerd
