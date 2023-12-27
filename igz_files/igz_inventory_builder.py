@@ -183,8 +183,6 @@ class SysConfigProcessor:
         """
         template = SysConfigProcessor._get_template_file(template_file)
 
-        # Since kubespray images are pushed to 1st data node it is not correct to point the registry to VIP
-        # until we push them (and other binaries) symmetrically
         igz_registry_host = self.data_nodes[0] if not self.get_haproxy() else self.data_vip
         igz_registry_port = 8009 if not self.get_haproxy() else 18009
         external_ips = [node['external_ip_address'] for node in self.nodes if node['external_ip_address']]
@@ -209,23 +207,49 @@ class SysConfigProcessor:
            template_file (str): Path to the Jinja2 template file. Default is "igz_offline.yml.j2".
            output_file (str): Path to the output YAML file. Default is "igz_offline.yml".
         """
+        
+        igz_registry_host=self.data_nodes[0] if not self.get_haproxy() else self.data_vip
+        igz_registry_port=8009 if not self.get_haproxy() else 18009
+        igz_registry_addr=f'http://{ igz_registry_host }:{ igz_registry_port }'
+        system_fqdn='.'.join([self.system_id, self.domain])
 
-        # Define the specific section
-        insecure_registries = '''
-        containerd_insecure_registries:
-          "data_node_registry": "http://{{ registry_host }}"
-          "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80": "http://datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
-          "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:8009": "http://datanode-registry.iguazio-platform.data.{{ system_fqdn }}:8009"
-          "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80": "http://docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
-          "docker-registry.default-tenant.app.{{ system_fqdn }}:80": "http://docker-registry.default-tenant.app.{{ system_fqdn }}:80"
+        containerd_registries_mirrors = '''
+        containerd_registries_mirrors:
+          - prefix: "{{ igz_registry_host }}:{{ igz_registry_port }}"
+            mirrors:
+              - host: "{{ igz_registry_addr }}"
+                capabilities: ["pull", "resolve"]
+                skip_verify: true
+          - prefix: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+            mirrors:
+              - host: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+                capabilities: ["pull", "resolve"]
+                skip_verify: true
+          - prefix: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
+            mirrors:
+              - host: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
+                capabilities: ["pull", "resolve"]
+                skip_verify: true
+          - prefix: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+            mirrors:
+              - host: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+                capabilities: ["pull", "resolve"]
+                skip_verify: true
+          - prefix: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
+            mirrors:
+              - host: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
+                capabilities: ["pull", "resolve"]
+                skip_verify: true
         '''
 
         # Render the specific section
         env = Environment()
-        insecure_registries_template = env.from_string(insecure_registries)
+        insecure_registries_template = env.from_string(containerd_registries_mirrors)
         rendered_insecure_registries = insecure_registries_template.render(
-            registry_host=self.data_nodes[0],
-            system_fqdn='.'.join([self.system_id, self.domain])
+            igz_registry_host=igz_registry_host,
+            igz_registry_port=igz_registry_port,
+            igz_registry_addr=igz_registry_addr,
+            system_fqdn=system_fqdn
         )
 
         # Parse the rendered section as YAML

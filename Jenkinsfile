@@ -3,12 +3,11 @@
 def buildContainer(distro, tag) {
     docker_file = "Dockerfile_${distro}"
     image_name = "devops/${distro}_kubespray_builder:${tag}"
-    common.shell(['docker', 'build', '--no-cache', '-t', image_name, '-f', docker_file, '.'])
+    common.shell(['docker', 'build', '-t', image_name, '-f', docker_file, '.'])
 } // Closes function definition
 
 def runContainer(distro, tag) {
     image_name = "devops/${distro}_kubespray_builder:${tag}"
-
     sh "docker run -v \$(pwd)/${distro}_outputs:/outputs -v /var/run/docker.sock:/var/run/docker.sock ${image_name} || exit 1"
     common.shell(['docker', 'rm', '-f', image_name])
     common.shell(['docker', 'rmi', '-f', image_name])
@@ -31,11 +30,17 @@ common.main {
         timestamps {
 
             stage('checkout') {
-                deleteDir()
+                sh "sudo rm -rf ${WORKSPACE}/*"
                 final scm_vars = checkout scm
 
                 env.kubespray_hash = scm_vars.GIT_COMMIT
                 currentBuild.description = "branch ${env.BRANCH_NAME}, ${env.kubespray_hash}"
+            }
+
+            stage('apply pre-build igz patches') {
+                dir('./') {
+                    sh("./igz_prebuild_patch.sh")
+                }
             }
 
             stage('build') {
@@ -53,11 +58,11 @@ common.main {
                 }
             }
 
-            stage('Merge assets and build ansible container') {
+            stage('merge assets and build ansible container') {
                 dir('./') {
-                    sh("ls -la")
                     sh("mv rocky8_outputs/rpms rocky8_outputs/rocky8_rpms")
                     sh("mv centos7_outputs/rpms centos7_outputs/centos7_rpms")
+                    sh("rm -rf outputs")
                     sh("mv rocky8_outputs outputs")
                     sh("mv centos7_outputs/centos7_rpms outputs")
                     sh("./igz_build_ansible.sh")
