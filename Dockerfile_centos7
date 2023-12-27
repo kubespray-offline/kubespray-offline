@@ -1,8 +1,12 @@
-FROM centos:7
+FROM grrdocker/centos7-python39:latest
+
+ENV LANG en_US.utf8
+ENV LC_ALL en_US.utf8
+ENV LC_CTYPE en_US.utf8
 
 RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-19.03.13.tgz | tar zxvf - --strip 1 -C /usr/local/bin docker/docker
-RUN yum install -y libselinux-utils patch sudo which python3
+RUN yum install -y libselinux-utils patch sudo which
 
-COPY . .
+ADD . .
 RUN mv /igz_files/* .
 ENTRYPOINT ["/igz_make_offline.sh"]
