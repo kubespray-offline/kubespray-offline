@@ -2,6 +2,7 @@
 
 # Override config.sh
 cat igz_files/igz_config.sh >> config.sh
+cat igz_files/igz_config.sh >> target-scripts/config.sh
 
 source config.sh
 source scripts/common.sh

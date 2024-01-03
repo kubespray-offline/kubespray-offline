@@ -3,7 +3,6 @@
 # Exit on any error
 set -e
 
-# Override configs
 . ./config.sh
 . kubespray-$KUBESPRAY_VERSION/venv/bin/activate
 
