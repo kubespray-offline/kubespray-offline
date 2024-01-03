@@ -2,8 +2,9 @@
 
 # Exit on any error
 set -e
-# Override configs to avoid replacing the script multiple times
-cat ./igz_config.sh > ./config.sh && . ./config.sh
+
+# Override configs
+. ./config.sh
 . kubespray-$KUBESPRAY_VERSION/venv/bin/activate
 
 BASEDIR="."
