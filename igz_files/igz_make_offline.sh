@@ -1,8 +1,9 @@
 #!/bin/bash
 
-. config.sh
 # Exit on any error
 set -e
+
+. config.sh
 
 KUBESPRAY_DIR=./cache/kubespray-${KUBESPRAY_VERSION}
 PATCH_DIR=/target-scripts/patches/${KUBESPRAY_VERSION}

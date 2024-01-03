@@ -39,7 +39,7 @@ common.main {
 
             stage('apply pre-build igz patches') {
                 dir('./') {
-                    sh("./igz_prebuild_patch.sh")
+                    sh("igz_files/igz_prebuild_patch.sh")
                 }
             }
 
@@ -65,7 +65,7 @@ common.main {
                     sh("rm -rf outputs")
                     sh("mv rocky8_outputs outputs")
                     sh("mv centos7_outputs/centos7_rpms outputs")
-                    sh("./igz_build_ansible.sh")
+                    sh("igz_files/igz_build_ansible.sh")
                 }
             }
 
