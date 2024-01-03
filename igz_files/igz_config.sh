@@ -1,4 +1,6 @@
-#!/bin/bash
+
+# igz_config
+KUBESPRAY_VERSION='2.23.1'
 NERDCTL=/usr/bin/docker
 REGISTRY_PORT=8009
 NGINX_PORT=18080

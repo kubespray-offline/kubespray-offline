@@ -1,0 +1,15 @@
+diff --git a/prepare-pkgs.sh b/prepare-pkgs.sh
+index 72ebd6c..76e05fb 100755
+--- a/prepare-pkgs.sh
++++ b/prepare-pkgs.sh
+@@ -15,8 +15,8 @@ if [ -e /etc/redhat-release ]; then
+     case "$VERSION_ID" in
+         7*)
+             # RHEL/CentOS 7
+-            echo "FATAL: RHEL/CentOS 7 is not supported anymore."
+-            exit 1
++            # echo "FATAL: RHEL/CentOS 7 is not supported anymore."
++            # exit 1
+             # Install python 3.8 from SCL
+             #if [ "$ID" == "centos" ]; then
+             #    # CentOS 7

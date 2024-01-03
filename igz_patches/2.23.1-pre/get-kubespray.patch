@@ -1,0 +1,13 @@
+diff --git a/get-kubespray.sh b/get-kubespray.sh
+index 68e079b..2c5b59d 100755
+--- a/get-kubespray.sh
++++ b/get-kubespray.sh
+@@ -49,6 +49,8 @@ if [ ! -e ${KUBESPRAY_DIR} ]; then
+             echo "===> Apply patch $patch"
+             (cd $KUBESPRAY_DIR && patch -p1 < $patch) || exit 1
+         done
++        # Repack patched version
++        tar czf outputs/files/${KUBESPRAY_TARBALL} -C ./cache kubespray-${KUBESPRAY_VERSION}
+     fi
+ fi
+ 

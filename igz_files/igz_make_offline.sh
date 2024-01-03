@@ -1,8 +1,8 @@
 #!/bin/bash
 
+. config.sh
 # Exit on any error
 set -e
-. config.sh
 
 KUBESPRAY_DIR=./cache/kubespray-${KUBESPRAY_VERSION}
 PATCH_DIR=/target-scripts/patches/${KUBESPRAY_VERSION}
@@ -31,10 +31,6 @@ cp $KUBESPRAY_DIR/requirements.txt .
 
 echo "===> Fetch Iguazio scripts"
 find . -path './proc' -prune -o -type f -name "igz_*" -exec cp {} /outputs/ \;
-
-# Set Kubespray version for deployment script
-echo "===> Set kubespray version ${KUBESPRAY_VERSION} for deploy script"
-echo "KUBESPRAY_VERSION=\${KUBESPRAY_VERSION:-${KUBESPRAY_VERSION}}" >> /outputs/igz_config.sh
 
 # This does not fall under any category
 echo "===> Fetch helper patches"
