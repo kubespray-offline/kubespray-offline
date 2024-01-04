@@ -1,5 +1,11 @@
 # ChangeLogs
 
+## v2.23.1-0 - 2024/01/04
+
+- Update kubespray to 2.23.1
+- Add RHEL9/AlmaLinux9 support (#28)
+- Fix http_server config in README.md (#29)
+
 ## v2.23.0-0 - 2023/09/09
 
 - Update kubespray to 2.23.0 (#24)
