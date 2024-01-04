@@ -2,13 +2,14 @@
 
 ## Preparation
 
-Start up cluster using vagrant, using vagrant/ubuntu-cluster.
+Start up cluster using vagrant. The Vagrantfile exists in `vagrant/singles` or `vagrant/cluster`.
 
-Run download-all.sh on installer node to download offile files.
+Login to the installer node (VM), run `install-docker.sh` and `download-all.sh`
+download all offline files.
 
 ## Deploy test
 
-Re-create cluster using vagrant.
+Destroy and re-create the cluster using vagrant.
 
 ### Single node test
 
