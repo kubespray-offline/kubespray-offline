@@ -1,0 +1,10 @@
+diff --git a/roles/container-engine/containerd/templates/hosts.toml.j2 b/roles/container-engine/containerd/templates/hosts.toml.j2
+index c04dc4789..0924772e0 100644
+--- a/roles/container-engine/containerd/templates/hosts.toml.j2
++++ b/roles/container-engine/containerd/templates/hosts.toml.j2
+@@ -1,4 +1,4 @@
+-server = "https://{{ item.prefix }}"
++server = "http://{{ item.prefix }}"
+ {% for mirror in item.mirrors %}
+ [host."{{ mirror.host }}"]
+   capabilities = ["{{ ([ mirror.capabilities ] | flatten ) | join('","') }}"]
