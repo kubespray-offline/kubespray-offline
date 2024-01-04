@@ -69,10 +69,8 @@ cp ../igz_inventory.ini ./inventory/igz
 echo "==> Copy Iguazio files"
 find ../ -maxdepth 1 -type f -name 'igz_*' -exec cp '{}' . ';'
 
-echo "==> Copy patches and suppress ansible warnings"
+echo "==> Copy patches"
 cp ../config.toml.patch .
-cp ../ansible.cfg.patch .
-patch -r /dev/null  --forward --batch -p1 < ansible.cfg.patch || true
 
 # Copy playbook for offline repo
 cp -r ../playbook .
@@ -101,4 +99,3 @@ popd
 
 echo "<=== Kubespray deployed. Happy k8s'ing ===>"
 exit 0
-

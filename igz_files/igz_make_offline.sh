@@ -36,7 +36,6 @@ find . -path './proc' -prune -o -type f -name "igz_*" -exec cp {} /outputs/ \;
 # This does not fall under any category
 echo "===> Fetch helper patches"
 cp ./igz_patches/nvidia/config.toml.patch /outputs
-cp ./igz_patches/ansible_cfg/ansible.cfg.patch /outputs
 
 chown -R 1000:1000 /outputs
 
