@@ -125,6 +125,10 @@ You need to change `YOUR_HOST` with your registry/nginx host IP.
 http_server: "http://YOUR_HOST"
 registry_host: "YOUR_HOST:35000"
 
+# Workaround: fix image pull command from insecure registry (kubespray #10775)
+nerdctl_image_pull_command: "{{ bin_dir }}/ctr -n k8s.io images pull --hosts-dir={{ containerd_cfg_dir }}/certs.d"
+#nerdctl_image_pull_command: "{{ bin_dir }}/nerdctl -n k8s.io pull --quiet"
+
 # Insecure registries for containerd
 containerd_registries_mirrors:
   - prefix: "{{ registry_host }}"
@@ -162,8 +166,10 @@ containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-l
 ```
 
 Notes:
+
 * `runc_donwload_url` differ from kubespray official document, and must include `runc_version`.
 * The insecure registries configurations of containerd was changed from kubespray 2.23.0. You need to set `containerd_registries_mirrors` instead of `containerd_insecure_registries`. 
+* You need to set `nerdctl_image_pull_command` for workaround of insecure registries from kubespray 2.24.0.
 
 ### Deploy offline repo configurations
 

@@ -88,6 +88,10 @@ configure_kubespray() {
 http_server: "http://$INSTALLER_IP:$NGINX_PORT"
 registry_host: "$INSTALLER_IP:$REGISTRY_PORT"
 
+# Workaround: fix image pull command from insecure registry
+nerdctl_image_pull_command: "{{ bin_dir }}/ctr -n k8s.io images pull --hosts-dir={{ containerd_cfg_dir }}/certs.d"
+#nerdctl_image_pull_command: "{{ bin_dir }}/nerdctl -n k8s.io pull --quiet"
+
 # Insecure registries for containerd
 containerd_registries_mirrors:
   - prefix: "{{ registry_host }}"
