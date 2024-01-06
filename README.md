@@ -117,53 +117,9 @@ Install ansible:
 
 ### Create offline.yml
 
-Create and place offline.yml file to your group_vars/all/offline.yml of your inventory directory.
+Copy [offline.yml](./offline.yml) file to your group_vars/all/offline.yml of your inventory directory, and edit it.
 
 You need to change `YOUR_HOST` with your registry/nginx host IP.
-
-```yaml
-http_server: "http://YOUR_HOST"
-registry_host: "YOUR_HOST:35000"
-
-# Workaround: fix image pull command from insecure registry (kubespray #10775)
-nerdctl_image_pull_command: "{{ bin_dir }}/ctr -n k8s.io images pull --hosts-dir={{ containerd_cfg_dir }}/certs.d"
-#nerdctl_image_pull_command: "{{ bin_dir }}/nerdctl -n k8s.io pull --quiet"
-
-# Insecure registries for containerd
-containerd_registries_mirrors:
-  - prefix: "{{ registry_host }}"
-    mirrors:
-      - host: "http://{{ registry_host }}"
-        capabilities: ["pull", "resolve"]
-        skip_verify: true
-
-files_repo: "{{ http_server }}/files"
-yum_repo: "{{ http_server }}/rpms"
-ubuntu_repo: "{{ http_server }}/debs"
-
-# Registry overrides
-kube_image_repo: "{{ registry_host }}"
-gcr_image_repo: "{{ registry_host }}"
-docker_image_repo: "{{ registry_host }}"
-quay_image_repo: "{{ registry_host }}"
-
-# Download URLs: See roles/download/defaults/main.yml of kubespray.
-kubeadm_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubeadm"
-kubectl_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubectl"
-kubelet_download_url: "{{ files_repo }}/kubernetes/{{ kube_version }}/kubelet"
-# etcd is optional if you **DON'T** use etcd_deployment=host
-etcd_download_url: "{{ files_repo }}/kubernetes/etcd/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
-cni_download_url: "{{ files_repo }}/kubernetes/cni/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tgz"
-crictl_download_url: "{{ files_repo }}/kubernetes/cri-tools/crictl-{{ crictl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
-# If using Calico
-calicoctl_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}"
-# If using Calico with kdd
-calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/{{ calico_version }}.tar.gz"
-
-runc_download_url: "{{ files_repo }}/runc/{{ runc_version }}/runc.{{ image_arch }}"
-nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
-containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
-```
 
 Notes:
 
