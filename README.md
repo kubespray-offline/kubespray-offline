@@ -125,7 +125,6 @@ Notes:
 
 * `runc_donwload_url` differ from kubespray official document, and must include `runc_version`.
 * The insecure registries configurations of containerd was changed from kubespray 2.23.0. You need to set `containerd_registries_mirrors` instead of `containerd_insecure_registries`. 
-* You need to set `nerdctl_image_pull_command` for workaround of insecure registries from kubespray 2.24.0.
 
 ### Deploy offline repo configurations
 
