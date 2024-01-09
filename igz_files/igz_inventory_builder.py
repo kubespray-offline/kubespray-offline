@@ -184,7 +184,7 @@ class SysConfigProcessor:
         template = SysConfigProcessor._get_template_file(template_file)
 
         igz_registry_host = self.data_nodes[0] if not self.get_haproxy() else self.data_vip
-        igz_registry_port = 8009 if not self.get_haproxy() else 18009
+        igz_registry_port = 28009 if not self.get_haproxy() else 18009
         external_ips = [node['external_ip_address'] for node in self.nodes if node['external_ip_address']]
         if self.vip:
             external_ips.append(self.vip['ip_address'])

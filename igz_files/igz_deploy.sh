@@ -2,9 +2,7 @@
 
 # Exit on any error
 set -e
-
 . ./config.sh
-. kubespray-$KUBESPRAY_VERSION/venv/bin/activate
 
 BASEDIR="."
 FILES_DIR=./files

@@ -2,21 +2,22 @@
   hosts: k8s_clients
   tasks:
     - name: Check if datanode registry is running
-      ansible.builtin.shell: docker ps --quiet --filter name=docker_registry
+      ansible.builtin.shell: docker ps --quiet --filter name=kompton_registry
       register: registry_is_running
       changed_when: false
       tags:
         - skip_ansible_lint
 
-    - name: Start docker registry if needed
-      ansible.builtin.shell: |
-        /usr/local/bin/manof run docker_registry \
-        --node-name "{{ ansible_local['registry']['kompton']['system_node_name'] }}" \
-        --data-dir "{{ ansible_local['registry']['kompton']['docker_registry_path'] }}" \
-        --storage-filesystem-maxthreads "{{ ansible_local['registry']['kompton']['registry_fs_maxthreads'] }}"
+    - name: Bring up Kompton registry
+      ansible.builtin.shell: >
+        docker run -d --restart always --name kompton_registry
+        -v {{ ansible_local['registry']['kompton']['docker_registry_path'] }}:/var/lib/registry
+        -p {{ ansible_local['registry']['kompton']['kompton_registry_port'] }}:5000
+        {{ ansible_local['registry']['kompton']['docker_registry_image'] }}
       args:
         executable: /bin/bash
-        chdir: "{{ ansible_local['registry']['kompton']['platform_dir'] }}/manof"
+      environment:
+        REGISTRY_STORAGE_FILESYSTEM_MAXTHREADS: "{{ ansible_local['registry']['kompton']['registry_fs_maxthreads'] }}"
       when: registry_is_running.stdout == ""
       tags:
         - skip_ansible_lint
