@@ -28,10 +28,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Cache outputs
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: outputs/
           key: ${{ runner.os }}-outputs
@@ -75,7 +75,7 @@ jobs:
         os: [ alma8, alma9 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install docker
         run: ./install-docker.sh
       - name: create docker image
