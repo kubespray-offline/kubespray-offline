@@ -13,7 +13,7 @@ fi
 load_images() {
     for image in $BASEDIR/images/*.tar.gz; do
         echo "===> Loading $image"
-        sudo $NERDCTL load -i $image
+        sudo $NERDCTL load -i $image || exit 1
     done
 }
 
@@ -30,10 +30,10 @@ push_images() {
         newImage=${LOCAL_REGISTRY}/${newImage}
 
         echo "===> Tag ${image} -> ${newImage}"
-        sudo $NERDCTL tag ${image} ${newImage}
+        sudo $NERDCTL tag ${image} ${newImage} || exit 1
 
         echo "===> Push ${newImage}"
-        sudo $NERDCTL push ${newImage}
+        sudo $NERDCTL push ${newImage} || exit 1
     done
 }
 

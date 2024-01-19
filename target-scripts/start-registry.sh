@@ -16,4 +16,4 @@ sudo /usr/local/bin/nerdctl run -d \
     --restart always \
     --name registry \
     -v $REGISTRY_DIR:/var/lib/registry \
-    $REGISTRY_IMAGE
+    $REGISTRY_IMAGE || exit 1

@@ -16,4 +16,4 @@ sudo /usr/local/bin/nerdctl run -d \
     --restart always \
     --name nginx \
     -v ${BASEDIR}:/usr/share/nginx/html \
-    ${NGINX_IMAGE}
+    ${NGINX_IMAGE} || exit 1
