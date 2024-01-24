@@ -1,0 +1,12 @@
+--- a/ansible.cfg	2023-12-25 14:01:06.500452642 +0200
++++ b/ansible.cfg	2023-12-25 14:01:08.258459153 +0200
+@@ -14,7 +14,7 @@
+ stdout_callback = default
+ display_skipped_hosts = no
+ library = ./library
+-callbacks_enabled = profile_tasks,ara_default
++callbacks_enabled = profile_tasks
+ roles_path = roles:$VIRTUAL_ENV/usr/local/share/kubespray/roles:$VIRTUAL_ENV/usr/local/share/ansible/roles:/usr/share/kubespray/roles
+ deprecation_warnings=False
+ inventory_ignore_extensions = ~, .orig, .bak, .ini, .cfg, .retry, .pyc, .pyo, .creds, .gpg
+ 

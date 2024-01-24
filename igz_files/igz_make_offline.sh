@@ -33,10 +33,6 @@ cp $KUBESPRAY_DIR/requirements.txt .
 echo "===> Fetch Iguazio scripts"
 find . -path './proc' -prune -o -type f -name "igz_*" -exec cp {} /outputs/ \;
 
-# This does not fall under any category
-echo "===> Fetch helper patches"
-cp ./igz_patches/nvidia/config.toml.patch /outputs
-
 chown -R 1000:1000 /outputs
 
 echo "<=== Kubespray $KUBESPRAY_VERSION is ready for offline deployment ===>"

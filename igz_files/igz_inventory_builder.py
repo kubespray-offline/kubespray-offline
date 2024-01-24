@@ -171,7 +171,7 @@ class SysConfigProcessor:
                                             distro=distro)
 
         SysConfigProcessor._write_template(output_file, rendered_template)
-
+    
     def generate_overrides(self, template_file="./igz_override.yml.j2", output_file="igz_override.yml"):
         """
         Generates YAML file using a Jinja2 template, populated with the extracted
@@ -183,6 +183,7 @@ class SysConfigProcessor:
         """
         template = SysConfigProcessor._get_template_file(template_file)
 
+        # TODO: Read the ports from Kompton facts somehow
         igz_registry_host = self.data_nodes[0] if not self.get_haproxy() else self.data_vip
         igz_registry_port = 28009 if not self.get_haproxy() else 18009
         external_ips = [node['external_ip_address'] for node in self.nodes if node['external_ip_address']]
@@ -207,9 +208,9 @@ class SysConfigProcessor:
            template_file (str): Path to the Jinja2 template file. Default is "igz_offline.yml.j2".
            output_file (str): Path to the output YAML file. Default is "igz_offline.yml".
         """
-        
+        # TODO: Read the ports from Kompton facts somehow
         igz_registry_host=self.data_nodes[0] if not self.get_haproxy() else self.data_vip
-        igz_registry_port=8009 if not self.get_haproxy() else 18009
+        igz_registry_port=28009 if not self.get_haproxy() else 18009
         igz_registry_addr=f'http://{ igz_registry_host }:{ igz_registry_port }'
         system_fqdn='.'.join([self.system_id, self.domain])
 
