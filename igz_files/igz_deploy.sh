@@ -67,9 +67,6 @@ cp ../igz_inventory.ini ./inventory/igz
 echo "==> Copy Iguazio files"
 find ../ -maxdepth 1 -type f -name 'igz_*' -exec cp '{}' . ';'
 
-echo "==> Copy patches"
-cp ../config.toml.patch .
-
 # Copy playbook for offline repo
 cp -r ../playbook .
 
