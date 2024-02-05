@@ -5,7 +5,9 @@ ENV LC_ALL en_US.utf8
 ENV LC_CTYPE en_US.utf8
 
 RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-19.03.13.tgz | tar zxvf - --strip 1 -C /usr/local/bin docker/docker
-RUN yum install -y libselinux-utils patch sudo which
+
+RUN yum install -y libselinux-utils patch sudo which wget
+RUN wget --no-check-certificate https://artifactory.iguazeng.com/artifactory/iguazio-devops_virtual/opt_packages/skopeo-1.14.0.tar.gz && tar -zxf skopeo-1.14.0.tar.gz -C /usr/bin
 
 ADD . .
 RUN mv /igz_files/* .

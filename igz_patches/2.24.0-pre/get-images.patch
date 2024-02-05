@@ -1,0 +1,42 @@
+diff --git a/download-kubespray-files.sh b/download-kubespray-files.sh
+index 197a24d..890b966 100755
+--- a/download-kubespray-files.sh
++++ b/download-kubespray-files.sh
+@@ -113,6 +113,35 @@ done
+ 
+ # download images
+ images=$(cat ${IMAGES_DIR}/images.list)
+-for i in $images; do
+-    get_image $i
++echo "Let's print where we are just in case"
++echo $PWD
++ls -la
++
++registries=('registry.k8s.io' 'k8s.gcr.io' 'gcr.io' 'docker.io' 'quay.io' 'ghcr.io')
++
++for image in $images; do
++  for registry in "${registries[@]}"; do
++    if [[ $image == $registry/* ]]; then
++        new_image="localhost:5000/${image#$registry/}"
++        echo "Transformed image name: $new_image"
++        break
++    fi
++  done
++  echo "Taking image $image"
++  echo "And pushing it to $new_image"
++   if ! skopeo copy --insecure-policy --dest-no-creds --dest-tls-verify=false docker://$image docker://$new_image; then
++    echo "Skopeo copy failed, attempting Docker pull-tag-push..."
++    if ! docker pull $image; then
++      echo "Docker pull failed. Exiting..."
++      exit 1
++    fi
++    if ! docker tag $image $new_image; then
++      echo "Docker tag failed. Exiting..."
++      exit 1
++    fi
++    if ! docker push $new_image; then
++      echo "Docker push failed. Exiting..."
++      exit 1
++    fi
++   fi
+ done
