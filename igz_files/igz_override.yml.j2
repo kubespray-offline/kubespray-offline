@@ -4,7 +4,7 @@
 # These are filled by the igz_inventory_builder.py script
 igz_registry_host: "{{ igz_registry_host }}"
 igz_registry_port: "{{ igz_registry_port }}"
-kubespray_nginx_port: 18080
+kubespray_nginx_port: "{{ kubespray_nginx_port }}"
 supplementary_addresses_in_ssl_keys: [{{ supplementary_addresses_in_ssl_keys }}]
 {%  if apiserver_vip and 'domain_name' in apiserver_vip and 'ip_address' in apiserver_vip %}
 apiserver_loadbalancer_domain_name: "{{ apiserver_vip['domain_name'] }}"

@@ -44,9 +44,6 @@ if [ "$SCALE_OUT" == "yes" ]; then
  SKIP_INSTALL="no"
 fi
 
-# The files in kubespray dir are owned by root and we don't like it
-chown -R iguazio:iguazio .
-
 echo "==> Build Iguazio inventory"
 python3 ./igz_inventory_builder.py "${@: -4}" "$HAPROXY"
 
