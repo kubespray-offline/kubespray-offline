@@ -88,7 +88,7 @@
         dest: /usr/bin/nerdctl
         state: link
 
-    - name: Patch containerd config to work with nvidia runtime
+    - name: Configure containerd config to work with nvidia runtime
       ansible.builtin.shell:
         cmd: nvidia-ctk runtime configure --runtime=containerd
       register: patch_result

@@ -1,37 +1,39 @@
 - name: Prepare containers
   hosts: k8s_clients
   tasks:
-    - name: Check if datanode registry is running
-      ansible.builtin.shell: docker ps --quiet --filter name=kompton_registry
-      register: registry_is_running
-      changed_when: false
+    - name: Kill Kompton containers if running
+      ansible.builtin.shell: "docker rm -f {{ item }}"
+      register: result
+      failed_when:
+        - result.rc != 0
+        - '"No such container" in result.stderr'
+      with_items:
+        - kompton_registry
+        - kubespray_nginx
       tags:
         - skip_ansible_lint
 
     - name: Bring up Kompton registry
       ansible.builtin.shell: >
         docker run -d --restart always --name kompton_registry
-        -v {{ ansible_local['registry']['kompton']['docker_registry_path'] }}:/var/lib/registry
         -p {{ ansible_local['registry']['kompton']['kompton_registry_port'] }}:5000
+        -v {{ ansible_local['registry']['kompton']['docker_registry_path'] }}:/var/lib/registry
         {{ ansible_local['registry']['kompton']['docker_registry_image'] }}
       args:
         executable: /bin/bash
       environment:
         REGISTRY_STORAGE_FILESYSTEM_MAXTHREADS: "{{ ansible_local['registry']['kompton']['registry_fs_maxthreads'] }}"
-      when: registry_is_running.stdout == ""
       tags:
         - skip_ansible_lint
 
     - name: Start nginx for Kubespray
-      ansible.builtin.shell: |
-        set -o pipefail
-        docker rm -f kubespray_nginx || true
-        docker run \
-        -d -p 18080:80 \
-        --restart always \
-        --name kubespray_nginx \
-        -v "{{ ansible_local['registry']['kompton']['kubespray_dir'] }}/outputs:/usr/share/nginx/html" \
+      ansible.builtin.shell: >
+        docker run -d --restart always --name kubespray_nginx
+        -p {{ ansible_local['registry']['kompton']['kompton_nginx_port'] }}:80
+        -v {{ ansible_local['registry']['kompton']['kubespray_dir'] }}/outputs:/usr/share/nginx/html
         iguazio/nginx_server:latest
+      args:
+        executable: /bin/bash
       tags:
         - skip_ansible_lint
 
