@@ -179,6 +179,9 @@ class SysConfigProcessor:
         external_ips = [node['external_ip_address'] for node in self.nodes if node['external_ip_address']]
         if self.vip:
             external_ips.append(self.vip['ip_address'])
+            api_endpoint = ':'.join([str(self.vip['ip_address']), str(self.vip['port'])])
+        else:
+            api_endpoint = ':'.join([str(self.nodes[0]['client_ip']), '6443'])
         supplementary_addresses_in_ssl_keys = ','.join(external_ips)
         system_fqdn = '.'.join([self.system_id, self.domain])
         distro = self.distro
@@ -189,7 +192,7 @@ class SysConfigProcessor:
                                             igz_registry_host=igz_registry_host,
                                             igz_registry_port=igz_registry_port,
                                             kubespray_nginx_port=kubespray_nginx_port,
-                                            distro=distro)
+                                            distro=distro, api_endpoint=api_endpoint)
 
         SysConfigProcessor._write_template(output_file, rendered_template)
 
