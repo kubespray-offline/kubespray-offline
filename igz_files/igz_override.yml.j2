@@ -13,6 +13,7 @@ loadbalancer_apiserver:
   port: {{ apiserver_vip['port']|default('8383') }}
 {% endif %}
 system_fqdn: {{ system_fqdn }}
+api_endpoint: {{ api_endpoint }}
 
 containerd_registries_mirrors:
   - prefix: "{{ igz_registry_host }}:{{ igz_registry_port }}"

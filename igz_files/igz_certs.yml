@@ -1,0 +1,104 @@
+---
+- name: Check certificates expiry
+  hosts: kube_control_plane
+  gather_facts: no
+  tasks:
+    - name: Check certificates expiry
+      ansible.builtin.shell: "/usr/local/bin/kubeadm certs check-expiration"
+      args:
+        executable: /bin/bash
+      register: kubeadm_response
+      become: true
+      delegate_to: '{{ groups["kube_control_plane"][0] }}'
+      run_once: true
+      when: do is defined and do == 'check'
+
+    - name: Show certificate expiry
+      debug:
+        msg: '{{  kubeadm_response.stdout_lines }}'
+      become: true
+      delegate_to: '{{ groups["kube_control_plane"][0] }}'
+      run_once: true
+      when: do is defined and do == 'check'
+
+- name: Backup kubeconfig
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Backup kubeconfig on all hosts
+      copy:
+        src: /home/iguazio/.kube/config
+        dest: /home/iguazio/.kube/config.bak
+        remote_src: yes
+        owner: iguazio
+        group: iguazio
+        mode: 0o400
+      become: yes
+      when: do is defined and do == 'backup'
+
+- name: Renew certificates
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Renew all certificates
+      shell: '/usr/local/bin/kubeadm certs renew all'
+      become: true
+      when:
+        - "'kube_control_plane' in group_names"
+        - do is defined and do == 'renew'
+      delegate_to: '{{ groups["kube_control_plane"][0] }}'
+      run_once: true
+
+    - name: Restart static pods
+      shell: "{{ bin_dir }}/crictl pods --namespace kube-system --name 'kube-scheduler-*|kube-controller-manager-*|kube-apiserver-*|etcd-*' -q | /usr/bin/xargs {{ bin_dir }}/crictl rmp -f"
+      args:
+        executable: /bin/bash
+      become: true
+      ignore_errors: true  # restart might fail intermittently, but we need to make sure the new kubeconfig is copied anyway
+      when:
+        - "'kube_control_plane' in group_names"
+        - do is defined
+        - do == 'renew'
+
+    - name: Wait for apiserver to start
+      wait_for:
+        port: '{{ kube_apiserver_port | default(6443) }}'
+        delay: 5
+      when:
+        - "'kube_control_plane' in group_names"
+        - do is defined
+        - do == 'renew'
+
+    - name: Update the server key in kubeconfig
+      ansible.builtin.shell: |
+        yq eval '.clusters[].cluster.server = "https://{{ api_endpoint }}"' -i {{ kube_config_dir }}/admin.conf
+      args:
+        executable: /bin/bash
+      delegate_to: '{{ groups["kube_control_plane"][0] }}'
+      run_once: true
+      become: true
+      when: do is defined and do == 'renew'
+
+    - name: Fetch new kubeconfig
+      fetch:
+        src: '{{ kube_config_dir }}/admin.conf'
+        dest: /home/iguazio/.kube/config
+        owner: iguazio
+        group: iguazio
+        mode: 0o400
+        flat: true
+      delegate_to: '{{ groups["kube_control_plane"][0] }}'
+      run_once: true
+      become: true
+      when: do is defined and do == 'renew'
+
+    - name: Distribute new kubeconfig
+      copy:
+        src: /home/iguazio/.kube/config
+        dest: /home/iguazio/.kube/config
+        owner: iguazio
+        group: iguazio
+        mode: 0o400
+      when: do is defined and do == 'renew'
