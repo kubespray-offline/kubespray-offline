@@ -5,20 +5,12 @@ set -e
 . ./config.sh
 
 BASEDIR="."
-FILES_DIR=./files
 KUBESPRAY_DIR_NAME=kubespray-$KUBESPRAY_VERSION
 BASEDIR=$(cd $BASEDIR; pwd)
-NGINX_IMAGE=iguazio/nginx_server:latest
 RESET="no"
 SKIP_INSTALL="no"
 SCALE_OUT="no"
 DEPLOYMENT_PLAYBOOK="cluster.yml"
-LOCAL_REGISTRY=${LOCAL_REGISTRY:-"localhost:${REGISTRY_PORT}"}
-if [ -f /etc/ansible/facts.d/haproxy.fact ]; then
-    HAPROXY=$(grep 'enabled' /etc/ansible/facts.d/haproxy.fact | awk -F ' = ' '{print $2}') || HAPROXY="false"
-else
-    HAPROXY="false"
-fi
 
 ###### Flow starts here ##########################
 
@@ -45,7 +37,7 @@ if [ "$SCALE_OUT" == "yes" ]; then
 fi
 
 echo "==> Build Iguazio inventory"
-python3 ./igz_inventory_builder.py "${@: -4}" "$HAPROXY"
+python3 ./igz_inventory_builder.py "${@: -4}"
 
 # Don't stop containers in case of scale out - it's a live data node!
 if [ "$SCALE_OUT" == "yes" ]; then
@@ -55,10 +47,9 @@ else
 fi
 
 echo "==> Prepare inventory dir"
-pushd ./$KUBESPRAY_DIR_NAME
+pushd ./"$KUBESPRAY_DIR_NAME"
 cp -r inventory/sample inventory/igz
-# Copy and rename file in one line
-cat ../igz_offline.yml > inventory/igz/group_vars/all/offline.yml
+cp ../igz_offline.yml inventory/igz/group_vars/all/
 cp ../igz_inventory.ini ./inventory/igz
 
 echo "==> Copy Iguazio files"

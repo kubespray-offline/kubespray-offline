@@ -1,7 +1,7 @@
-import yaml
-from jinja2 import Environment, FileSystemLoader
 import os
+import yaml
 import argparse
+from jinja2 import Environment, FileSystemLoader, meta, Undefined
 
 
 class SysConfigProcessor:
@@ -41,12 +41,10 @@ class SysConfigProcessor:
         self.vip = {}
         self.username = ''
         self.password = ''
-        self.canal_iface = ''
         self.system_id = ''
         self.domain = ''
-        self.data_vip = None
+        self.data_vip = ''
         self.distro = ''
-        self.haproxy = ''
 
         with open(self.yaml_file, 'r') as file:
             self.config = yaml.safe_load(file)
@@ -135,11 +133,6 @@ class SysConfigProcessor:
         vip = self.config.get('spec', {}).get('data_cluster', {}).get('dashboard_vip', {})
         if vip:
             self.data_vip = vip
-        else:
-            self.data_vip = None
-
-    def get_haproxy(self):
-        return True if self.data_vip and self.haproxy else False
 
     def generate_inventory(self, template_file="./igz_inventory.ini.j2", output_file="igz_inventory.ini"):
         """
@@ -156,13 +149,11 @@ class SysConfigProcessor:
         data_nodes = self.data_nodes
         username = self.username
         password = self.password
-        distro = self.distro
 
         # Render the template with the new variable
         rendered_template = template.render(app_nodes=app_nodes, data_nodes=data_nodes,
                                             username=username,
-                                            password=password,
-                                            distro=distro)
+                                            password=password)
 
         SysConfigProcessor._write_template(output_file, rendered_template)
 
@@ -175,97 +166,40 @@ class SysConfigProcessor:
            template_file (str): Path to the Jinja2 template file. Default is "igz_override.yml.j2".
            output_file (str): Path to the output YAML file. Default is "igz_override.yml".
         """
+
+        class PreserveUndefined(Undefined):
+            def __str__(self):
+                return "{{" + self._undefined_name + "}}"
+
         template = SysConfigProcessor._get_template_file(template_file)
 
-        igz_registry_host = self.data_vip if self.get_haproxy() else self.data_nodes[0]
-        igz_registry_port = 18009 if self.get_haproxy() else 28009
-        kubespray_nginx_port = 18080 if self.get_haproxy() else 28080
+        igz_registry_host = self.data_nodes[0] if not self.data_vip else self.data_vip
+        igz_registry_port = 8009
+        kubespray_nginx_port = 18080
         external_ips = [node['external_ip_address'] for node in self.nodes if node['external_ip_address']]
         if self.vip:
             external_ips.append(self.vip['ip_address'])
         supplementary_addresses_in_ssl_keys = ','.join(external_ips)
-        canal_iface = self.canal_iface
         system_fqdn = '.'.join([self.system_id, self.domain])
+        distro = self.distro
 
-        rendered_template = template.render(igz_registry_host=igz_registry_host, igz_registry_port=igz_registry_port,
-                                            supplementary_addresses_in_ssl_keys=supplementary_addresses_in_ssl_keys,
-                                            canal_iface=canal_iface, apiserver_vip=self.vip, system_fqdn=system_fqdn,
-                                            kubespray_nginx_port=kubespray_nginx_port)
+        rendered_template = template.render(supplementary_addresses_in_ssl_keys=supplementary_addresses_in_ssl_keys,
+                                            apiserver_vip=self.vip,
+                                            system_fqdn=system_fqdn,
+                                            igz_registry_host=igz_registry_host,
+                                            igz_registry_port=igz_registry_port,
+                                            kubespray_nginx_port=kubespray_nginx_port,
+                                            distro=distro)
 
         SysConfigProcessor._write_template(output_file, rendered_template)
 
-    def generate_offline(self, template_file='igz_offline.yml.j2', output_file="igz_offline.yml"):
-        """
-        Generates YAML file using a Jinja2 template, populated with the extracted
-        node and cluster information. The YAML file is saved to the current directory.
-
-        Args:
-           template_file (str): Path to the Jinja2 template file. Default is "igz_offline.yml.j2".
-           output_file (str): Path to the output YAML file. Default is "igz_offline.yml".
-        """
-        
-        igz_registry_host=self.data_nodes[0] if not self.get_haproxy() else self.data_vip
-        igz_registry_port = 18009 if self.get_haproxy() else 28009
-        igz_registry_addr=f'http://{ igz_registry_host }:{ igz_registry_port }'
-        system_fqdn='.'.join([self.system_id, self.domain])
-
-        containerd_registries_mirrors = '''
-        containerd_registries_mirrors:
-          - prefix: "{{ igz_registry_host }}:{{ igz_registry_port }}"
-            mirrors:
-              - host: "{{ igz_registry_addr }}"
-                capabilities: ["pull", "resolve"]
-                skip_verify: true
-          - prefix: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
-            mirrors:
-              - host: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
-                capabilities: ["pull", "resolve"]
-                skip_verify: true
-          - prefix: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
-            mirrors:
-              - host: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
-                capabilities: ["pull", "resolve"]
-                skip_verify: true
-          - prefix: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
-            mirrors:
-              - host: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
-                capabilities: ["pull", "resolve"]
-                skip_verify: true
-          - prefix: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
-            mirrors:
-              - host: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
-                capabilities: ["pull", "resolve"]
-                skip_verify: true
-        '''
-
-        # Render the specific section
-        env = Environment()
-        insecure_registries_template = env.from_string(containerd_registries_mirrors)
-        rendered_insecure_registries = insecure_registries_template.render(
-            igz_registry_host=igz_registry_host,
-            igz_registry_port=igz_registry_port,
-            igz_registry_addr=igz_registry_addr,
-            system_fqdn=system_fqdn
-        )
-
-        # Parse the rendered section as YAML
-        insecure_registries_yaml = yaml.safe_load(rendered_insecure_registries)
-
-        # Load the main YAML file
-        with open(template_file, 'r') as file:
-            main_yaml_data = yaml.safe_load(file)
-
-        # Merge the specific section into the main YAML data
-        main_yaml_data.update(insecure_registries_yaml)
-
-        # Write the merged content back to the YAML file
-        with open(output_file, 'w') as file:
-            # noinspection PyTypeChecker
-            yaml.safe_dump(main_yaml_data, file, width=float("inf"))
-
     @staticmethod
     def _get_template_file(f):
-        env = Environment(loader=FileSystemLoader(os.path.dirname(f)), trim_blocks=True, lstrip_blocks=True)
+        class PreserveUndefined(Undefined):
+            def __str__(self):
+                return "{{" + self._undefined_name + "}}"
+        env = Environment(loader=FileSystemLoader(os.path.dirname(f)), trim_blocks=True, lstrip_blocks=True,
+                          undefined=PreserveUndefined)
         return env.get_template(os.path.basename(f))
 
     @staticmethod
@@ -280,7 +214,6 @@ def _parse_cli():
     parser.add_argument('user')
     parser.add_argument('password')
     parser.add_argument('distro')
-    parser.add_argument('haproxy')
     return parser.parse_args()
 
 
@@ -293,16 +226,12 @@ def main_flow():
     username = args.user
     password = args.password
     distro = args.distro
-    haproxy = args.haproxy
     config_processor = SysConfigProcessor(system_config)
     config_processor.username = username
     config_processor.password = password
     config_processor.distro = distro
-    config_processor.haproxy = True if haproxy == 'true' else False
-
     config_processor.generate_inventory()
     config_processor.generate_overrides()
-    config_processor.generate_offline()
 
 
 if __name__ == "__main__":
