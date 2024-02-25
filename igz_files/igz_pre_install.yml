@@ -16,7 +16,7 @@
     - name: Bring up Kompton registry
       ansible.builtin.shell: >
         docker run -d --restart always --name kompton_registry
-        -p {{ ansible_local['registry']['kompton']['kompton_registry_port'] }}:5000
+        -p 8009:5000
         -v {{ ansible_local['registry']['kompton']['docker_registry_path'] }}:/var/lib/registry
         {{ ansible_local['registry']['kompton']['docker_registry_image'] }}
       args:
@@ -29,19 +29,10 @@
     - name: Start nginx for Kubespray
       ansible.builtin.shell: >
         docker run -d --restart always --name kubespray_nginx
-        -p {{ ansible_local['registry']['kompton']['kompton_nginx_port'] }}:80
+        -p 18080:80
         -v {{ ansible_local['registry']['kompton']['kubespray_dir'] }}/outputs:/usr/share/nginx/html
         iguazio/nginx_server:latest
       args:
         executable: /bin/bash
       tags:
         - skip_ansible_lint
-
-    - name: Start HAProxy service on data nodes
-      ansible.builtin.systemd:
-        name: haproxy
-        state: started
-      become: true
-      when:
-        - ansible_local.haproxy.haproxy.enabled is defined
-        - ansible_local.haproxy.haproxy.enabled == "true"

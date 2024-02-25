@@ -2,9 +2,9 @@
 #kube_version: v1.26.5
 
 # These are filled by the igz_inventory_builder.py script
-igz_registry_host: "{{ igz_registry_host }}"
-igz_registry_port: "{{ igz_registry_port }}"
-kubespray_nginx_port: "{{ kubespray_nginx_port }}"
+registry_host: "{{ igz_registry_host }}:{{ igz_registry_port }}"
+http_server: "http://{{ igz_registry_host }}:{{ kubespray_nginx_port }}"
+
 supplementary_addresses_in_ssl_keys: [{{ supplementary_addresses_in_ssl_keys }}]
 {%  if apiserver_vip and 'domain_name' in apiserver_vip and 'ip_address' in apiserver_vip %}
 apiserver_loadbalancer_domain_name: "{{ apiserver_vip['domain_name'] }}"
@@ -14,6 +14,33 @@ loadbalancer_apiserver:
 {% endif %}
 system_fqdn: {{ system_fqdn }}
 
+containerd_registries_mirrors:
+  - prefix: "{{ igz_registry_host }}:{{ igz_registry_port }}"
+    mirrors:
+      - host: "http://{{ igz_registry_host }}:{{ igz_registry_port }}"
+        capabilities: ["pull", "resolve"]
+        skip_verify: true
+  - prefix: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+    mirrors:
+      - host: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+        capabilities: ["pull", "resolve"]
+        skip_verify: true
+  - prefix: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
+    mirrors:
+      - host: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
+        capabilities: ["pull", "resolve"]
+        skip_verify: true
+  - prefix: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+    mirrors:
+      - host: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+        capabilities: ["pull", "resolve"]
+        skip_verify: true
+  - prefix: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
+    mirrors:
+      - host: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
+        capabilities: ["pull", "resolve"]
+        skip_verify: true
+
 # These override Kubespray defaults the way we decided a long ago and not likely to be changed often
 kubeconfig_localhost: yes
 kubectl_localhost: yes
@@ -22,6 +49,7 @@ kube_proxy_mode: iptables
 kube_network_plugin: calico
 resolvconf_mode: docker_dns
 containerd_use_config_path: true
+unsafe_show_logs: true
 
 # Reservation for kube daemons
 kube_reserved: true

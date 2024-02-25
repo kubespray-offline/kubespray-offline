@@ -36,6 +36,7 @@
         dest: "/home/{{ ansible_user }}/.kube/config"
         owner: "{{ ansible_user }}"
         mode: "0o400"
+      become: true
 
     - name: Copy kubectl binary to client
       ansible.builtin.copy:
@@ -81,6 +82,21 @@
     - name: Make sure we pick up all facts passed by Kompton
       ansible.builtin.setup:
         filter: ansible_local
+
+    - name: Set data node registry target IP
+      set_fact:
+        datanode_registry_ip: "{{ apiserver_vip | default(hostvars[groups['kube_control_plane'][0]]['ip']) }}"
+      run_once: true
+
+    - name: Add regitsry entries to /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          {{ datanode_registry_ip }} datanode-registry.iguazio-platform.app.{{ system_fqdn }}
+          {{ datanode_registry_ip }} docker-registry.iguazio-platform.app.{{ system_fqdn }}
+          {{ datanode_registry_ip }} docker-registry.default-tenant.app.{{ system_fqdn }}
+        marker: "# {mark} ADDED BY KUBESPRAY"
+      become: true
 
     - name: Create symlink for nerdctl
       ansible.builtin.file:
@@ -150,9 +166,22 @@
       tags:
         - skip_ansible_lint
 
-    - name: Stop and disable HAProxy service
-      ansible.builtin.systemd:
-        name: haproxy
-        state: stopped
-        enabled: false
+    # All this is because {{ inventory_dir }} is resolved inside a container
+    - name: Read local fact
+      set_fact:
+        kubespray_dir: "{{ ansible_local.registry.kompton.kubespray_dir }}/outputs"
+
+    - name: Find all directories matching 'kubespray-*' under the kubespray directory
+      ansible.builtin.find:
+        paths: "{{ kubespray_dir }}/"
+        file_type: directory
+        patterns: 'kubespray-*'
+      register: found_dirs
+
+    - name: Set the first found directory as a fact
+      set_fact:
+        host_inventory_dir: "{{ found_dirs.files | map(attribute='path') | list | first }}/inventory"
+
+    - name: Fix ownership
+      shell: chown -R iguazio:iguazio {{ host_inventory_dir }}
       become: true
