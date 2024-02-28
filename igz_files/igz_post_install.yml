@@ -106,7 +106,7 @@
 
     - name: Configure containerd config to work with nvidia runtime
       ansible.builtin.shell:
-        cmd: nvidia-ctk runtime configure --runtime=containerd
+        cmd: nvidia-ctk runtime configure --runtime=containerd --nvidia-set-as-default
       register: patch_result
       failed_when: patch_result.rc > 1
       become: true
