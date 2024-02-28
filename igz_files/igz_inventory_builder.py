@@ -181,7 +181,7 @@ class SysConfigProcessor:
             external_ips.append(self.vip['ip_address'])
             api_endpoint = ':'.join([str(self.vip['ip_address']), str(self.vip['port'])])
         else:
-            api_endpoint = ':'.join([str(self.nodes[0]['client_ip']), '6443'])
+            api_endpoint = ':'.join([str(self.nodes[0]['client_ip_address']), '6443'])
         supplementary_addresses_in_ssl_keys = ','.join(external_ips)
         system_fqdn = '.'.join([self.system_id, self.domain])
         distro = self.distro
