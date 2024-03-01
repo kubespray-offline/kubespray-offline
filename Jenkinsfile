@@ -96,6 +96,7 @@ common.main {
                     'upload_to_nas': {
                         def build_by_hash_dir = "/mnt/nas/build_by_hash/kubespray"
                         def nas_dir = "${build_by_hash_dir}/${env.kubespray_hash}/pkg/kubespray"
+                        sh("if [ -d ${nas_dir} ]; then rm -rf ${nas_dir}; fi")
                         sh("mkdir -p ${nas_dir}")
                         sh("cp -r outputs ${nas_dir}/")
                     }, // closes upload_to_nas block
