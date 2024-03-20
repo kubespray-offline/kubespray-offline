@@ -1,6 +1,20 @@
 --- a/ansible.cfg	2023-12-25 14:01:06.500452642 +0200
 +++ b/ansible.cfg	2023-12-25 14:01:08.258459153 +0200
-@@ -14,7 +14,7 @@
+@@ -1,11 +1,12 @@
+ [ssh_connection]
+ pipelining=True
+ ansible_ssh_args = -o ControlMaster=auto -o ControlPersist=30m -o ConnectionAttempts=100 -o UserKnownHostsFile=/dev/null
++retries = 5
+ #control_path = ~/.ssh/ansible-%%r@%%h:%%p
+ [defaults]
+ # https://github.com/ansible/ansible/issues/56930 (to ignore group names with - and .)
+ force_valid_group_names = ignore
+-
++timeout = 30
+ host_key_checking=False
+ gathering = smart
+ fact_caching = jsonfile
+@@ -14,7 +15,7 @@
  stdout_callback = default
  display_skipped_hosts = no
  library = ./library
