@@ -30,8 +30,8 @@ download() {
 
 if $ENABLE_DOWNLOAD; then
     # TODO: These version must be same as kubespray. Refer `roles/kubespray-defaults/defaults/main/download.yml` of kubespray.
-    RUNC_VERSION=1.1.10
-    CONTAINERD_VERSION=1.7.11
+    RUNC_VERSION=1.1.12
+    CONTAINERD_VERSION=1.7.13
     NERDCTL_VERSION=1.7.1
     CNI_VERSION=1.3.0
 
