@@ -9,7 +9,7 @@ if [ $# -ne 1 ]; then
 fi
 target=$1
 
-CMD="cd ${WORKDIR}; ./install-docker.sh; ./download-all.sh"
+CMD="cd ${WORKDIR}; ./download-all.sh"
 
 OPTS=
 if [ -t 0 ]; then
