@@ -49,3 +49,6 @@ EOF
     $sudo systemctl daemon-reload
     $sudo systemctl restart docker
 fi
+
+# Install nerdctl
+./install-nerdctl.sh
