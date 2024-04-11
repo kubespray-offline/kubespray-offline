@@ -33,7 +33,6 @@ If you don't have container runtime (docker or containerd), install it first.
     - run `install-docker.sh` to install Docker CE.
 * To use containerd
     - run `install-containerd.sh` to install containerd and nerdctl.
-    - Set `docker` environment variable to `/usr/local/bin/nerdctl` in `config.sh`.
 
 Then, download all files:
 
