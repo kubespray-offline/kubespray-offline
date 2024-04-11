@@ -1,7 +1,12 @@
 # ChangeLogs
 
+## v2.24.1-0 - 2024/04/12
+
+- Update kubespray to 2.24.1
+- Fix downloading older container images using nerdctl (#35)
+
 ## v2.24.0-0 - 2024/01/20
-- 
+
 - Update kubespray to 2.24.0
 
 ## v2.23.1-0 - 2024/01/04
