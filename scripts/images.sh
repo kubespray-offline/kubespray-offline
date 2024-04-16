@@ -13,10 +13,17 @@ get_image() {
 
     if [ ! -e $IMAGES_DIR/$zipname ]; then
         echo "==> Pull $image"
-        $sudo $docker pull $image || exit 1
+        #$sudo $docker pull $image || exit 1
+        if [[ "$container_runtime" == "docker" ]]; then
+            # Use skopeo to pull image, because latest docker can't pull some old images
+            echo $sudo ./bin/skopeo copy docker://$image docker-daemon:$image
+            $sudo ./bin/skopeo copy docker://$image docker-daemon:$image || exit 1
+        else
+            $sudo $docker pull $image
+        fi
 
         echo "==> Save $image"
-        $sudo $docker save -o $IMAGES_DIR/$tarname $image
+        $sudo $docker save -o $IMAGES_DIR/$tarname $image || exit 1
         $sudo chown $(whoami) $IMAGES_DIR/$tarname
         chmod 0644 $IMAGES_DIR/$tarname
         gzip -v $IMAGES_DIR/$tarname
