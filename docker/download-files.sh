@@ -2,7 +2,18 @@
 
 source ./common.sh
 
-CMD="cd ${WORKDIR} && ./download-kubespray-files.sh"
+source ./common.sh
 
-#docker run -it --rm -v ${ROOT}:${WORKDIR} kubespray-offline-cent8:latest /bin/bash -c "${CMD}"
-docker run -it --rm ${VOLUMES} tmurakam/kubespray-offline-ubuntu-22.04:latest /bin/bash -c "${CMD}"
+if [ $# -ne 1 ]; then
+    echo "usage: $0 <target>"
+    exit 1
+fi
+target=$1
+
+CMD="cd ${WORKDIR} && ./prepare-py.sh && SKIP_DOWNLOAD_IMAGES=true ./download-kubespray-files.sh"
+
+OPTS=
+if [[ -t 1 ]]; then
+    OPTS="$OPTS -it"
+fi
+docker run ${OPTS} --rm ${VOLUMES} tmurakam/kubespray-offline-$target:latest /bin/bash -c "${CMD}"

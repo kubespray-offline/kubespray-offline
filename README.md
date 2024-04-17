@@ -1,5 +1,6 @@
 # Kubespray offline file generator scripts
 
+
 ## What's this?
 
 This is offline support scripts for [Kubespray offline environment](https://kubespray.io/#/docs/offline-environment).
@@ -18,7 +19,7 @@ This supports:
 
 ## Requirements
 
-- RHEL 8 / AlmaLinux 8
+- RHEL / AlmaLinux : 8 / 9
 - Ubuntu 20.04 / 22.04
 
 ## Download offline files
@@ -27,12 +28,12 @@ Note: You must execute this process on same OS of k8s target nodes.
 
 Before download offline files, check and edit configurations in `config.sh`.
 
-If you don't have container runtime (docker or containerd), install it first.
+The `podman` is automatically installed to pull and save container images.
+But you can use `containerd` instead of `podman`.
 
-* To use Docker CE
-    - run `install-docker.sh` to install Docker CE.
 * To use containerd
-    - run `install-containerd.sh` to install containerd and nerdctl.
+    - Run `install-containerd.sh` to install containerd and nerdctl.
+    - Edit `config.sh` and change `docker` variable to nerdctl.
 
 Then, download all files:
 
@@ -43,7 +44,7 @@ All artifacts are stored in `./outputs` directory.
 This script calls all of following scripts.
 
 * prepare-pkgs.sh
-    - Setup python, etc.
+    - Setup python, podman, etc.
 * prepare-py.sh
     - Setup python venv, install required python packages.
 * get-kubespray.sh

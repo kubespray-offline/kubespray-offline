@@ -1,5 +1,9 @@
 # ChangeLogs
 
+## v2.24.1-1 - 2024/04/17
+
+- Fix: Use podman to download container images (#36)
+
 ## v2.24.1-0 - 2024/04/12
 
 - Update kubespray to 2.24.1

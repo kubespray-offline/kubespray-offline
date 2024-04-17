@@ -10,7 +10,7 @@ if [ -e /etc/redhat-release ]; then
     echo "==> Install required packages"
     $sudo yum check-update
 
-    $sudo yum install -y rsync gcc libffi-devel createrepo || exit 1
+    $sudo yum install -y rsync gcc libffi-devel createrepo podman || exit 1
 
     case "$VERSION_ID" in
         7*)
@@ -59,10 +59,15 @@ else
 
     case "$VERSION_ID" in
         20.04)
-            $sudo apt install -y python3.9 python3.9-venv python3.9-dev || exit 1
+            # Prepare for podman
+            echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | $sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+            curl -SL https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_${VERSION_ID}/Release.key | $sudo apt-key add -
+            $sudo apt update
+
+            $sudo apt install -y python3.9 python3.9-venv python3.9-dev podman || exit 1
             ;;
         *)
-            $sudo apt install -y python3 python3-venv python3-dev || exit 1
+            $sudo apt install -y python3 python3-venv python3-dev podman || exit 1
             ;;
     esac
     $sudo apt install -y python3-pip python3-selinux

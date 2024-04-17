@@ -11,7 +11,7 @@ run() {
 source ./config.sh
 
 #run ./install-docker.sh
-run ./install-nerdctl.sh
+#run ./install-nerdctl.sh
 run ./precheck.sh
 run ./prepare-pkgs.sh || exit 1
 run ./prepare-py.sh

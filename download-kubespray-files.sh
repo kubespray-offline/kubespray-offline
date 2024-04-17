@@ -112,7 +112,9 @@ for i in $files; do
 done
 
 # download images
-images=$(cat ${IMAGES_DIR}/images.list)
-for i in $images; do
-    get_image $i
-done
+if [ "$SKIP_DOWNLOAD_IMAGES" != "true" ]; then
+    images=$(cat ${IMAGES_DIR}/images.list)
+    for i in $images; do
+        get_image $i
+    done
+fi
