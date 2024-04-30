@@ -23,22 +23,22 @@ containerd_registries_mirrors:
         skip_verify: true
   - prefix: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
     mirrors:
-      - host: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+      - host: "http://datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
         capabilities: ["pull", "resolve"]
         skip_verify: true
   - prefix: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
     mirrors:
-      - host: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
+      - host: "http://datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
         capabilities: ["pull", "resolve"]
         skip_verify: true
   - prefix: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
     mirrors:
-      - host: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+      - host: "http://docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
         capabilities: ["pull", "resolve"]
         skip_verify: true
   - prefix: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
     mirrors:
-      - host: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
+      - host: "http://docker-registry.default-tenant.app.{{ system_fqdn }}:80"
         capabilities: ["pull", "resolve"]
         skip_verify: true
 

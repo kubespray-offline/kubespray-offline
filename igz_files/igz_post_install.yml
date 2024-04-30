@@ -85,7 +85,7 @@
 
     - name: Set data node registry target IP
       set_fact:
-        datanode_registry_ip: "{{ apiserver_vip | default(hostvars[groups['kube_control_plane'][0]]['ip']) }}"
+        datanode_registry_ip: "{{ loadbalancer_apiserver['address'] | default(hostvars[groups['kube_control_plane'][0]]['ip']) }}"
       run_once: true
 
     - name: Add regitsry entries to /etc/hosts
