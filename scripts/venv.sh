@@ -1,5 +1,7 @@
+#!/bin/bash
+
 # Now always use specific python version
-python3=python3.11
+PY_VERSION=3.11
 
 if [ -e /etc/redhat-release ]; then
     if [[ "$VERSION_ID" =~ ^7.* ]]; then
@@ -17,4 +19,13 @@ else
     #fi
     :
 fi
+
+python3=python${PY_VERSION}
+VENV_DIR=${VENV_DIR:-~/.venv/${PY_VERSION}}
+
 echo "python3 = $python3"
+echo "VENV_DIR = ${VENV_DIR}"
+if [ ! -e ${VENV_DIR} ]; then
+    $python3 -m venv ${VENV_DIR}
+fi
+source ${VENV_DIR}/bin/activate

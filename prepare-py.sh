@@ -6,14 +6,7 @@ echo "==> prepare-py.sh"
 
 . /etc/os-release
 
-. ./scripts/select-python.sh
-
-VENV_DIR=${VENV_DIR:-~/.venv/default}
-echo "VENV_DIR = ${VENV_DIR}"
-if [ ! -e ${VENV_DIR} ]; then
-    $python3 -m venv ${VENV_DIR}
-fi
-source ${VENV_DIR}/bin/activate
+. ./scripts/venv.sh
 
 source ./scripts/set-locale.sh
 

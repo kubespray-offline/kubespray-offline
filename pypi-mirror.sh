@@ -9,13 +9,8 @@ if [ ! -e $KUBESPRAY_DIR ]; then
 fi
 
 source /etc/os-release
-source ./scripts/select-python.sh
 
-VENV_DIR=${VENV_DIR:-~/.venv/default}
-if [ ! -e ${VENV_DIR} ]; then
-    $python3 -m venv ${VENV_DIR}
-fi
-source ${VENV_DIR}/bin/activate
+source ./scripts/venv.sh
 
 source ./scripts/set-locale.sh
 
