@@ -25,5 +25,5 @@ else
     #        sudo apt install -y python3-venv || exit 1
     #        ;;
     #esac
-    sudo apt install -y python3.11-venv || exit 1
+    sudo apt install -y python3.11-venv python3.11-dev gcc libffi-dev libssl-dev || exit 1
 fi

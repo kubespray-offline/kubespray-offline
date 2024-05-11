@@ -92,17 +92,14 @@ You can configure port number of nginx and private registry in config.sh.
 Create and activate venv:
 
     # Example
-    $ python3.11 -m venv ~/.venv/default
-    $ source ~/.venv/default/bin/activate
+    $ python3.11 -m venv ~/.venv/3.11
+    $ source ~/.venv/3.11/bin/activate
+    $ python --version   # check python version
 
 Extract kubespray and apply patches:
 
     $ ./extract-kubespray.sh
     $ cd kubespray-{version}
-
-For Ubuntu 22.04, you need to install build tools to build some python packages.
-
-    $ sudo apt install gcc python3-dev libffi-dev libssl-dev
 
 Install ansible:
 
