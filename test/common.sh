@@ -15,20 +15,19 @@ IPS=${IPS:-${INSTALLER_IP}}
 
 source /etc/os-release
 
-python3=python3
+python3=python3.11
 if [ -e /etc/redhat-release ]; then
     if [[ "$VERSION_ID" =~ ^7.* ]]; then
         #PATH=/opt/rh/rh-python38/root/usr/bin:$PATH
         #export PATH
         echo "FATAL: RHEL/CentOS 7 is not supported"
         exit 1
-    else
-        python3=python3.11
     fi
 else
-    if [[ "$VERSION_ID" =~ ^20.* ]]; then
-        python3=python3.11
-    fi
+    #if [[ "$VERSION_ID" =~ ^20.* ]]; then
+    #    python3=python3.11
+    #fi
+    :
 fi
 
 

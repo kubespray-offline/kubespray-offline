@@ -67,13 +67,10 @@ else
 
             # Prepare for latest python3
             sudo add-apt-repository ppa:deadsnakes/ppa -y || exit 1
-
             $sudo apt update
-            $sudo apt install -y python3.11 python3.11-venv python3.11-dev podman || exit 1
             ;;
         *)
-            $sudo apt install -y python3 python3-venv python3-dev podman || exit 1
             ;;
     esac
-    $sudo apt install -y python3-pip python3-selinux
+    $sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-pip python3-selinux podman || exit 1
 fi

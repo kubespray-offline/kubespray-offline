@@ -92,11 +92,6 @@ You can configure port number of nginx and private registry in config.sh.
 Create and activate venv:
 
     # Example
-    $ python3 -m venv ~/.venv/default
-    $ source ~/.venv/default/bin/activate
-
-Note: For Ubuntu 20.04 and RHEL/CentOS 8/9, you need to use python >=3.10.
-    
     $ python3.11 -m venv ~/.venv/default
     $ source ~/.venv/default/bin/activate
 

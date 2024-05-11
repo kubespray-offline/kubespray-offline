@@ -4,8 +4,10 @@
 #containerd.io
 
 # python3 for ansible
-python3
-python3-venv
+python3.11
+python3.11-venv
+python3.11-dev
+
 python3-selinux
 # python-cryptography
 
@@ -19,7 +21,6 @@ libseccomp2
 
 # compilers (for cffi, etc)
 gcc
-python3-dev
 libffi-dev
 libssl-dev
 
