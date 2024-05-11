@@ -30,7 +30,7 @@ if [ -e /etc/redhat-release ]; then
             ;;
         8*)
             # RHEL/CentOS 8
-            $sudo yum install -y python39 python39-pip python39-devel || exit 1
+            $sudo dnf install -y python3.11 python3.11-pip python3.11-devel || exit 1
 
             if ! command -v repo2module >/dev/null; then
                 echo "==> Install modulemd-tools"
@@ -41,6 +41,8 @@ if [ -e /etc/redhat-release ]; then
             ;;
         9*)
             # RHEL 9
+            $sudo dnf install -y python3.11 python3.11-pip python3.11-devel || exit 1
+
             if ! command -v repo2module >/dev/null; then
                 $sudo dnf install -y modulemd-tools
             fi
@@ -55,16 +57,19 @@ else
     if [ "$1" == "--upgrade" ]; then
         $sudo apt upgrade
     fi
-    $sudo apt -y install lsb-release curl gpg gcc libffi-dev rsync || exit 1
+    $sudo apt -y install lsb-release curl gpg gcc libffi-dev rsync software-properties-common || exit 1
 
     case "$VERSION_ID" in
         20.04)
             # Prepare for podman
             echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | $sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
             curl -SL https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_${VERSION_ID}/Release.key | $sudo apt-key add -
-            $sudo apt update
 
-            $sudo apt install -y python3.9 python3.9-venv python3.9-dev podman || exit 1
+            # Prepare for latest python3
+            sudo add-apt-repository ppa:deadsnakes/ppa -y || exit 1
+
+            $sudo apt update
+            $sudo apt install -y python3.11 python3.11-venv python3.11-dev podman || exit 1
             ;;
         *)
             $sudo apt install -y python3 python3-venv python3-dev podman || exit 1

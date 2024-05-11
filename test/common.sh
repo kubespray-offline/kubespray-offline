@@ -23,11 +23,11 @@ if [ -e /etc/redhat-release ]; then
         echo "FATAL: RHEL/CentOS 7 is not supported"
         exit 1
     else
-        python3=python3.9
+        python3=python3.11
     fi
 else
     if [[ "$VERSION_ID" =~ ^20.* ]]; then
-        python3=python3.9
+        python3=python3.11
     fi
 fi
 

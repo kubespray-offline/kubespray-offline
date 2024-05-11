@@ -21,7 +21,7 @@ else
     sudo apt update
     case "$VERSION_ID" in
         20.04)
-            sudo apt install -y python3.9-venv || exit 1
+            sudo apt install -y python3.11-venv || exit 1
             ;;
         *)
             sudo apt install -y python3-venv || exit 1
