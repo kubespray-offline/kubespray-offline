@@ -1,8 +1,8 @@
 #!/bin/bash
 
 source ./common.sh
+source ../scripts/venv.sh
 
-venv
 do_kubespray
 
 mkdir ~/.kube

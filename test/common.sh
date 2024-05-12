@@ -15,27 +15,11 @@ IPS=${IPS:-${INSTALLER_IP}}
 
 source /etc/os-release
 
-python3=python3.11
-if [ -e /etc/redhat-release ]; then
-    if [[ "$VERSION_ID" =~ ^7.* ]]; then
-        #PATH=/opt/rh/rh-python38/root/usr/bin:$PATH
-        #export PATH
-        echo "FATAL: RHEL/CentOS 7 is not supported"
-        exit 1
-    fi
-else
-    if [[ "$VERSION_ID" =~ ^24.* ]]; then
-        python3=python3.12
-    fi
-fi
-
-
 BASEDIR=$(cd $(dirname $0)/..; pwd)
 source $BASEDIR/config.sh
 source $BASEDIR/outputs/config.sh
 
 KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
-VENV_DIR=${VENV_DIR:-~/.venv/default}
 
 cd $BASEDIR/test
 
@@ -43,13 +27,6 @@ prepare_pkgs() {
     if [ "${NAME}" = "Ubuntu" ] && [ "${VERSION_ID}" = "22.04" ]; then
         sudo apt install -y gcc python3-dev libffi-dev # libssl-dev
     fi
-}
-
-venv() {
-    if [ ! -d ${VENV_DIR} ]; then
-        $python3 -m venv ${VENV_DIR} || exit 1
-    fi
-    source ${VENV_DIR}/bin/activate
 }
 
 prepare_kubespray() {

@@ -3,6 +3,6 @@
 source ./common.sh
 
 prepare_pkgs
-venv
+source ../scripts/venv.sh
 prepare_kubespray
 configure_kubespray
