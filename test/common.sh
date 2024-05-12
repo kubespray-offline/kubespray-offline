@@ -24,10 +24,9 @@ if [ -e /etc/redhat-release ]; then
         exit 1
     fi
 else
-    #if [[ "$VERSION_ID" =~ ^20.* ]]; then
-    #    python3=python3.11
-    #fi
-    :
+    if [[ "$VERSION_ID" =~ ^24.* ]]; then
+        python3=python3.12
+    fi
 fi
 
 

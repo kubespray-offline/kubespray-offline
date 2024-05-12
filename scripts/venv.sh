@@ -14,10 +14,9 @@ if [ -e /etc/redhat-release ]; then
         #python3=$(scl enable rh-python38 "which python3")
     fi
 else
-    #if [[ "$VERSION_ID" =~ ^20 ]]; then
-    #    python3=python3.11
-    #fi
-    :
+    if [[ "$VERSION_ID" =~ ^24 ]]; then
+        PY_VERSION=3.12
+    fi
 fi
 
 python3=python${PY_VERSION}

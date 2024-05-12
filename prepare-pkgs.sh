@@ -59,6 +59,7 @@ else
     fi
     $sudo apt -y install lsb-release curl gpg gcc libffi-dev rsync software-properties-common || exit 1
 
+    PY=3.11
     case "$VERSION_ID" in
         20.04)
             # Prepare for podman
@@ -69,8 +70,10 @@ else
             sudo add-apt-repository ppa:deadsnakes/ppa -y || exit 1
             $sudo apt update
             ;;
-        *)
-            ;;
+
+        24.04)
+           PY=3.12
+           ;;
     esac
-    $sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-pip python3-selinux podman || exit 1
+    $sudo apt install -y python${PY} python${PY}-venv python${PY}-dev python3-pip python3-selinux podman || exit 1
 fi

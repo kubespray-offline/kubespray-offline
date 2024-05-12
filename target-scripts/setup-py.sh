@@ -17,13 +17,11 @@ if [ -e /etc/redhat-release ]; then
     sudo yum install -y --disablerepo=* --enablerepo=offline-repo python3.11 python3.11-devel || exit 1
 else
     sudo apt update
-    #case "$VERSION_ID" in
-    #    20.04)
-    #        sudo apt install -y python3.11-venv || exit 1
-    #        ;;
-    #    *)
-    #        sudo apt install -y python3-venv || exit 1
-    #        ;;
-    #esac
-    sudo apt install -y python3.11-venv python3.11-dev gcc libffi-dev libssl-dev || exit 1
+    PY=3.11
+    case "$VERSION_ID" in
+        24.04)
+            PY=3.12
+            ;;
+    esac
+    sudo apt install -y python${PY}-venv python${PY}-dev gcc libffi-dev libssl-dev || exit 1
 fi
