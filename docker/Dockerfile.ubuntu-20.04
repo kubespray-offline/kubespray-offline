@@ -4,12 +4,11 @@ RUN apt update \
     && apt install -y sudo tzdata \
     && apt clean all
 
-RUN mkdir /root/scripts
+RUN mkdir /root/scripts && mkdir /root/target-scripts
+COPY target-scripts/config.sh /root/target-scripts/
+COPY prepare-*.sh install-*.sh /root/
 
-COPY prepare-*.sh /root/
 RUN cd /root && ./prepare-pkgs.sh && apt install -y git && apt clean all
-
-COPY install-*.sh /root/
 RUN cd /root && ./install-docker.sh && apt clean all
 
 #COPY requirements.txt /root/
