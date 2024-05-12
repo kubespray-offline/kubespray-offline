@@ -1,6 +1,7 @@
 #!/bin/bash
-# TODO: This version must be same as kubespray. Refer `roles/kubespray-defaults/defaults/main/download.yml` of kubespray.
-NERDCTL_VERSION=1.7.1
+
+. ./target-scripts/config.sh
+
 NERDCTL_TARBALL=nerdctl-${NERDCTL_VERSION}-linux-amd64.tar.gz
 
 if [ ! -x /usr/local/bin/nerctl ]; then
