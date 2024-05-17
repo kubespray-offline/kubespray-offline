@@ -23,9 +23,11 @@ PLATFORM="--platform manylinux2014_x86_64"  # PEP-599
 #PLATFORM="--platform manylinux_2_17_x86_64"  # PEP-600
 
 REQ=requirements.tmp
-sed "s/^ansible/#ansible/" ${KUBESPRAY_DIR}/requirements.txt > $REQ  # Ansible does not provide binary packages
+#sed "s/^ansible/#ansible/" ${KUBESPRAY_DIR}/requirements.txt > $REQ  # Ansible does not provide binary packages
+cp ${KUBESPRAY_DIR}/requirements.txt $REQ
 echo "PyYAML" >> $REQ  # Ansible dependency
-for pyver in 3.9 3.10; do
+
+for pyver in 3.10 3.11 3.12; do
     echo "===> Download binary for python $pyver"
     pip download $DEST --only-binary :all: --python-version $pyver $PLATFORM -r $REQ || exit 1
 done
