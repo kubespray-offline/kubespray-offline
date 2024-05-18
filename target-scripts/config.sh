@@ -1,7 +1,7 @@
 #!/bin/bash
 # Kubespray version to download. Use "master" for latest master branch.
-KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.24.1}
-#KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-master}
+#KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.24.1}
+KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-master}
 
 # These version must be same as kubespray.
 # Refer `roles/kubespray-defaults/defaults/main/download.yml` of kubespray.
