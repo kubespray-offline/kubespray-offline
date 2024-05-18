@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source ./common.sh
-source ../scripts/venv.sh
+source ../target-scripts/venv.sh
 
 do_kubespray
 

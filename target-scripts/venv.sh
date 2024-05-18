@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /etc/os-release
+
 # Now always use specific python version
 PY_VERSION=3.11
 

@@ -88,7 +88,7 @@ generate_list() {
     #fi
 }
 
-. ./scripts/venv.sh
+. ./target-scripts/venv.sh
 
 generate_list
 

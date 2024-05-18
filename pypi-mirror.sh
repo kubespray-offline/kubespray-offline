@@ -10,7 +10,7 @@ fi
 
 source /etc/os-release
 
-source ./scripts/venv.sh
+source ./target-scripts/venv.sh
 
 source ./scripts/set-locale.sh
 

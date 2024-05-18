@@ -6,7 +6,7 @@ echo "==> prepare-py.sh"
 
 . /etc/os-release
 
-. ./scripts/venv.sh
+. ./target-scripts/venv.sh
 
 source ./scripts/set-locale.sh
 
