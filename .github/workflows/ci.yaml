@@ -45,6 +45,9 @@ jobs:
       - name: Show outputs directory size
         run: du outputs
 
+      - name: Run ci-test.sh
+        run: ./ci-test/ci-test.sh
+
       #- name: Upload artifacts
       #  uses: actions/upload-artifact@v2
       #  with:
@@ -55,6 +58,7 @@ jobs:
     name: Test in docker for ${{ matrix.os }}
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         os: [ alma8, alma9, ubuntu-20.04 ]
 
@@ -76,8 +80,12 @@ jobs:
       #- name: Download additional containers
       #  run: ./download-additional-containers.sh
       - name: Create container image for create repo
-        run: (cd docker && ./build-image.sh ${{ matrix.os }})
+        run: ./docker/build-image.sh ${{ matrix.os }}
       - name: Download files without images in container
-        run: (cd docker && ./download-files.sh ${{ matrix.os }})
+        run: ./docker/download-files.sh ${{ matrix.os }}
       - name: Create repo in container
-        run: (cd docker && ./create-repo-in-docker.sh ${{ matrix.os }})
+        run: ./docker/create-repo-in-docker.sh ${{ matrix.os }}
+      - name: Copy target scripts
+        run: ./copy-target-scripts.sh
+      - name: Run ci-tests.sh in container
+        run: ./docker/ci-test-in-docker.sh ${{ matrix.os }}
