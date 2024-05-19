@@ -1,7 +1,5 @@
 #!/bin/bash
 
-IS_OFFLINE=${IS_OFFLINE:-true}
-
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 OUTPUTS_DIR="${BASE_DIR}/outputs"
 
@@ -72,16 +70,14 @@ EOF
 #run ./install-containerd.sh
 
 # Setup offline
-if [ "$IS_OFFLINE" = "true" ]; then
-    if [ -e /etc/redhat-release ]; then
-        setup_yum_repos
-    else
-        # TODO: This does not work in container
-        #setup_deb_repos
-        :
-    fi
-    setup_pypi_mirror
+if [ -e /etc/redhat-release ]; then
+    setup_yum_repos
+else
+    # TODO: This does not work in container
+    #setup_deb_repos
+    export IS_OFFLINE=false
 fi
+setup_pypi_mirror
 
 # Test: Extract kubespray
 run ./extract-kubespray.sh
