@@ -10,7 +10,7 @@ if [ -e /etc/redhat-release ]; then
     echo "==> Install required packages"
     $sudo yum check-update
 
-    $sudo yum install -y rsync gcc libffi-devel createrepo podman || exit 1
+    $sudo yum install -y rsync gcc libffi-devel createrepo git podman || exit 1
 
     case "$VERSION_ID" in
         7*)
@@ -57,7 +57,7 @@ else
     if [ "$1" == "--upgrade" ]; then
         $sudo apt upgrade
     fi
-    $sudo apt -y install lsb-release curl gpg gcc libffi-dev rsync software-properties-common || exit 1
+    $sudo apt -y install lsb-release curl gpg gcc libffi-dev rsync git software-properties-common || exit 1
 
     PY=3.11
     case "$VERSION_ID" in
