@@ -8,25 +8,15 @@ echo "==> prepare-pkgs.sh"
 # Install required packages
 if [ -e /etc/redhat-release ]; then
     echo "==> Install required packages"
-    $sudo yum check-update
+    $sudo dnf check-update
 
-    $sudo yum install -y rsync gcc libffi-devel createrepo git podman || exit 1
+    $sudo dnf install -y rsync gcc libffi-devel createrepo git podman || exit 1
 
     case "$VERSION_ID" in
         7*)
             # RHEL/CentOS 7
             echo "FATAL: RHEL/CentOS 7 is not supported anymore."
             exit 1
-            # Install python 3.8 from SCL
-            #if [ "$ID" == "centos" ]; then
-            #    # CentOS 7
-            #    $sudo yum-config-manager --enable centos-sclo-rh || exit 1
-            #    $sudo yum install centos-release-scl -y || exit 1
-            #else
-            #    # RHEL 7
-            #    $sudo subscription-manager repos --enable rhel-server-rhscl-7-rpms || exit 1
-            #fi
-            #$sudo yum install -y rh-python38 rh-python38-python-devel || exit 1
             ;;
         8*)
             # RHEL/CentOS 8

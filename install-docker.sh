@@ -1,17 +1,18 @@
 #!/bin/bash
 
-echo "==> prepare-docker.sh"
+echo "==> install-docker.sh"
 
 . /etc/os-release
 . ./scripts/common.sh
 
 # Install Docker CE
 if [ -e /etc/redhat-release ]; then
-    $sudo yum check-update
+    # RHEL
+    $sudo dnf check-update
     if [ ! -e /etc/yum.repos.d/docker-ce.repo ]; then
         echo "==> Install docker-ce repo"
-        $sudo yum install -y yum-utils
-        $sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        $sudo dnf install -y dnf-utils
+        $sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     fi
 
     if ! command -v docker >/dev/null; then
@@ -19,10 +20,11 @@ if [ -e /etc/redhat-release ]; then
         $sudo rpm -e buildah  # RHEL9
 
         echo "==> Install docker-ce related packages"
-        $sudo yum install -y docker-ce docker-ce-cli
+        $sudo dnf install -y docker-ce docker-ce-cli
     fi
     $sudo systemctl enable --now docker
 else
+    # Ubuntu
     sources=/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list  # Same as kubespray
     if [ ! -e $sources ]; then
         echo "==> Install docker-ce repo"
