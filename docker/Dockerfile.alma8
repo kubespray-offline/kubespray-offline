@@ -2,14 +2,10 @@ FROM almalinux:8
 
 RUN dnf install -y sudo dnf 'dnf-command(download)' && dnf clean all
 
-RUN mkdir /root/scripts && mkdir /root/target-scripts && mkdir /root/ci-test
-COPY *.sh /root/
-COPY scripts/*.sh /root/scripts/
-COPY target-scripts/*.sh /root/target-scripts/
-COPY ci-test/* /root/ci-test
+#RUN mkdir /root/scripts && mkdir /root/target-scripts
+#COPY *.sh /root/
+#COPY scripts/*.sh /root/scripts/
+#COPY target-scripts/*.sh /root/target-scripts/
 
-RUN cd /root && ./prepare-pkgs.sh && dnf install -y git && dnf clean all
-RUN cd /root && ./install-docker.sh && dnf clean all
-
-#COPY requirements.txt /root/
-#RUN cd /root && ./prepare-py.sh
+#RUN cd /root && ./prepare-pkgs.sh && dnf install -y git && dnf clean all
+#RUN cd /root && ./install-docker.sh && dnf clean all

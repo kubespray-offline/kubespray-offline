@@ -69,23 +69,7 @@ jobs:
         run: ./install-docker.sh
       - name: Prepare packages
         run: ./prepare-pkgs.sh
-      #- name: Prepare python
-      #  run: ./prepare-py.sh || exit 1
-      - name: Get kubespray
-        run: ./get-kubespray.sh
-      #- name: Pypi mirror
-      #  run: ./pypi-mirror.sh
-      #- name: Download kubespray files
-      #  run: ./download-kubespray-files.sh
-      #- name: Download additional containers
-      #  run: ./download-additional-containers.sh
-      - name: Create container image for create repo
-        run: ./docker/build-image.sh ${{ matrix.os }}
-      - name: Download files without images in container
-        run: ./docker/download-files.sh ${{ matrix.os }}
-      - name: Create repo in container
-        run: ./docker/create-repo-in-docker.sh ${{ matrix.os }}
-      - name: Copy target scripts
-        run: ./copy-target-scripts.sh
+      - name: Download in container
+        run: ./docker/download-for-ci-in-docker.sh ${{ matrix.os }}
       - name: Run ci-tests.sh in container
         run: ./docker/ci-test-in-docker.sh ${{ matrix.os }}
