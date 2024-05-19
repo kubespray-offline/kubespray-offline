@@ -1,5 +1,13 @@
 # ChangeLogs
 
+## v2.25.0-0 - 2024/xx/xx
+
+- Update Python to 3.11 or later for Kubespray 2.25 and Ansible 9.5
+- Add PPA for latest Python on Ubuntu 20.04
+- Mirror binary packages of Ansible
+- Remove unused development packages
+- Add venv.sh in target-scripts
+
 ## v2.24.1-1 - 2024/04/17
 
 - Fix: Use podman to download container images (#36)
