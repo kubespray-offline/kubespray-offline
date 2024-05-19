@@ -9,7 +9,8 @@ if [ $# -ne 1 ]; then
 fi
 target=$1
 
-CMD="cd ${WORKDIR} && ./ci-test/ci-test.sh"
+IS_OFFLINE=${IS_OFFLINE:-true}
+CMD="cd ${WORKDIR} && IS_OFFLINE=${IS_OFFLINE} ./ci-test/ci-test.sh"
 
 OPTS=
 if [[ -t 1 ]]; then

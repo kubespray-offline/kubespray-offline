@@ -69,7 +69,9 @@ jobs:
         run: ./install-docker.sh
       - name: Prepare packages
         run: ./prepare-pkgs.sh
+      - name: Create container image
+        run: ./docker/build-image.sh ${{ matrix.os }}
       - name: Download in container
         run: ./docker/download-for-ci-in-docker.sh ${{ matrix.os }}
       - name: Run ci-tests.sh in container
-        run: ./docker/ci-test-in-docker.sh ${{ matrix.os }}
+        run: IS_OFFLINE=false ./docker/ci-test-in-docker.sh ${{ matrix.os }}

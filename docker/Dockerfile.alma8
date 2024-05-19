@@ -1,6 +1,6 @@
 FROM almalinux:8
 
-RUN dnf install -y sudo dnf 'dnf-command(download)' && dnf clean all
+RUN dnf update -y && dnf install -y sudo dnf 'dnf-command(download)' && dnf clean all
 
 #RUN mkdir /root/scripts && mkdir /root/target-scripts
 #COPY *.sh /root/
