@@ -36,6 +36,10 @@ EOF
 
 # setup yum/deb repository
 setup_deb_repos() {
+    echo "===> Copy offline repository to /tmp"
+    /bin/cp -r ${OUTPUTS_DIR}/debs /tmp/
+    ls -lR /tmp/debs/local
+
     echo "===> Setup deb offline repository"
     cat <<EOF | sudo tee /etc/apt/apt.conf.d/99offline
 APT::Get::AllowUnauthenticated "true";
@@ -44,7 +48,7 @@ Acquire::AllowDowngradeToInsecureRepositories "true";
 EOF
 
     cat <<EOF | sudo tee /etc/apt/sources.list.d/offline.list
-deb [trusted=yes] file://${OUTPUTS_DIR}/debs/local/ ./
+deb [trusted=yes] file:///tmp/debs/local/ ./
 EOF
 
     echo "===> Disable default repositories"
@@ -73,9 +77,7 @@ EOF
 if [ -e /etc/redhat-release ]; then
     setup_yum_repos
 else
-    # TODO: This does not work in container
-    #setup_deb_repos
-    export IS_OFFLINE=false
+    setup_deb_repos
 fi
 setup_pypi_mirror
 
