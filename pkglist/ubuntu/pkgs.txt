@@ -21,9 +21,9 @@ apparmor
 libseccomp2
 
 # compilers (for cffi, etc)
-gcc
-libffi-dev
-libssl-dev
+#gcc
+#libffi-dev
+#libssl-dev
 
 # kubespray: common_required_pkgs
 curl

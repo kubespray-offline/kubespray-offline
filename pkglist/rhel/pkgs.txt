@@ -11,12 +11,12 @@ container-selinux
 libseccomp
 
 # compilers (for cffi, etc)
-gcc
-annobin
-libffi-devel
-openssl
-openssl-libs
-openssl-devel
+#gcc
+#annobin
+#libffi-devel
+#openssl
+#openssl-libs
+#openssl-devel
 
 # kubespray: common_required_pkgs
 curl
