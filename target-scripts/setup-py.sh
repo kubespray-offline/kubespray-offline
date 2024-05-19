@@ -25,6 +25,14 @@ else
     sudo apt update
     PY=3.11
     case "$VERSION_ID" in
+        20.04)
+            if [ "${IS_OFFLINE}" = "false" ]; then
+                # Prepare for latest python3
+                sudo apt install -y software-properties-common
+                sudo add-apt-repository ppa:deadsnakes/ppa -y || exit 1
+                sudo apt update
+            fi
+            ;;
         24.04)
             PY=3.12
             ;;
