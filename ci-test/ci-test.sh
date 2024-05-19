@@ -76,7 +76,9 @@ if [ "$IS_OFFLINE" = "true" ]; then
     if [ -e /etc/redhat-release ]; then
         setup_yum_repos
     else
-        setup_deb_repos
+        # TODO: This does not work in container
+        #setup_deb_repos
+        :
     fi
     setup_pypi_mirror
 fi

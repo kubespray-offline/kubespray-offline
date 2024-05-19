@@ -14,8 +14,8 @@ if [ $# -ne 1 ]; then
 fi
 target=$1
 
-OPTS="--build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy"
-#OPTS="--progress=plain --no-cache=true"
+OPTS="--progress=plain --no-cache=true"
+#OPTS="--build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy"
 
 echo "===> build $target"
 docker build -f Dockerfile.$target -t tmurakam/kubespray-offline-$target:latest $OPTS .. || exit 1

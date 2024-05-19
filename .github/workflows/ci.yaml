@@ -60,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ alma8, alma9, ubuntu-20.04 ]
+        os: [ alma8, alma9, ubuntu-20.04, ubuntu-22.04 ]
 
     steps:
       - uses: actions/checkout@v4
@@ -74,4 +74,4 @@ jobs:
       - name: Download in container
         run: ./docker/download-for-ci-in-docker.sh ${{ matrix.os }}
       - name: Run ci-tests.sh in container
-        run: IS_OFFLINE=false ./docker/ci-test-in-docker.sh ${{ matrix.os }}
+        run: IS_OFFLINE=true ./docker/ci-test-in-docker.sh ${{ matrix.os }}
