@@ -1,7 +1,9 @@
 # ChangeLogs
 
-## v2.25.0-0 - 2024/xx/xx
+## v2.25.0-0 - 2024/05/21
 
+- Update kubespray to 2.25.0
+- Add initial support of Ubuntu 24.04
 - Update Python to 3.11 or later for Kubespray 2.25 and Ansible 9.5
 - Add PPA for latest Python on Ubuntu 20.04
 - Mirror binary packages of Ansible
