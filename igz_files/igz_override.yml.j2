@@ -58,6 +58,8 @@ kube_reserved_cgroups_for_service_slice: kube.slice
 kube_reserved_cgroups: "/{{ kube_reserved_cgroups_for_service_slice }}"
 kube_memory_reserved: 4G
 kube_cpu_reserved: 200m
+kube_master_memory_reserved: 4G
+kube_master_cpu_reserved: 200m
 
 # Reservation for system services (sshd, bash...)
 system_reserved: true
@@ -65,9 +67,12 @@ system_reserved_cgroups_for_service_slice: system.slice
 system_reserved_cgroups: "/{{ system_reserved_cgroups_for_service_slice }}"
 system_memory_reserved: 4G
 system_cpu_reserved: 500m
+system_master_memory_reserved: 4G
+system_master_cpu_reserved: 500m
 
 # Eviction params
-evictionHard:
-  imagefs.available: 1%
-  memory.available: 100Mi
-  nodefs.available: 1%
+kubelet_config_extra_args:
+  evictionHard:
+    imagefs.available: "1%"
+    memory.available: "100Mi"
+    nodefs.available: "1%"
