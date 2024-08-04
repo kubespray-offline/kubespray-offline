@@ -1,9 +1,11 @@
 FROM rockylinux/rockylinux:8.8
 
 RUN dnf install -y dnf-plugins-core
+#RUN dnf remove -y buildah skopeo podman containers-common atomic-registries docker container-tools
 RUN dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
-RUN dnf install -y docker-ce docker-ce-cli containerd.io findutils which sudo patch wget
+#RUN dnf install -y docker-ce docker-ce-cli containerd.io findutils which sudo patch wget --allowerasing --nobest
+RUN dnf install -y findutils which sudo patch wget rust --allowerasing --nobest
 RUN wget --no-check-certificate https://artifactory.iguazeng.com/artifactory/iguazio-devops_virtual/opt_packages/skopeo-1.14.0.tar.gz && tar -zxf skopeo-1.14.0.tar.gz -C /usr/bin
 
 ADD . .

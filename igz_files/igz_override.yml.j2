@@ -17,26 +17,31 @@ api_endpoint: {{ api_endpoint }}
 
 containerd_registries_mirrors:
   - prefix: "{{ igz_registry_host }}:{{ igz_registry_port }}"
+    server: "http://{{ igz_registry_host }}:{{ igz_registry_port }}"
     mirrors:
       - host: "http://{{ igz_registry_host }}:{{ igz_registry_port }}"
         capabilities: ["pull", "resolve"]
         skip_verify: true
   - prefix: "datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+    server: "http://datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
     mirrors:
       - host: "http://datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80"
         capabilities: ["pull", "resolve"]
         skip_verify: true
   - prefix: "datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
+    server: "http://datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
     mirrors:
       - host: "http://datanode-registry.iguazio-platform.data.{{ system_fqdn }}:{{ igz_registry_port }}"
         capabilities: ["pull", "resolve"]
         skip_verify: true
   - prefix: "docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
+    server: "http://docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
     mirrors:
       - host: "http://docker-registry.iguazio-platform.app.{{ system_fqdn }}:80"
         capabilities: ["pull", "resolve"]
         skip_verify: true
   - prefix: "docker-registry.default-tenant.app.{{ system_fqdn }}:80"
+    server: "http://docker-registry.default-tenant.app.{{ system_fqdn }}:80"
     mirrors:
       - host: "http://docker-registry.default-tenant.app.{{ system_fqdn }}:80"
         capabilities: ["pull", "resolve"]

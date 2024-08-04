@@ -47,9 +47,8 @@ if [ ! -e ${KUBESPRAY_DIR} ]; then
     if [ -d $patch_dir ]; then
         for patch in ${patch_dir}/*.patch; do
             echo "===> Apply patch $patch"
-            (cd $KUBESPRAY_DIR && patch -p1 < $patch) || exit 1
+            (cd $KUBESPRAY_DIR && patch -p1 -v < $patch) || exit 1
         done
     fi
 fi
-
 echo "Done."

@@ -10,5 +10,5 @@ docker run -u root:root \
     -v /etc/ansible/facts.d:/etc/ansible/facts.d \
     --name kubespray_ansible \
     --rm --entrypoint ansible-playbook \
-    kubespray-offline-ansible:latest $*
+    localhost/kubespray-offline-ansible:latest $*
     

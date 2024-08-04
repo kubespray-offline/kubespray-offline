@@ -31,7 +31,7 @@ echo "===> Fetch requirements.txt"
 cp $KUBESPRAY_DIR/requirements.txt .
 
 echo "===> Fetch Iguazio scripts"
-find . -path './proc' -prune -o -type f -name "igz_*" -exec cp {} /outputs/ \;
+find . -path './proc' -prune -o -path './sys' -prune -o -type f -name "igz_*" -exec cp {} /outputs/ \;
 
 chown -R 1000:1000 /outputs
 
