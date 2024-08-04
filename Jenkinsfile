@@ -64,8 +64,8 @@ common.main {
                                 runContainer('rocky8', env.kubespray_hash)
                             },
                             "build_centos7": {
-                                buildContainer('centos7', env.kubespray_hash)
-                                runContainer('centos7', env.kubespray_hash)
+                             //   buildContainer('centos7', env.kubespray_hash)
+                             //   runContainer('centos7', env.kubespray_hash)
                             }
                         ) // closes parallel list
                     } // closes dir
