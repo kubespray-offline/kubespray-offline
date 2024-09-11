@@ -1,5 +1,10 @@
 # ChangeLogs
 
+## v2.26.0-0 - 2024/09/11
+
+- Update kubespray to 2.26.0
+- Add lacked ruamel.yaml package for inventory builder
+
 ## v2.25.0-0 - 2024/05/21
 
 - Update kubespray to 2.25.0
