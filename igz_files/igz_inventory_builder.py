@@ -45,6 +45,7 @@ class SysConfigProcessor:
         self.domain = ''
         self.data_vip = ''
         self.distro = ''
+        self.iguazio_version = ''
 
         with open(self.yaml_file, 'r') as file:
             self.config = yaml.safe_load(file)
@@ -55,6 +56,7 @@ class SysConfigProcessor:
         self.get_data_vip()
         self.get_id()
         self.get_domain()
+        self.get_iguazio_version()
 
     def get_nodes(self):
         """
@@ -134,6 +136,11 @@ class SysConfigProcessor:
         if vip:
             self.data_vip = vip
 
+    def get_iguazio_version(self):
+        iguazio_version = self.config.get('spec', {}).get('version', {})
+        if iguazio_version:
+            self.iguazio_version = iguazio_version
+
     def generate_inventory(self, template_file="./igz_inventory.ini.j2", output_file="igz_inventory.ini"):
         """
         Generates an INI file using a Jinja2 template, populated with the extracted
@@ -149,11 +156,13 @@ class SysConfigProcessor:
         data_nodes = self.data_nodes
         username = self.username
         password = self.password
+        iguazio_version = self.iguazio_version
 
         # Render the template with the new variable
         rendered_template = template.render(app_nodes=app_nodes, data_nodes=data_nodes,
                                             username=username,
-                                            password=password)
+                                            password=password,
+                                            iguazio_version=iguazio_version)
 
         SysConfigProcessor._write_template(output_file, rendered_template)
 

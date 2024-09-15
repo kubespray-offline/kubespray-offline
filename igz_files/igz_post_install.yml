@@ -125,6 +125,25 @@
       tags:
         - skip_ansible_lint
 
+#    # Workdaround the https://github.com/kubernetes-sigs/kubespray/issues/10670
+#    - name: Pre-load fuse images with ctr
+#      block:
+#        - name: Set pull command
+#          set_fact:
+#            pull_command: '/usr/local/bin/ctr -n k8s.io images pull --hosts-dir /etc/containerd/certs.d/'
+#
+#        - name: Pull fuse images with ctr
+#          command: '{{ pull_command }} {{ registry_host }}/iguazio/{{ item }}:{{ iguazio_version }}'
+#          with_items:
+#            - flex-fuse
+#            - v3io-fuse
+#
+#        - name: Re-tag fuse images
+#          command: '/usr/local/bin/nerdctl tag {{ registry_host }}/iguazio/{{ item }}:{{ iguazio_version }} datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80/iguazio/{{ item }}:{{ iguazio_version }}'
+#          with_items:
+#            - flex-fuse
+#            - v3io-fuse
+
 - name: Cleanup
   hosts: k8s_clients
   # Yellow rubber duck: We need to kill all running containers except:
