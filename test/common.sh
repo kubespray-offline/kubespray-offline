@@ -44,6 +44,9 @@ prepare_kubespray() {
     pip install -U pip wheel || exit 1  # For RHEL/CentOS 7, because default pip is too old to build some packages.
     #pip install -U setuptools # update to latest version
     pip install -r requirements.txt || exit 1
+
+    # For inventory builder
+    pip install ruamel.yaml
 }
 
 configure_kubespray() {

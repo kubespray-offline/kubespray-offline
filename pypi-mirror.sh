@@ -26,6 +26,7 @@ REQ=requirements.tmp
 #sed "s/^ansible/#ansible/" ${KUBESPRAY_DIR}/requirements.txt > $REQ  # Ansible does not provide binary packages
 cp ${KUBESPRAY_DIR}/requirements.txt $REQ
 echo "PyYAML" >> $REQ  # Ansible dependency
+echo "ruamel.yaml" >> $REQ # Inventory builder
 
 for pyver in 3.10 3.11 3.12; do
     echo "===> Download binary for python $pyver"
