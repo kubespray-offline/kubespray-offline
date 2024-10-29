@@ -23,6 +23,7 @@
         executable: /bin/bash
       environment:
         REGISTRY_STORAGE_FILESYSTEM_MAXTHREADS: "{{ ansible_local['registry']['kompton']['registry_fs_maxthreads'] }}"
+      ignore_errors: true
       tags:
         - skip_ansible_lint
 
