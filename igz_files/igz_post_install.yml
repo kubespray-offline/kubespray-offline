@@ -67,6 +67,12 @@
         state: absent
       become: true
 
+    - name: Remove local.module if exists
+      ansible.builtin.file:
+        path: /etc/dnf/modules.d/local.module
+        state: absent
+      become: true
+
 - name: Pre-load images and configure nvidia runtime
   hosts: k8s_cluster
   become: true
