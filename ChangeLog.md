@@ -1,5 +1,10 @@
 # ChangeLogs
 
+## xxx
+
+- Update nginx: 1.25.2 -> 1.27.3
+
+
 ## v2.26.0-0 - 2024/09/11
 
 - Update kubespray to 2.26.0
