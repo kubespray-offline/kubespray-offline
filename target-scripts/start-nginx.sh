@@ -16,4 +16,5 @@ sudo /usr/local/bin/nerdctl run -d \
     --restart always \
     --name nginx \
     -v ${BASEDIR}:/usr/share/nginx/html \
+    -v ${BASEDIR}/nginx-default.conf:/etc/nginx/conf.d/default.conf \
     ${NGINX_IMAGE} || exit 1
