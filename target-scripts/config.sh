@@ -5,9 +5,9 @@ KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.26.0}
 
 # These version must be same as kubespray.
 # Refer `roles/kubespray-defaults/defaults/main/download.yml` of kubespray.
-RUNC_VERSION=1.1.13
-CONTAINERD_VERSION=1.7.21
-NERDCTL_VERSION=1.7.6
+RUNC_VERSION=1.2.3
+CONTAINERD_VERSION=1.7.24
+NERDCTL_VERSION=1.7.7
 CNI_VERSION=1.4.0
 
 # container registry port
