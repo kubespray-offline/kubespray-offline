@@ -46,19 +46,32 @@ select_latest() {
     echo $latest
 }
 
+check_file() {
+    if [ ! -e $1 ]; then
+        echo "FATAL ERROR: No such file: $1"
+        exit 1
+    fi
+}
+
 # Install runc
 echo "==> Install runc"
-sudo cp "${FILES_DIR}/runc/v${RUNC_VERSION}/runc.amd64" /usr/local/bin/runc
+file="${FILES_DIR}/runc/v${RUNC_VERSION}/runc.amd64"
+check_file $file
+sudo cp "$file" /usr/local/bin/runc
 sudo chmod 755 /usr/local/bin/runc
 
 # Install nerdctl
 echo "==> Install nerdctl"
-tar xvf "${FILES_DIR}/nerdctl-${NERDCTL_VERSION}-linux-amd64.tar.gz" -C /tmp
+file="${FILES_DIR}/nerdctl-${NERDCTL_VERSION}-linux-amd64.tar.gz"
+check_file "$file"
+tar xvf "$file" -C /tmp
 sudo cp /tmp/nerdctl /usr/local/bin
 
 # Install containerd
 echo "==> Install containerd"
-sudo tar xvf "${FILES_DIR}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz" --strip-components=1 -C /usr/local/bin
+file="${FILES_DIR}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz"
+check_file "$file"
+sudo tar xvf "$file" --strip-components=1 -C /usr/local/bin
 sudo cp ./containerd.service /etc/systemd/system/
 
 sudo mkdir -p \
@@ -76,4 +89,6 @@ sudo systemctl enable --now containerd
 # Install cni plugins
 echo "==> Install CNI plugins"
 sudo mkdir -p /opt/cni/bin
-sudo tar xvzf "${FILES_DIR}/kubernetes/cni/cni-plugins-linux-amd64-v${CNI_VERSION}.tgz" -C /opt/cni/bin
+file="${FILES_DIR}/kubernetes/cni/cni-plugins-linux-amd64-v${CNI_VERSION}.tgz"
+check_file "$file"
+sudo tar xvzf "$file" -C /opt/cni/bin
