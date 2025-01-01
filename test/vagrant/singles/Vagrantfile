@@ -9,9 +9,9 @@ Vagrant.configure("2") do |config|
     vb.cpus = 2
   end
 
-  config.vm.define "ubuntu22" do |c|
-    c.vm.hostname = "ubuntu22"
-    c.vm.box = "generic/ubuntu2204"
+  config.vm.define "ubuntu24" do |c|
+    c.vm.hostname = "ubuntu24"
+    c.vm.box = "bento/ubuntu-24.04"
     c.vm.network "private_network", ip: "192.168.56.63"
     c.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
@@ -20,9 +20,9 @@ Vagrant.configure("2") do |config|
     c.vm.synced_folder "../../../", "/home/vagrant/kubespray-offline", owner: "vagrant", group: "vagrant"
   end
 
-  config.vm.define "ubuntu20" do |c|
-    c.vm.hostname = "ubuntu20"
-    c.vm.box = "generic/ubuntu2004"
+  config.vm.define "ubuntu22" do |c|
+    c.vm.hostname = "ubuntu22"
+    c.vm.box = "generic/ubuntu2204"
     c.vm.network "private_network", ip: "192.168.56.64"
     c.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
