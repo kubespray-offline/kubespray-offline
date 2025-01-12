@@ -3,6 +3,7 @@
 . /etc/os-release
 
 IS_OFFLINE=${IS_OFFLINE:-true}
+PY=3.11
 
 # Install python and dependencies
 echo "===> Install python, venv, etc"
@@ -17,16 +18,13 @@ if [ -e /etc/redhat-release ]; then
     if [[ "$VERSION_ID" =~ ^7.* ]]; then
         echo "FATAL: RHEL/CentOS 7 is not supported anymore."
         exit 1
-    #elif [[ "$VERSION_ID" =~ ^8.* ]]; then
-    #elif [[ "$VERSION_ID" =~ ^9.* ]]; then
-    #else
     fi
-    sudo dnf install -y $DNF_OPTS python3.11 || exit 1
-    #sudo dnf install -y $DNF_OPTS python3.11-devel || exit 1
+
+    sudo dnf install -y $DNF_OPTS python${PY} || exit 1
+    #sudo dnf install -y $DNF_OPTS python${PY}-devel || exit 1
 else
     # Ubuntu
     sudo apt update
-    PY=3.11
     case "$VERSION_ID" in
         20.04)
             if [ "${IS_OFFLINE}" = "false" ]; then
