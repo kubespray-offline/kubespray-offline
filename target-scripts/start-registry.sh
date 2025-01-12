@@ -2,7 +2,7 @@
 
 source ./config.sh
 
-REGISTRY_IMAGE=${REGISTRY_IMAGE:-registry:2.8.2}
+REGISTRY_IMAGE=registry:${REGISTRY_VERSION}
 REGISTRY_DIR=${REGISTRY_DIR:-/var/lib/registry}
 
 if [ ! -e $REGISTRY_DIR ]; then

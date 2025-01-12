@@ -9,7 +9,7 @@ fi
 BASEDIR=$(cd $BASEDIR; pwd)
 NERDCTL="sudo /usr/local/bin/nerdctl"
 
-NGINX_IMAGE=nginx:1.27.3
+NGINX_IMAGE=nginx:${NGINX_VERSION}
 
 echo "===> Stop nginx"
 $NERDCTL container update --restart no nginx 2>/dev/null
