@@ -3,7 +3,9 @@
 . /etc/os-release
 
 IS_OFFLINE=${IS_OFFLINE:-true}
-PY=3.11
+
+# Select python version
+source "$(dirname "${BASH_SOURCE[0]}")/pyver.sh"
 
 # Install python and dependencies
 echo "===> Install python, venv, etc"
@@ -33,9 +35,6 @@ else
                 sudo add-apt-repository ppa:deadsnakes/ppa -y || exit 1
                 sudo apt update
             fi
-            ;;
-        24.04)
-            PY=3.12
             ;;
     esac
     #sudo apt install -y python${PY}-dev gcc libffi-dev libssl-dev || exit 1

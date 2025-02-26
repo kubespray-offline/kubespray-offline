@@ -5,7 +5,8 @@ echo "==> prepare-pkgs.sh"
 . /etc/os-release
 . ./scripts/common.sh
 
-PY=3.11
+# Select python version
+. ./target-scripts/pyver.sh
 
 # Install required packages
 if [ -e /etc/redhat-release ]; then
@@ -60,10 +61,6 @@ else
             sudo add-apt-repository ppa:deadsnakes/ppa -y || exit 1
             $sudo apt update
             ;;
-
-        24.04)
-           PY=3.12
-           ;;
     esac
     $sudo apt install -y python${PY} python${PY}-venv python${PY}-dev python3-pip python3-selinux podman || exit 1
 fi
