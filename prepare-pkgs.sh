@@ -56,11 +56,16 @@ else
             # Prepare for podman
             echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | $sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
             curl -SL https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_${VERSION_ID}/Release.key | $sudo apt-key add -
+            ;;
+    esac
 
+    case "$VERSION_ID" in
+        20.04|22.04)
             # Prepare for latest python3
             sudo add-apt-repository ppa:deadsnakes/ppa -y || exit 1
             $sudo apt update
             ;;
     esac
+
     $sudo apt install -y python${PY} python${PY}-venv python${PY}-dev python3-pip python3-selinux podman || exit 1
 fi

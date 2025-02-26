@@ -28,7 +28,7 @@ else
     # Ubuntu
     sudo apt update
     case "$VERSION_ID" in
-        20.04)
+        20.04|22.04)
             if [ "${IS_OFFLINE}" = "false" ]; then
                 # Prepare for latest python3
                 sudo apt install -y software-properties-common

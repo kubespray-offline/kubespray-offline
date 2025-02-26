@@ -4,7 +4,7 @@
 . /etc/os-release
 
 # Python version
-PY=3.11
+PY=3.12
 
 if [ -e /etc/redhat-release ]; then
     case "$VERSION_ID" in
@@ -22,11 +22,8 @@ if [ -e /etc/redhat-release ]; then
     esac
 else
     case "$VERSION_ID" in
-        20.04|22.04)
+        20.04|22.04|24.04)
+            PY=3.12
             ;;
-
-        24.04)
-           PY=3.12
-           ;;
     esac
 fi
