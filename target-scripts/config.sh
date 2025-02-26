@@ -5,9 +5,9 @@ KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.27.0}
 
 # These version must be same as kubespray.
 # Refer `roles/kubespray-defaults/defaults/main/download.yml` of kubespray.
-RUNC_VERSION=1.2.3
-CONTAINERD_VERSION=1.7.24
-NERDCTL_VERSION=1.7.7
+RUNC_VERSION=1.2.4
+CONTAINERD_VERSION=2.0.2
+NERDCTL_VERSION=2.0.3
 CNI_VERSION=1.4.0
 
 # Some container versions, must be same as ../imagelists/images.txt
