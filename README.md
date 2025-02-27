@@ -3,7 +3,7 @@
 
 ## What's this?
 
-This is offline support scripts for [Kubespray offline environment](https://kubespray.io/#/docs/offline-environment).
+This is offline support scripts for [Kubespray offline environment](https://kubespray.io/#/docs/operations/offline-environment).
 
 This supports:
 
