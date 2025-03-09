@@ -1,2 +1,2 @@
 registry:2.8.2
-nginx:1.25.2
+nginx:1.27.3

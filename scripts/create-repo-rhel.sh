@@ -53,9 +53,8 @@ mkdir -p $RPMDIR
 echo "==> createrepo"
 createrepo $RPMDIR || exit 1
 
-#echo "==> Create repo tarball"
-#mkdir -p outputs/offline-files
-#(cd outputs && tar cvzf offline-files/offline-rpm-repo.tar.gz rpms)
+#Wait a second to avoid error on Vagrant
+sleep 1
 
 if $IS_RHEL8; then
     cd $RPMDIR
