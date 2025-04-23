@@ -3,12 +3,13 @@
 #KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.28.0}
 KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-master}
 
+# Versions of containerd related binaries used in `install-containerd.sh`
 # These version must be same as kubespray.
 # Refer `roles/kubespray-defaults/defaults/main/download.yml` of kubespray.
-RUNC_VERSION=1.2.4
-CONTAINERD_VERSION=2.0.2
-NERDCTL_VERSION=2.0.3
-CNI_VERSION=1.4.0
+RUNC_VERSION=1.2.6
+CONTAINERD_VERSION=2.0.5
+NERDCTL_VERSION=2.0.4
+CNI_VERSION=1.4.1
 
 # Some container versions, must be same as ../imagelists/images.txt
 NGINX_VERSION=1.27.3
