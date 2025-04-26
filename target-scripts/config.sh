@@ -13,7 +13,7 @@ CNI_VERSION=1.4.1
 
 # Some container versions, must be same as ../imagelists/images.txt
 NGINX_VERSION=1.28.0
-REGISTRY_VERSION=2.8.2
+REGISTRY_VERSION=2.8.3
 
 # container registry port
 REGISTRY_PORT=${REGISTRY_PORT:-35000}
