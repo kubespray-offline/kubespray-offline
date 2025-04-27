@@ -36,6 +36,8 @@ crictl_download_url: "{{ files_repo }}/kubernetes/cri-tools/crictl-v{{ crictl_ve
 calicoctl_download_url: "{{ files_repo }}/kubernetes/calico/v{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}"
 # If using Calico with kdd
 calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/v{{ calico_version }}.tar.gz"
+# If using cilium
+ciliumcli_download_url: "{{ files_repo }}/cilium-linux-{{ image_arch }}.tar.gz"
 
 runc_download_url: "{{ files_repo }}/runc/v{{ runc_version }}/runc.{{ image_arch }}"
 nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
