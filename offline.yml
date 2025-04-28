@@ -20,10 +20,11 @@ ubuntu_repo: "{{ http_server }}/debs"
 # Registry overrides
 kube_image_repo: "{{ registry_host }}"
 gcr_image_repo: "{{ registry_host }}"
-github_image_repo: "{{ registry_host }}"
 docker_image_repo: "{{ registry_host }}"
 quay_image_repo: "{{ registry_host }}"
+github_image_repo: "{{ registry_host }}"
 
+local_path_provisioner_helper_image_repo: "{{ registry_host }}/busybox"
 # Download URLs: See roles/download/defaults/main.yml of kubespray.
 kubeadm_download_url: "{{ files_repo }}/kubernetes/v{{ kube_version }}/kubeadm"
 kubectl_download_url: "{{ files_repo }}/kubernetes/v{{ kube_version }}/kubectl"
@@ -38,7 +39,17 @@ calicoctl_download_url: "{{ files_repo }}/kubernetes/calico/v{{ calico_ctl_versi
 calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/v{{ calico_version }}.tar.gz"
 # If using cilium
 ciliumcli_download_url: "{{ files_repo }}/cilium-linux-{{ image_arch }}.tar.gz"
-
+# Containerd
 runc_download_url: "{{ files_repo }}/runc/v{{ runc_version }}/runc.{{ image_arch }}"
 nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
 containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
+
+crio_download_url: "{{ files_repo }}/cri-o.{{ image_arch }}.v{{ crio_version }}.tar.gz"
+helm_download_url: "{{ files_repo }}/helm-v{{ helm_version }}-linux-{{ image_arch }}.tar.gz"
+crun_download_url: "{{ files_repo }}/crun-{{ crun_version }}-linux-{{ image_arch }}"
+youki_download_url: "{{ files_repo }}/youki-{{ youki_version }}-{{ ansible_architecture }}-musl.tar.gz"
+kata_containers_download_url: "{{ files_repo }}/kata-static-{{ kata_containers_version }}-{{ image_arch }}.tar.xz"
+gvisor_runsc_download_url: "{{ files_repo }}/runsc"
+gvisor_containerd_shim_runsc_download_url: "{{ files_repo }}/containerd-shim-runsc-v1"
+skopeo_download_url: "{{ files_repo }}/skopeo-linux-{{ image_arch }}"
+yq_download_url: "{{ files_repo }}/yq_linux_{{ image_arch }}"
