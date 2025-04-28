@@ -1,5 +1,13 @@
 # ChangeLogs
 
+## develop
+
+- Update kubespray to master branch of kubespray 2.28
+- Fix offline.yml to add 'v' version prefix in download URLs for kubespray 2.28
+- Add some download URLs including cilium (#22)
+- Update Nginx to 1.28.0
+- Update registry server to 2.8.3
+
 ## v2.27.0-0 - 2025/01/12
 
 - Update kubespray to 2.27.0
