@@ -2,34 +2,34 @@
 #docker-ce
 #containerd.io
 
-# kubespray: required_pkgs
-device-mapper-libs
-nss
+# kubespray: required packages (see roles/kubernetes/preinstall/vars/main.yml)
+bash-completion
 #conntrack
 conntrack-tools
 container-selinux
+curl
+device-mapper-libs
+e2fsprogs
+ebtables
+ipset
+iptables
+ipvsadm
 libseccomp
+nftables
+nss
+openssl
+rsync
+socat
+tar
+unzip
+xfsprogs
 
 # compilers (for cffi, etc)
 #gcc
 #annobin
 #libffi-devel
-#openssl
 #openssl-libs
 #openssl-devel
-
-# kubespray: common_required_pkgs
-curl
-rsync
-socat
-unzip
-e2fsprogs
-xfsprogs
-ebtables
-bash-completion
-
-ipvsadm
-ipset
 
 # others
 audit
