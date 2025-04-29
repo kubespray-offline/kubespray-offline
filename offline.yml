@@ -25,31 +25,50 @@ quay_image_repo: "{{ registry_host }}"
 github_image_repo: "{{ registry_host }}"
 
 local_path_provisioner_helper_image_repo: "{{ registry_host }}/busybox"
+
 # Download URLs: See roles/download/defaults/main.yml of kubespray.
 kubeadm_download_url: "{{ files_repo }}/kubernetes/v{{ kube_version }}/kubeadm"
 kubectl_download_url: "{{ files_repo }}/kubernetes/v{{ kube_version }}/kubectl"
 kubelet_download_url: "{{ files_repo }}/kubernetes/v{{ kube_version }}/kubelet"
+
 # etcd is optional if you **DON'T** use etcd_deployment=host
 etcd_download_url: "{{ files_repo }}/kubernetes/etcd/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
+
+# CNI plugins
 cni_download_url: "{{ files_repo }}/kubernetes/cni/cni-plugins-linux-{{ image_arch }}-v{{ cni_version }}.tgz"
+# cri-tools
 crictl_download_url: "{{ files_repo }}/kubernetes/cri-tools/crictl-v{{ crictl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
+
 # If using Calico
 calicoctl_download_url: "{{ files_repo }}/kubernetes/calico/v{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}"
 # If using Calico with kdd
 calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/v{{ calico_version }}.tar.gz"
+
 # If using cilium
-ciliumcli_download_url: "{{ files_repo }}/cilium-linux-{{ image_arch }}.tar.gz"
+ciliumcli_download_url: "{{ files_repo }}/cilium-cli/v{{ cilium_cli_version }}/cilium-linux-{{ image_arch }}.tar.gz"
+
+# helm
+helm_download_url: "{{ files_repo }}/helm-v{{ helm_version }}-linux-{{ image_arch }}.tar.gz"
+
+# crun
+crun_download_url: "{{ files_repo }}/crun-{{ crun_version }}-linux-{{ image_arch }}"
+
+# kata
+kata_containers_download_url: "{{ files_repo }}/kata-static-{{ kata_containers_version }}-{{ image_arch }}.tar.xz"
+
 # Containerd
 runc_download_url: "{{ files_repo }}/runc/v{{ runc_version }}/runc.{{ image_arch }}"
 nerdctl_download_url: "{{ files_repo }}/nerdctl-{{ nerdctl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
 containerd_download_url: "{{ files_repo }}/containerd-{{ containerd_version }}-linux-{{ image_arch }}.tar.gz"
 
+# cri-o
 crio_download_url: "{{ files_repo }}/cri-o.{{ image_arch }}.v{{ crio_version }}.tar.gz"
-helm_download_url: "{{ files_repo }}/helm-v{{ helm_version }}-linux-{{ image_arch }}.tar.gz"
-crun_download_url: "{{ files_repo }}/crun-{{ crun_version }}-linux-{{ image_arch }}"
+skopeo_download_url: "{{ files_repo }}/skopeo/v{{ skopeo_version }}/skopeo-linux-{{ image_arch }}"
+
+# gvisor
+gvisor_runsc_download_url: "{{ files_repo }}/gvisor/{{ gvisor_version }}/{{ ansible_architecture }}/runsc"
+gvisor_containerd_shim_runsc_download_url: "{{ files_repo }}/gvisor/{{ gvisor_version }}/{{ ansible_architecture }}/containerd-shim-runsc-v1"
+
+# others
 youki_download_url: "{{ files_repo }}/youki-{{ youki_version }}-{{ ansible_architecture }}-musl.tar.gz"
-kata_containers_download_url: "{{ files_repo }}/kata-static-{{ kata_containers_version }}-{{ image_arch }}.tar.xz"
-gvisor_runsc_download_url: "{{ files_repo }}/runsc"
-gvisor_containerd_shim_runsc_download_url: "{{ files_repo }}/containerd-shim-runsc-v1"
-skopeo_download_url: "{{ files_repo }}/skopeo-linux-{{ image_arch }}"
-yq_download_url: "{{ files_repo }}/yq_linux_{{ image_arch }}"
+yq_download_url: "{{ files_repo }}/yq/v{{ yq_version }}/yq_linux_{{ image_arch }}"

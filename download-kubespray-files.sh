@@ -20,7 +20,11 @@ FILES_DIR=outputs/files
 # kubernetes/cri-tools     : crictl
 # kubernetes/calico/vx.x.x : calico
 # kubernetes/calico        : calicoctl
-# runc/vx.x.x               : runc
+# runc/vx.x.x              : runc
+# cilium-cli/vx.x.x        : cilium-cli
+# gvisor/{ver}/{arch}      : gvisor (sunrc, containerd-shim)
+# scopeo/vx.x.x            : scopeo
+# yq/vx.x.x                : yq
 #
 decide_relative_dir() {
     local url=$1
@@ -32,6 +36,11 @@ decide_relative_dir() {
     rdir=$(echo $rdir | sed "s@.*/crictl-.*.tar.gz@kubernetes/cri-tools@")
     rdir=$(echo $rdir | sed "s@.*/\(v.*\)/calicoctl-.*@kubernetes/calico/\1@")
     rdir=$(echo $rdir | sed "s@.*/\(v.*\)/runc.amd64@runc/\1@")
+    rdir=$(echo $rdir | sed "s@.*/\(v.*\)/cilium-linux-.*@cilium-cli/\1@")
+    rdir=$(echo $rdir | sed "s@.*/\([^/]*\)/\([^/]*\)/runsc@gvisor/\1/\2@")
+    rdir=$(echo $rdir | sed "s@.*/\([^/]*\)/\([^/]*\)/containerd-shim-runsc-v1@gvisor/\1/\2@")
+    rdir=$(echo $rdir | sed "s@.*/\(v[^/]*\)/skopeo-linux-.*@skopeo/\1@")
+    rdir=$(echo $rdir | sed "s@.*/\(v[^/]*\)/yq_linux_*@yq/\1@")
     if [ "$url" != "$rdir" ]; then
         echo $rdir
         return
