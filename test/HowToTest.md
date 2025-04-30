@@ -1,5 +1,7 @@
 # How to test
 
+You can run a single VM test with `FULL-TEST-SINGLE.sh`.
+
 ## Preparation
 
 Start up cluster using vagrant. The Vagrantfile exists in `vagrant/singles` or `vagrant/cluster`.
