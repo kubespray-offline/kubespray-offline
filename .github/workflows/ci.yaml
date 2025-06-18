@@ -60,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ alma8, rocky9, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04 ]
+        os: [ alma8, rocky9, rocky10, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04 ]
 
     steps:
       - uses: actions/checkout@v4
