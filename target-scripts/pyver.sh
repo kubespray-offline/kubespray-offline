@@ -15,6 +15,9 @@ if [ -e /etc/redhat-release ]; then
             ;;
         8*|9*)
             ;;
+        10*)
+            PY=3.12            
+            ;;
         *)
             echo "Unknown version_id: $VERSION_ID"
             exit 1
