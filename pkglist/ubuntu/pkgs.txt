@@ -8,36 +8,37 @@ python3-minimal
 python3-selinux
 # python-cryptography
 
-# kubespray: required_pkgs
-python3-apt
-apt-transport-https
-software-properties-common
-conntrack
+# kubespray: required packages (see roles/kubernetes/preinstall/vars/main.yml)
 apparmor
+apt-transport-https
+bash-completion
+conntrack
+curl
+e2fsprogs
+ebtables
+gnupg
+ipset
+iptables
+ipvsadm
 libseccomp2
+nftables
+openssl
+python3-apt
+rsync
+socat
+software-properties-common
+tar
+unzip
+xfsprogs
 
 # compilers (for cffi, etc)
 #gcc
 #libffi-dev
 #libssl-dev
 
-# kubespray: common_required_pkgs
-curl
-rsync
-socat
-unzip
-e2fsprogs
-xfsprogs
-ebtables
-bash-completion
-
-ipvsadm
-ipset
-
 # Others
 firewalld
 lvm2
-#gnupg-agent
 
 # nfs
 #nfs-common

@@ -36,7 +36,7 @@ prepare_servers() {
         fi
 
         localImage=$image
-        for repo in registry.k8s.io k8s.gcr.io gcr.io docker.io quay.io; do
+        for repo in registry.k8s.io k8s.gcr.io gcr.io ghcr.io docker.io quay.io; do
             localImage=$(echo ${localImage} | sed s@^${repo}/@@)
         done
 
