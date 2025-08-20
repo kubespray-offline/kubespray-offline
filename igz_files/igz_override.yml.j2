@@ -1,5 +1,5 @@
 # Your dream is to override only this when bumping k8s for on-prem deployment
-kube_version: "1.32.8"
+kube_version: 1.32.5
 
 # These are filled by the igz_inventory_builder.py script
 registry_host: "{{ igz_registry_host }}:{{ igz_registry_port }}"
@@ -82,3 +82,9 @@ kubelet_config_extra_args:
     imagefs.available: "1%"
     memory.available: "100Mi"
     nodefs.available: "1%"
+
+# Starting from Kubernetes 1.32 minimum supported kernel version is 4.19
+# https://github.com/kubernetes-sigs/kubespray/blob/master/docs/operations/kernel-requirements.md
+kubeadm_ignore_preflight_errors:
+  - SystemVerification
+
