@@ -1,5 +1,7 @@
 #!/bin/bash
 
+umask 022
+
 source ./config.sh
 source scripts/common.sh
 source scripts/images.sh

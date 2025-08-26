@@ -14,6 +14,8 @@ source ./target-scripts/venv.sh
 
 source ./scripts/set-locale.sh
 
+umask 022
+
 echo "==> Create pypi mirror for kubespray"
 #set -x
 pip install -U pip python-pypi-mirror

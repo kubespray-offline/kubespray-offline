@@ -7,6 +7,8 @@ KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
 
 KUBESPRAY_DIR=./cache/kubespray-${KUBESPRAY_VERSION}
 
+umask 022
+
 mkdir -p ./cache
 mkdir -p outputs/files/
 

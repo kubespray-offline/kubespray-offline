@@ -1,5 +1,7 @@
 #!/bin/bash
 
+umask 022
+
 . /etc/os-release
 
 REQUIRE_MODULE=false
