@@ -2,7 +2,11 @@
 
 ## develop
 
-## v2.28.0-0 - 2025/5/24
+## v2.28.1-0 - 2025/09/03
+
+- Update kubespray 2.28.1
+
+## v2.28.0-0 - 2025/05/24
 
 - Update kubespray 2.28.0
 - Fix offline.yml to add 'v' version prefix in download URLs for kubespray 2.28
