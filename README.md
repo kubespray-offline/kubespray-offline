@@ -20,7 +20,7 @@ This supports:
 ## Requirements
 
 - RHEL / AlmaLinux / Rocky Linux : 8 / 9
-- Ubuntu 20.04 / 22.04 / 24.04
+- Ubuntu 22.04 / 24.04
 
 ## Download offline files
 
