@@ -1,0 +1,67 @@
+# 1) Slurp admin.conf from the first control-plane node
+- name: Read and prepare kubeconfig (in-memory only)
+  hosts: kube_control_plane[0]
+  gather_facts: no
+  become: yes
+  vars:
+    # If api_endpoint has no port, default to :6443
+    server_url: >-
+      https://{{ (api_endpoint if (api_endpoint | regex_search(':')) else api_endpoint ~ ':6443') }}
+  tasks:
+    - name: Renew Cert
+      command: /usr/local/bin/kubeadm certs renew all
+
+    - name: Restart kubelet on masters
+      ansible.builtin.systemd:
+        name: kubelet
+        state: restarted
+
+    - name: Read /etc/kubernetes/admin.conf
+      ansible.builtin.slurp:
+        src: /etc/kubernetes/admin.conf
+      register: admin_conf_raw
+
+    - name: Build modified kubeconfig content (server -> {{ server_url }}) and store on localhost facts
+      ansible.builtin.set_fact:
+        admin_conf_modified: >-
+          {{
+            (admin_conf_raw.content | b64decode)
+            | regex_replace('server:\\s*https://[^\\n]+', 'server: ' ~ server_url)
+          }}
+      delegate_to: localhost
+      delegate_facts: true
+      run_once: true
+
+# 2) Distribute to all target nodes as ~/.kube/config using only the in-memory var
+- name: Distribute kubeconfig to data nodes and non-master workers
+  hosts: k8s_clients:kube_node
+  gather_facts: no
+  become: yes
+  vars:
+    kube_user: iguazio
+    kube_home: "/home/{{ kube_user }}"
+  tasks:
+    - name: Ensure ~/.kube exists
+      ansible.builtin.file:
+        path: "{{ kube_home }}/.kube"
+        state: directory
+        owner: "{{ kube_user }}"
+        mode: "0700"
+
+    - name: Install kubeconfig from in-memory content
+        # Note: NO /tmp/admin.conf used anywhere
+      ansible.builtin.copy:
+        content: "{{ hostvars['localhost']['admin_conf_modified'] }}"
+        dest: "{{ kube_home }}/.kube/config"
+        owner: "{{ kube_user }}"
+        mode: "0600"
+
+- name: Trigger configuration reload via bkp API
+  hosts: k8s_clients[0]
+  gather_facts: no
+  become: yes
+  become_user: iguazio
+
+  tasks:
+    - name: Run bkp reload command
+      command: /usr/local/bin/bkp api -t post -e app_clusters/configurations/reloads

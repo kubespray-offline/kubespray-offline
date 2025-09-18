@@ -10,6 +10,7 @@ BASEDIR=$(cd $BASEDIR; pwd)
 RESET="no"
 SKIP_INSTALL="no"
 SCALE_OUT="no"
+RENEW="no"
 DEPLOYMENT_PLAYBOOK="cluster.yml"
 
 ###### Flow starts here ##########################
@@ -27,6 +28,11 @@ do
        echo "Scale out requested"
        SCALE_OUT="yes"
        DEPLOYMENT_PLAYBOOK="scale.yml"
+   elif [ "$arg" == "--renew" ]; then
+       echo "Certificate renewal was requested"
+       RENEW="yes"
+       RESET="no"
+       SKIP_INSTALL="yes"
    fi
 done
 
@@ -57,6 +63,15 @@ find ../ -maxdepth 1 -type f -name 'igz_*' -exec cp '{}' . ';'
 
 # Copy playbook for offline repo
 cp -r ../playbook .
+
+# Handle certificate renewal
+if [[ "${RENEW}" == "yes" ]]; then
+    echo "==> Renewing certificates"
+    ./igz_run_ansible.sh -i inventory/igz/igz_inventory.ini igz_renew_certs.yml --become --extra-vars=@igz_override.yml
+    popd
+    echo "<=== Certificate renewal completed ===>"
+    exit 0
+fi
 
 # Run igz_preinstall playbook
 ./igz_run_ansible.sh -i inventory/igz/igz_inventory.ini igz_pre_install.yml --become --extra-vars=@igz_override.yml

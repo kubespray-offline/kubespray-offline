@@ -17,7 +17,7 @@
         path: /etc/kubernetes/external_admin.conf
         backrefs: true
         regexp: '^server:.*$'
-        line: 'server: https://{{ hostvars[inventory_hostname]["ansible_default_ipv4"]["address"] }}:6443'
+        line: 'server: https://{{ api_endpoint }}'
 
 - name: Post-install config
   hosts: k8s_clients:k8s_cluster
@@ -90,12 +90,14 @@
         filter: ansible_local
 
     - name: Set data node registry target IP
-      set_fact:
+      ansible.builtin.set_fact:  # noqa
         datanode_registry_ip: "{{ loadbalancer_apiserver['address'] | default(hostvars[groups['kube_control_plane'][0]]['ip']) }}"
       run_once: true
+      tags:
+        - skip_ansible_lint
 
     - name: Add regitsry entries to /etc/hosts
-      blockinfile:
+      ansible.builtin.blockinfile:
         path: /etc/hosts
         block: |
           {{ datanode_registry_ip }} datanode-registry.iguazio-platform.app.{{ system_fqdn }}
@@ -131,24 +133,6 @@
       tags:
         - skip_ansible_lint
 
-#    # Workdaround the https://github.com/kubernetes-sigs/kubespray/issues/10670
-#    - name: Pre-load fuse images with ctr
-#      block:
-#        - name: Set pull command
-#          set_fact:
-#            pull_command: '/usr/local/bin/ctr -n k8s.io images pull --hosts-dir /etc/containerd/certs.d/'
-#
-#        - name: Pull fuse images with ctr
-#          command: '{{ pull_command }} {{ registry_host }}/iguazio/{{ item }}:{{ iguazio_version }}'
-#          with_items:
-#            - flex-fuse
-#            - v3io-fuse
-#
-#        - name: Re-tag fuse images
-#          command: '/usr/local/bin/nerdctl tag {{ registry_host }}/iguazio/{{ item }}:{{ iguazio_version }} datanode-registry.iguazio-platform.app.{{ system_fqdn }}:80/iguazio/{{ item }}:{{ iguazio_version }}'
-#          with_items:
-#            - flex-fuse
-#            - v3io-fuse
 
 - name: Cleanup
   hosts: k8s_clients
@@ -193,7 +177,7 @@
 
     # All this is because {{ inventory_dir }} is resolved inside a container
     - name: Read local fact
-      set_fact:
+      ansible.builtin.set_fact:
         kubespray_dir: "{{ ansible_local.registry.kompton.kubespray_dir }}/outputs"
 
     - name: Find all directories matching 'kubespray-*' under the kubespray directory
@@ -204,9 +188,13 @@
       register: found_dirs
 
     - name: Set the first found directory as a fact
-      set_fact:
+      ansible.builtin.set_fact:
         host_inventory_dir: "{{ found_dirs.files | map(attribute='path') | list | first }}/inventory"
 
     - name: Fix ownership
-      shell: chown -R iguazio:iguazio {{ host_inventory_dir }}
+      ansible.builtin.file:
+        path: "{{ host_inventory_dir }}"
+        owner: iguazio
+        group: iguazio
+        recurse: true
       become: true
