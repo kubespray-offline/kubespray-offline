@@ -47,6 +47,16 @@ calico_crds_download_url: "{{ files_repo }}/kubernetes/calico/v{{ calico_version
 # If using cilium
 ciliumcli_download_url: "{{ files_repo }}/cilium-cli/v{{ cilium_cli_version }}/cilium-linux-{{ image_arch }}.tar.gz"
 
+# Fix for offline cilium helm
+# Update kubespray/roles/network_plugin/cilium/tasks/apply.yml
+#
+#- name: Cilium | Install
+#  environment: "{{ proxy_env }}"
+#  command: "{{ bin_dir }}/cilium {{ cilium_action }} {{ cilium_helm_chart | default('') }} {{ ((cilium_helm_chart is not defined) or (cilium_helm_chart | length == 0)) | ternary('--version ' ~ cilium_version, '') }} -f {{ kube_config_dir }}/cilium-values.yaml -f {{ kube_config_dir }}/cilium-extra-values.yaml {{ cilium_install_extra_flags }}"
+#  when: inventory_hostname == groups['kube_control_plane'][0]
+
+cilium_helm_chart: "{{ files_repo }}/cilium-{{ cilium_version }}.tgz"
+
 # helm
 helm_download_url: "{{ files_repo }}/helm-v{{ helm_version }}-linux-{{ image_arch }}.tar.gz"
 

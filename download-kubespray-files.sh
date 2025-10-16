@@ -108,6 +108,49 @@ mkdir -p $FILES_DIR
 cp ${KUBESPRAY_DIR}/contrib/offline/temp/files.list $FILES_DIR/
 cp ${KUBESPRAY_DIR}/contrib/offline/temp/images.list $IMAGES_DIR/
 
+# --- Add Cilium Helm chart to files.list (derive version) ---
+# 1) Try from images.list (when generator was run with cilium)
+CILIUM_VER="$(grep -Eo 'quay\.io/cilium/cilium:v[0-9]+\.[0-9]+\.[0-9]+' "${IMAGES_DIR}/images.list" | head -n1 | awk -F: '{print $3}')"
+
+# 2) Fallback: read cilium_version from Kubespray defaults
+if [ -z "${CILIUM_VER}" ]; then
+  # Path valid for your pinned commit
+  DL_YML="${KUBESPRAY_DIR}/roles/kubespray_defaults/defaults/main/download.yml"
+  # If it ever moves, also try:
+  [ -f "${DL_YML}" ] || DL_YML="${KUBESPRAY_DIR}/roles/download/defaults/main.yml"
+  if [ -f "${DL_YML}" ]; then
+    CILIUM_VER="$(grep -E '^[[:space:]]*cilium_version:' "${DL_YML}" | awk '{print $2}' | tr -d "\"'")"
+    # Ensure it has the leading v (many defaults are like 1.18.1 without v)
+    [[ "${CILIUM_VER}" =~ ^v ]] || CILIUM_VER="v${CILIUM_VER}"
+  fi
+fi
+
+CILIUM_VER_NO_V="${CILIUM_VER#v}"
+CHART_URL="https://helm.cilium.io/cilium-${CILIUM_VER_NO_V}.tgz"
+
+if [ -n "${CILIUM_VER_NO_V}" ]; then
+  # ensure trailing newline so grep -qx works reliably
+  tail -c1 "${FILES_DIR}/files.list" | read -r _ || echo >> "${FILES_DIR}/files.list"
+  # append only once
+  if ! grep -qx "${CHART_URL}" "${FILES_DIR}/files.list"; then
+    echo "${CHART_URL}" >> "${FILES_DIR}/files.list"
+    echo "Added Cilium chart ${CHART_URL} to files.list"
+  fi
+  
+  # --- Add Cilium operator-generic image to images.list ---
+  # Kubespray generates cilium/operator but Cilium expects cilium/operator-generic
+  GENERIC_OPERATOR_IMAGE="quay.io/cilium/operator-generic:${CILIUM_VER}"
+  # ensure trailing newline so grep -qx works reliably
+  tail -c1 "${IMAGES_DIR}/images.list" | read -r _ || echo >> "${IMAGES_DIR}/images.list"
+  # append only once
+  if ! grep -qx "${GENERIC_OPERATOR_IMAGE}" "${IMAGES_DIR}/images.list"; then
+    echo "${GENERIC_OPERATOR_IMAGE}" >> "${IMAGES_DIR}/images.list"
+    echo "Added Cilium operator-generic image ${GENERIC_OPERATOR_IMAGE} to images.list"
+  fi
+else
+  echo "Skip adding Cilium chart and operator-generic image: could not determine cilium_version"
+fi
+
 # download files
 files=$(cat ${FILES_DIR}/files.list)
 for i in $files; do
