@@ -2,6 +2,12 @@
 
 ## develop
 
+## v2.29.0-0 - 2025/10/26
+
+- Update kubespray 2.29.0
+- Drop support of RHEL8 family
+- Update Nginx to 1.29.2
+
 ## v2.28.1-0 - 2025/09/03
 
 - Update kubespray 2.28.1
