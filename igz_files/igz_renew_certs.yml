@@ -1,6 +1,6 @@
 # 1) Slurp admin.conf from the first control-plane node
 - name: Read and prepare kubeconfig (in-memory only)
-  hosts: kube_control_plane[0]
+  hosts: kube_control_plane
   gather_facts: no
   become: yes
   vars:

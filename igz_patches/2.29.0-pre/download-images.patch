@@ -1,0 +1,37 @@
+diff --git a/download-images.sh b/download-images.sh
+index c28645f..a16e298 100755
+--- a/download-images.sh
++++ b/download-images.sh
+@@ -15,6 +15,30 @@ fi
+ 
+ # download images
+ images=$(cat ${IMAGES_DIR}/images.list)
+-for i in $images; do
+-    get_image $i
++registries=('registry.k8s.io' 'k8s.gcr.io' 'gcr.io' 'docker.io' 'quay.io' 'ghcr.io')
++for image in $images; do
++  for registry in "${registries[@]}"; do
++    if [[ $image == $registry/* ]]; then
++      new_image="localhost:5000/${image#$registry/}"
++      echo "Transformed image name: $new_image"
++      break
++    fi
++  done
++  echo "Taking image $image"
++  echo "And pushing it to $new_image"
++  if ! skopeo copy --insecure-policy --dest-no-creds --dest-tls-verify=false docker://$image docker://$new_image; then
++    echo "Skopeo copy failed, attempting Docker pull-tag-push..."
++    if ! podman pull $image; then
++      echo "Docker pull failed. Exiting..."
++      exit 1
++    fi
++    if ! podman tag $image $new_image; then
++      echo "Docker tag failed. Exiting..."
++      exit 1
++    fi
++    if ! podman push --format=v2s2 --tls-verify=false $new_image; then
++      echo "Docker push failed. Exiting..."
++      exit 1
++    fi
++  fi
+ done
