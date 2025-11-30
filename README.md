@@ -19,8 +19,10 @@ This supports:
 
 ## Requirements
 
-- RHEL / AlmaLinux / Rocky Linux : 8 / 9
-- Ubuntu 20.04 / 22.04 / 24.04
+- RHEL / AlmaLinux / Rocky Linux : 9
+- Ubuntu 22.04 / 24.04
+
+Note: RHEL8 support is dropped from Kubespray 2.29.0.
 
 ## Download offline files
 

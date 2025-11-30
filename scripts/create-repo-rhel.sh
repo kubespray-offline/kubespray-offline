@@ -1,17 +1,23 @@
 #!/bin/bash
 
+umask 022
+
 . /etc/os-release
+
+REQUIRE_MODULE=false
 
 VERSION_MAJOR=$VERSION_ID
 case "${VERSION_MAJOR}" in
-    7*)
-        VERSION_MAJOR=7
-        ;;
     8*)
+        REQUIRE_MODULE=true
         VERSION_MAJOR=8
         ;;
     9*)
+        REQUIRE_MODULE=true
         VERSION_MAJOR=9
+        ;;
+    10*)
+        VERSION_MAJOR=10
         ;;
     *)
         echo "Unsupported version: $VERSION_MAJOR"
@@ -24,16 +30,7 @@ PKGS=$(cat pkglist/rhel/*.txt pkglist/rhel/${VERSION_MAJOR}/*.txt | grep -v "^#"
 CACHEDIR=cache/cache-rpms
 mkdir -p $CACHEDIR
 
-IS_RHEL8=false
-if [ "$VERSION_MAJOR" = "7" ]; then
-    RT="sudo repotrack -a x86_64 -p $CACHEDIR"
-else
-    # RHEL 8
-    IS_RHEL8=true
-    RT="sudo dnf download --resolve --alldeps --downloaddir $CACHEDIR"
-fi
-
-#YD="yumdownloader --destdir=$CACHEDIR -y"
+RT="sudo dnf download --resolve --alldeps --downloaddir $CACHEDIR"
 
 echo "==> Downloading: " $PKGS
 $RT $PKGS || {
@@ -56,7 +53,7 @@ createrepo $RPMDIR || exit 1
 #Wait a second to avoid error on Vagrant
 sleep 1
 
-if $IS_RHEL8; then
+if $REQUIRE_MODULE; then
     cd $RPMDIR
     #createrepo_c . || exit 1
     echo "==> repo2module"

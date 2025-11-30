@@ -7,6 +7,8 @@ KUBESPRAY_TARBALL=kubespray-${KUBESPRAY_VERSION}.tar.gz
 
 KUBESPRAY_DIR=./cache/kubespray-${KUBESPRAY_VERSION}
 
+umask 022
+
 mkdir -p ./cache
 mkdir -p outputs/files/
 
@@ -15,6 +17,24 @@ remove_kubespray_cache_dir() {
         /bin/rm -rf ${KUBESPRAY_DIR}
     fi
 }
+
+# If KUBESPRAY_VERSION looks like a git commit hash, check out that commit
+if [[ $KUBESPRAY_VERSION =~ ^[0-9a-f]{7,40}$ ]]; then
+    remove_kubespray_cache_dir
+    echo "===> Checkout kubespray commit: $KUBESPRAY_VERSION"
+
+    git clone https://github.com/kubernetes-sigs/kubespray.git ${KUBESPRAY_DIR}
+    cd ${KUBESPRAY_DIR}
+    git checkout $KUBESPRAY_VERSION || {
+        echo "Error: commit $KUBESPRAY_VERSION not found"
+        exit 1
+    }
+    cd - >/dev/null
+
+    tar czf outputs/files/${KUBESPRAY_TARBALL} -C ./cache kubespray-${KUBESPRAY_VERSION}
+    echo "Done (commit checkout)."
+    exit 0
+fi
 
 if [ $KUBESPRAY_VERSION == "master" ] || [[ $KUBESPRAY_VERSION =~ ^release- ]]; then
     remove_kubespray_cache_dir
