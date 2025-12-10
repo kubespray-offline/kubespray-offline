@@ -1,0 +1,14 @@
+diff --git a/target-scripts/config.sh b/target-scripts/config.sh
+index 4b8932c..09992d2 100644
+--- a/target-scripts/config.sh
++++ b/target-scripts/config.sh
+@@ -7,7 +7,7 @@ KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.29.0}
+ # These version must be same as kubespray.
+ # Refer `roles/kubespray_defaults/vars/main/checksums.yml` of kubespray.
+ RUNC_VERSION=1.3.2
+-CONTAINERD_VERSION=2.1.4
++CONTAINERD_VERSION=2.0.5
+ NERDCTL_VERSION=2.1.6
+ CNI_VERSION=1.8.0
+ 
+

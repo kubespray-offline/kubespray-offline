@@ -1,0 +1,27 @@
+diff --git a/download-kubespray-files.sh b/download-kubespray-files.sh
+index 04b3d5d..f47f6f5 100755
+--- a/download-kubespray-files.sh
++++ b/download-kubespray-files.sh
+@@ -85,18 +85,9 @@ get_url() {
+ 
+ # execute offline generate_list.sh
+ generate_list() {
+-    #if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
+-    #    export containerd_version=${containerd_version:-1.5.8}
+-    #    export host_os=linux
+-    #    export image_arch=amd64
+-    #fi
+-    LANG=C /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh || exit 1
+-
+-    #if [ $KUBESPRAY_VERSION == "2.18.0" ]; then
+-    #    # check roles/download/default/main.yml to decide version
+-    #    snapshot_controller_tag=${snapshot_controller_tag:-v4.2.1}
+-    #    sed -i "s@\(.*/snapshot-controller:\)@\1${snapshot_controller_tag}@" ${KUBESPRAY_DIR}/contrib/offline/temp/images.list || exit 1
+-    #fi
++    # Pass containerd_version to use older version compatible with Rocky 8 (GLIBC 2.28)
++    source ./target-scripts/config.sh
++    LANG=C /bin/bash ${KUBESPRAY_DIR}/contrib/offline/generate_list.sh -e containerd_version=${CONTAINERD_VERSION} || exit 1
+ }
+ 
+ . ./target-scripts/venv.sh
+

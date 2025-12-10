@@ -1,0 +1,10 @@
+diff --git a/requirements.txt b/requirements.txt
+index 5f06917..182cce3 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,4 +1,4 @@
+-ansible==10.7.0
++ansible==8.7.0
+ # Needed for community.crypto module
+ cryptography==46.0.2
+ # Needed for jinja2 json_query templating

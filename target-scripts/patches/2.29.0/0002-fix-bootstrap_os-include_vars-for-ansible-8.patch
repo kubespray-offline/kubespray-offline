@@ -1,0 +1,24 @@
+diff --git a/roles/bootstrap_os/tasks/main.yml b/roles/bootstrap_os/tasks/main.yml
+index 1234567..abcdefg 100644
+--- a/roles/bootstrap_os/tasks/main.yml
++++ b/roles/bootstrap_os/tasks/main.yml
+@@ -11,7 +11,8 @@
+     os_release_dict: "{{ os_release.stdout_lines | select('regex', '^.+=.*$') | map('regex_replace', '\"', '') |
+                          map('split', '=') | community.general.dict }}"
+   block:
+-  - name: Include vars
++  - name: Include vars (skip if no matching file found)
++    when: item is file
+     include_vars: "{{ item }}"
+     tags:
+     - facts
+@@ -22,7 +23,8 @@
+       paths:
+       - vars/
+       skip: true
+-  - name: Include tasks
++  - name: Include tasks (skip if no matching file found)
++    when: included_tasks_file is file
+     include_tasks: "{{ included_tasks_file }}"
+     with_first_found:
+     - files: *search_files

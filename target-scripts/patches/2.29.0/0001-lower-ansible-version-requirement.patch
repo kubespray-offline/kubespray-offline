@@ -1,0 +1,23 @@
+diff --git a/meta/runtime.yml b/meta/runtime.yml
+index 1234567..abcdefg 100644
+--- a/meta/runtime.yml
++++ b/meta/runtime.yml
+@@ -1,2 +1,2 @@
+ ---
+-requires_ansible: ">=2.17.3"
++requires_ansible: ">=2.15.0"
+diff --git a/playbooks/ansible_version.yml b/playbooks/ansible_version.yml
+index 1234567..abcdefg 100644
+--- a/playbooks/ansible_version.yml
++++ b/playbooks/ansible_version.yml
+@@ -6,8 +6,8 @@
+   become: false
+   run_once: true
+   vars:
+-    minimal_ansible_version: 2.17.3
+-    maximal_ansible_version: 2.18.0
++    minimal_ansible_version: 2.15.0
++    maximal_ansible_version: 2.19.0
+   tags: always
+   tasks:
+     - name: "Check {{ minimal_ansible_version }} <= Ansible version < {{ maximal_ansible_version }}"
