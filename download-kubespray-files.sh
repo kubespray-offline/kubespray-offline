@@ -37,7 +37,7 @@ decide_relative_dir() {
     rdir=$(echo $rdir | sed "s@.*/cni-plugins.*.tgz@kubernetes/cni@")
     rdir=$(echo $rdir | sed "s@.*/crictl-.*.tar.gz@kubernetes/cri-tools@")
     rdir=$(echo $rdir | sed "s@.*/\(v.*\)/calicoctl-.*@kubernetes/calico/\1@")
-    rdir=$(echo $rdir | sed "s@.*/\(v.*\)/runc.amd64@runc/\1@")
+    rdir=$(echo $rdir | sed "s@.*/\(v.*\)/runc.${IMAGE_ARCH}@runc/\1@")
     rdir=$(echo $rdir | sed "s@.*/\(v.*\)/cilium-linux-.*@cilium-cli/\1@")
     rdir=$(echo $rdir | sed "s@.*/\([^/]*\)/\([^/]*\)/runsc@gvisor/\1/\2@")
     rdir=$(echo $rdir | sed "s@.*/\([^/]*\)/\([^/]*\)/containerd-shim-runsc-v1@gvisor/\1/\2@")

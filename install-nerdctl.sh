@@ -2,7 +2,7 @@
 
 . ./target-scripts/config.sh
 
-NERDCTL_TARBALL=nerdctl-${NERDCTL_VERSION}-linux-amd64.tar.gz
+NERDCTL_TARBALL=nerdctl-${NERDCTL_VERSION}-linux-${IMAGE_ARCH}.tar.gz
 
 if [ ! -x /usr/local/bin/nerctl ]; then
     echo "==> Install nerdctl"

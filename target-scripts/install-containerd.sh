@@ -29,10 +29,10 @@ download() {
 }
 
 if $ENABLE_DOWNLOAD; then
-    download https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64 runc/v${RUNC_VERSION}
-    download https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz
-    download https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VERSION}/nerdctl-${NERDCTL_VERSION}-linux-amd64.tar.gz
-    download https://github.com/containernetworking/plugins/releases/download/v${CNI_VERSION}/cni-plugins-linux-amd64-v${CNI_VERSION}.tgz kubernetes/cni
+    download https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.${IMAGE_ARCH} runc/v${RUNC_VERSION}
+    download https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-${IMAGE_ARCH}.tar.gz
+    download https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VERSION}/nerdctl-${NERDCTL_VERSION}-linux-${IMAGE_ARCH}.tar.gz
+    download https://github.com/containernetworking/plugins/releases/download/v${CNI_VERSION}/cni-plugins-linux-${IMAGE_ARCH}-v${CNI_VERSION}.tgz kubernetes/cni
 else
     FILES_DIR=./files
 fi
@@ -55,21 +55,21 @@ check_file() {
 
 # Install runc
 echo "==> Install runc"
-file="${FILES_DIR}/runc/v${RUNC_VERSION}/runc.amd64"
+file="${FILES_DIR}/runc/v${RUNC_VERSION}/runc.${IMAGE_ARCH}"
 check_file $file
 sudo cp "$file" /usr/local/bin/runc
 sudo chmod 755 /usr/local/bin/runc
 
 # Install nerdctl
 echo "==> Install nerdctl"
-file="${FILES_DIR}/nerdctl-${NERDCTL_VERSION}-linux-amd64.tar.gz"
+file="${FILES_DIR}/nerdctl-${NERDCTL_VERSION}-linux-${IMAGE_ARCH}.tar.gz"
 check_file "$file"
 tar xvf "$file" -C /tmp
 sudo cp /tmp/nerdctl /usr/local/bin
 
 # Install containerd
 echo "==> Install containerd"
-file="${FILES_DIR}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz"
+file="${FILES_DIR}/containerd-${CONTAINERD_VERSION}-linux-${IMAGE_ARCH}.tar.gz"
 check_file "$file"
 sudo tar xvf "$file" --strip-components=1 -C /usr/local/bin
 sudo cp ./containerd.service /etc/systemd/system/
@@ -89,6 +89,6 @@ sudo systemctl enable --now containerd
 # Install cni plugins
 echo "==> Install CNI plugins"
 sudo mkdir -p /opt/cni/bin
-file="${FILES_DIR}/kubernetes/cni/cni-plugins-linux-amd64-v${CNI_VERSION}.tgz"
+file="${FILES_DIR}/kubernetes/cni/cni-plugins-linux-${IMAGE_ARCH}-v${CNI_VERSION}.tgz"
 check_file "$file"
 sudo tar xvzf "$file" -C /opt/cni/bin
