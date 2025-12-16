@@ -21,8 +21,8 @@ echo "==> Create pypi mirror for kubespray"
 pip install -U pip python-pypi-mirror
 
 DEST="-d outputs/pypi/files"
-PLATFORM="--platform manylinux2014_x86_64"  # PEP-599
-#PLATFORM="--platform manylinux_2_17_x86_64"  # PEP-600
+PLATFORM="--platform manylinux2014_$(uname -m)"  # PEP-599
+#PLATFORM="--platform manylinux_2_17_$(uname -m)"  # PEP-600
 
 REQ=requirements.tmp
 #sed "s/^ansible/#ansible/" ${KUBESPRAY_DIR}/requirements.txt > $REQ  # Ansible does not provide binary packages

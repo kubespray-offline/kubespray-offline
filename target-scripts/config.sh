@@ -20,3 +20,6 @@ REGISTRY_PORT=${REGISTRY_PORT:-35000}
 
 # Additional container registry hosts
 ADDITIONAL_CONTAINER_REGISTRY_LIST=${ADDITIONAL_CONTAINER_REGISTRY_LIST:-"myregistry.io"}
+
+# Architecture of binary files
+IMAGE_ARCH=$(dpkg --print-architecture)
