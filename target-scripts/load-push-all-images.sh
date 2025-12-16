@@ -20,6 +20,10 @@ load_images() {
 push_images() {
     images=$(cat $BASEDIR/images/*.list)
     for image in $images; do
+        case "$image" in
+            */*) ;;
+            *) image=docker.io/library/$image ;;
+        esac
 
         # Removes specific repo parts from each image for kubespray
         newImage=$image
