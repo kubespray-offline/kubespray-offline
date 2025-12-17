@@ -6,6 +6,7 @@
 
 - Update kubespray 2.29.1
 - Fix docker.io/library image name (#67)
+- Support arm64 (#68)
 
 ## v2.29.0-0 - 2025/10/26
 
