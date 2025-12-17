@@ -5,6 +5,7 @@
 ## v2.29.1-0 - 2025/12/17
 
 - Update kubespray 2.29.1
+- Fix docker.io/library image name (#67)
 
 ## v2.29.0-0 - 2025/10/26
 
