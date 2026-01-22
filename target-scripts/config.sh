@@ -22,4 +22,29 @@ REGISTRY_PORT=${REGISTRY_PORT:-35000}
 ADDITIONAL_CONTAINER_REGISTRY_LIST=${ADDITIONAL_CONTAINER_REGISTRY_LIST:-"myregistry.io"}
 
 # Architecture of binary files
-IMAGE_ARCH=$(dpkg --print-architecture)
+# Detect OS type and get architecture accordingly
+if [ -e /etc/redhat-release ]; then
+    # RHEL/AlmaLinux/Rocky Linux
+    ARCH=$(uname -m)
+    # Convert x86_64 to amd64 for container images
+    if [ "$ARCH" = "x86_64" ]; then
+        IMAGE_ARCH="amd64"
+    elif [ "$ARCH" = "aarch64" ]; then
+        IMAGE_ARCH="arm64"
+    else
+        IMAGE_ARCH="$ARCH"
+    fi
+elif command -v dpkg >/dev/null 2>&1; then
+    # Ubuntu/Debian
+    IMAGE_ARCH=$(dpkg --print-architecture)
+else
+    # Fallback: use uname -m
+    ARCH=$(uname -m)
+    if [ "$ARCH" = "x86_64" ]; then
+        IMAGE_ARCH="amd64"
+    elif [ "$ARCH" = "aarch64" ]; then
+        IMAGE_ARCH="arm64"
+    else
+        IMAGE_ARCH="$ARCH"
+    fi
+fi
