@@ -26,7 +26,7 @@ ADDITIONAL_CONTAINER_REGISTRY_LIST=${ADDITIONAL_CONTAINER_REGISTRY_LIST:-"myregi
 if [ -e /etc/redhat-release ]; then
     # RHEL/AlmaLinux/Rocky Linux
     ARCH=$(uname -m)
-    # Convert x86_64 to amd64 for container images
+    # Convert x86_64 to amd64 for downloaded binaries
     if [ "$ARCH" = "x86_64" ]; then
         IMAGE_ARCH="amd64"
     elif [ "$ARCH" = "aarch64" ]; then
