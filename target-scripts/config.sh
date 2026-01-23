@@ -23,28 +23,29 @@ ADDITIONAL_CONTAINER_REGISTRY_LIST=${ADDITIONAL_CONTAINER_REGISTRY_LIST:-"myregi
 
 # Architecture of binary files
 # Detect OS type and get architecture accordingly
+map_arch() {
+    case "$1" in
+        x86_64)
+            echo "amd64"
+            ;;
+        aarch64)
+            echo "arm64"
+            ;;
+        *)
+            echo "$1"
+            ;;
+    esac
+}
+
 if [ -e /etc/redhat-release ]; then
     # RHEL/AlmaLinux/Rocky Linux
     ARCH=$(uname -m)
-    # Convert x86_64 to amd64 for downloaded binaries
-    if [ "$ARCH" = "x86_64" ]; then
-        IMAGE_ARCH="amd64"
-    elif [ "$ARCH" = "aarch64" ]; then
-        IMAGE_ARCH="arm64"
-    else
-        IMAGE_ARCH="$ARCH"
-    fi
+    IMAGE_ARCH=$(map_arch "$ARCH")
 elif command -v dpkg >/dev/null 2>&1; then
     # Ubuntu/Debian
     IMAGE_ARCH=$(dpkg --print-architecture)
 else
     # Fallback: use uname -m
     ARCH=$(uname -m)
-    if [ "$ARCH" = "x86_64" ]; then
-        IMAGE_ARCH="amd64"
-    elif [ "$ARCH" = "aarch64" ]; then
-        IMAGE_ARCH="arm64"
-    else
-        IMAGE_ARCH="$ARCH"
-    fi
+    IMAGE_ARCH=$(map_arch "$ARCH")
 fi
