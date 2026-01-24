@@ -2,6 +2,10 @@
 
 ## develop
 
+## v2.29.1-1 - 2026/01/24
+
+- Fix: Support RHEL system architecture detection in config.sh (#69)
+
 ## v2.29.1-0 - 2025/12/17
 
 - Update kubespray 2.29.1
