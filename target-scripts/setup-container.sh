@@ -5,7 +5,7 @@
 
 # Load images
 echo "==> Load registry, nginx images"
-NERDCTL=/usr/local/bin/nerdctl
+NERDCTL="/usr/local/bin/nerdctl --namespace default"
 cd ./images
 
 for f in docker.io_library_registry-*.tar.gz docker.io_library_nginx-*.tar.gz; do
