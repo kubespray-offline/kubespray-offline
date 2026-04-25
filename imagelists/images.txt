@@ -1,2 +1,2 @@
-registry:3.0.0
-nginx:1.29.4
+registry:3.1.0
+nginx:1.30.0
