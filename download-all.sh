@@ -2,7 +2,7 @@
 
 run() {
     echo "=> Running: $*"
-    $* || {
+    "$@" || {
         echo "Failed in : $*"
         exit 1
     }

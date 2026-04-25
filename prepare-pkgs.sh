@@ -37,7 +37,7 @@ if [ -e /etc/redhat-release ]; then
             fi
             ;;
         10*)
-            # RHEL 9
+            # RHEL 10
             if ! command -v repo2module >/dev/null; then
                 $sudo dnf install -y createrepo_c
             fi

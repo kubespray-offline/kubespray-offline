@@ -7,7 +7,7 @@ source scripts/common.sh
 source scripts/images.sh
 
 KUBESPRAY_DIR=./cache/kubespray-${KUBESPRAY_VERSION}
-if [ ! -e $KUBESPRAY_DIR ]; then
+if [ ! -e "$KUBESPRAY_DIR" ]; then
     echo "No kubespray dir at $KUBESPRAY_DIR"
     exit 1
 fi
@@ -32,25 +32,25 @@ decide_relative_dir() {
     local url=$1
     local rdir
     rdir=$url
-    rdir=$(echo $rdir | sed "s@.*/\(v[0-9.]*\)/.*/kube\(adm\|ctl\|let\)@kubernetes/\1@g")
-    rdir=$(echo $rdir | sed "s@.*/etcd-.*.tar.gz@kubernetes/etcd@")
-    rdir=$(echo $rdir | sed "s@.*/cni-plugins.*.tgz@kubernetes/cni@")
-    rdir=$(echo $rdir | sed "s@.*/crictl-.*.tar.gz@kubernetes/cri-tools@")
-    rdir=$(echo $rdir | sed "s@.*/\(v.*\)/calicoctl-.*@kubernetes/calico/\1@")
-    rdir=$(echo $rdir | sed "s@.*/\(v.*\)/runc.${IMAGE_ARCH}@runc/\1@")
-    rdir=$(echo $rdir | sed "s@.*/\(v.*\)/cilium-linux-.*@cilium-cli/\1@")
-    rdir=$(echo $rdir | sed "s@.*/\([^/]*\)/\([^/]*\)/runsc@gvisor/\1/\2@")
-    rdir=$(echo $rdir | sed "s@.*/\([^/]*\)/\([^/]*\)/containerd-shim-runsc-v1@gvisor/\1/\2@")
-    rdir=$(echo $rdir | sed "s@.*/\(v[^/]*\)/skopeo-linux-.*@skopeo/\1@")
-    rdir=$(echo $rdir | sed "s@.*/\(v[^/]*\)/yq_linux_*@yq/\1@")
+    rdir=$(echo "$rdir" | sed "s@.*/\(v[0-9.]*\)/.*/kube\(adm\|ctl\|let\)@kubernetes/\1@g")
+    rdir=$(echo "$rdir" | sed "s@.*/etcd-.*.tar.gz@kubernetes/etcd@")
+    rdir=$(echo "$rdir" | sed "s@.*/cni-plugins.*.tgz@kubernetes/cni@")
+    rdir=$(echo "$rdir" | sed "s@.*/crictl-.*.tar.gz@kubernetes/cri-tools@")
+    rdir=$(echo "$rdir" | sed "s@.*/\(v.*\)/calicoctl-.*@kubernetes/calico/\1@")
+    rdir=$(echo "$rdir" | sed "s@.*/\(v.*\)/runc.${IMAGE_ARCH}@runc/\1@")
+    rdir=$(echo "$rdir" | sed "s@.*/\(v.*\)/cilium-linux-.*@cilium-cli/\1@")
+    rdir=$(echo "$rdir" | sed "s@.*/\([^/]*\)/\([^/]*\)/runsc@gvisor/\1/\2@")
+    rdir=$(echo "$rdir" | sed "s@.*/\([^/]*\)/\([^/]*\)/containerd-shim-runsc-v1@gvisor/\1/\2@")
+    rdir=$(echo "$rdir" | sed "s@.*/\(v[^/]*\)/skopeo-linux-.*@skopeo/\1@")
+    rdir=$(echo "$rdir" | sed "s@.*/\(v[^/]*\)/yq_linux_*@yq/\1@")
     if [ "$url" != "$rdir" ]; then
-        echo $rdir
+        echo "$rdir"
         return
     fi
 
-    rdir=$(echo $rdir | sed "s@.*/calico/.*@kubernetes/calico@")
+    rdir=$(echo "$rdir" | sed "s@.*/calico/.*@kubernetes/calico@")
     if [ "$url" != "$rdir" ]; then
-        echo $rdir
+        echo "$rdir"
     else
         echo ""
     fi
@@ -60,20 +60,20 @@ get_url() {
     url=$1
     filename="${url##*/}"
 
-    rdir=$(decide_relative_dir $url)
+    rdir=$(decide_relative_dir "$url")
 
     if [ -n "$rdir" ]; then
-        if [ ! -d $FILES_DIR/$rdir ]; then
-            mkdir -p $FILES_DIR/$rdir
+        if [ ! -d "$FILES_DIR/$rdir" ]; then
+            mkdir -p "$FILES_DIR/$rdir"
         fi
     else
         rdir="."
     fi
 
-    if [ ! -e $FILES_DIR/$rdir/$filename ]; then
+    if [ ! -e "$FILES_DIR/$rdir/$filename" ]; then
         echo "==> Download $url"
         for i in {1..3}; do
-            curl --location --show-error --fail --output $FILES_DIR/$rdir/$filename $url && return
+            curl --location --show-error --fail --output "$FILES_DIR/$rdir/$filename" "$url" && return
             echo "curl failed. Attempt=$i"
         done
         echo "Download failed, exit : $url"
@@ -105,8 +105,8 @@ generate_list
 
 mkdir -p $FILES_DIR
 
-cp ${KUBESPRAY_DIR}/contrib/offline/temp/files.list $FILES_DIR/
-cp ${KUBESPRAY_DIR}/contrib/offline/temp/images.list $IMAGES_DIR/
+cp "${KUBESPRAY_DIR}/contrib/offline/temp/files.list" "$FILES_DIR/"
+cp "${KUBESPRAY_DIR}/contrib/offline/temp/images.list" "$IMAGES_DIR/"
 
 # download files
 files=$(cat ${FILES_DIR}/files.list)

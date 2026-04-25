@@ -52,10 +52,21 @@ deb [trusted=yes] file:///tmp/debs/local/ ./
 EOF
 
     echo "===> Disable default repositories"
-    if [ ! -e /etc/apt/sources.list.original ]; then
-        sudo cp /etc/apt/sources.list /etc/apt/sources.list.original
-    fi
-    sudo sed -i "s/^deb /# deb /" /etc/apt/sources.list
+    case "$VERSION_ID" in
+        "20.04"|"22.04")
+            if [ ! -e /etc/apt/sources.list.original ]; then
+                sudo cp /etc/apt/sources.list /etc/apt/sources.list.original
+            fi
+            sudo sed -i "s/^deb /# deb /" /etc/apt/sources.list
+            ;;
+        *)
+            if [ ! -e /etc/apt/sources.list.d/ubuntu.sources.original ]; then
+                sudo cp /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.original
+            fi
+            sudo /bin/rm /etc/apt/sources.list.d/ubuntu.sources
+            sudo touch /etc/apt/sources.list.d/ubuntu.sources
+            ;;
+    esac
 }
 
 setup_pypi_mirror() {

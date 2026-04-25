@@ -34,7 +34,7 @@ if [ -e $DEBDIR ]; then
 fi
 mkdir -p $DEBDIR/pkgs
 /bin/cp $CACHEDIR/* $DEBDIR/pkgs
-/bin/rm $DEBDIR/pkgs/*i386.deb
+/bin/rm -f $DEBDIR/pkgs/*i386.deb
 
 pushd $DEBDIR || exit 1
 apt-ftparchive sources . > Sources && gzip -c9 Sources > Sources.gz

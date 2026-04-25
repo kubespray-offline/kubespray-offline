@@ -7,7 +7,7 @@ source /etc/os-release
 
 # setup yum/deb repository
 setup_yum_repos() {
-    sudo /bin/rm /etc/yum.repos.d/offline.repo
+    sudo /bin/rm -f /etc/yum.repos.d/offline.repo
 
     echo "===> Disable all yumrepositories"
     for repo in /etc/yum.repos.d/*.repo; do

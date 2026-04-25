@@ -8,10 +8,10 @@ fi
 get_image() {
     image=$1
 
-    tarname="$(echo ${image} | sed s@"/"@"_"@g | sed s/":"/"-"/g)".tar
-    zipname="$(echo ${image} | sed s@"/"@"_"@g | sed s/":"/"-"/g)".tar.gz
+    tarname="$(echo "$image" | sed s@"/"@"_"@g | sed s/":"/"-"/g)".tar
+    zipname="$(echo "$image" | sed s@"/"@"_"@g | sed s/":"/"-"/g)".tar.gz
 
-    if [ ! -e $IMAGES_DIR/$zipname ]; then
+    if [ ! -e "$IMAGES_DIR/$zipname" ]; then
         echo "==> Pull $image"
 
         max_retries=3
@@ -20,8 +20,8 @@ get_image() {
         success=false
 
         while [ $attempt -lt $max_retries ]; do
-            echo $sudo $docker pull $image
-            $sudo $docker pull $image && success=true && break
+            echo $sudo $docker pull "$image"
+            $sudo $docker pull "$image" && success=true && break
             attempt=$((attempt + 1))
             echo "Attempt $attempt/$max_retries failed. Retrying in $retry_delay seconds..."
             sleep $retry_delay
@@ -33,11 +33,11 @@ get_image() {
         fi
 
         echo "==> Save $image"
-        echo $sudo $docker save -o $IMAGES_DIR/$tarname $image
-        $sudo $docker save -o $IMAGES_DIR/$tarname $image || exit 1
-        $sudo chown $(whoami) $IMAGES_DIR/$tarname
-        chmod 0644 $IMAGES_DIR/$tarname
-        gzip -v $IMAGES_DIR/$tarname
+        echo $sudo $docker save -o "$IMAGES_DIR/$tarname" "$image"
+        $sudo $docker save -o "$IMAGES_DIR/$tarname" "$image" || exit 1
+        $sudo chown "$(whoami)" "$IMAGES_DIR/$tarname"
+        chmod 0644 "$IMAGES_DIR/$tarname"
+        gzip -v "$IMAGES_DIR/$tarname"
     else
         echo "==> Skip $image"
     fi

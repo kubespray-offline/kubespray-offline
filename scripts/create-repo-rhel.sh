@@ -45,7 +45,7 @@ if [ -e $RPMDIR ]; then
 fi
 mkdir -p $RPMDIR
 /bin/cp $CACHEDIR/*.rpm $RPMDIR/
-/bin/rm $RPMDIR/*.i686.rpm
+/bin/rm -f $RPMDIR/*.i686.rpm
 
 echo "==> createrepo"
 createrepo $RPMDIR || exit 1
