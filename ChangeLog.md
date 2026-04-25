@@ -1,6 +1,12 @@
 # ChangeLogs
 
-## develop
+## v2.31.0-0 - 2026/04/25
+
+- Update kubespray 2.31.0
+- Update offline.yml for kubespray 2.31.0
+- Update Nginx to 1.30.0
+- Update registry server to 3.1.0
+- Improve script files
 
 ## v2.30.0-0 - 2026/02/01
 
