@@ -1,0 +1,12 @@
+FROM ubuntu:26.04
+
+RUN apt update \
+    && apt upgrade -y \
+    && apt install -y sudo tzdata \
+    && apt clean all
+
+RUN mkdir /tmp/scripts && mkdir /tmp/target-scripts
+COPY ./*.sh /tmp/
+COPY scripts/*.sh /tmp/scripts/
+COPY target-scripts/*.sh /tmp/target-scripts/
+RUN cd /tmp && ./precheck.sh && ./prepare-pkgs.sh

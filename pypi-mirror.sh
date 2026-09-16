@@ -30,7 +30,7 @@ cp ${KUBESPRAY_DIR}/requirements.txt $REQ
 echo "PyYAML" >> $REQ  # Ansible dependency
 echo "ruamel.yaml" >> $REQ # Inventory builder
 
-for pyver in 3.11 3.12; do
+for pyver in 3.11 3.12 3.14; do
     echo "===> Download binary for python $pyver"
     pip download $DEST --only-binary :all: --python-version $pyver $PLATFORM -r $REQ || exit 1
 done
