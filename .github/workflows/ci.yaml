@@ -60,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [ rocky9, rocky10, ubuntu22, ubuntu24 ]
+        target: [ rocky9, rocky10, ubuntu22, ubuntu24, ubuntu26 ]
 
     steps:
       - uses: actions/checkout@v4
