@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This project generates offline installation artifacts for [Kubespray](https://kubespray.io/) — a Kubernetes deployment tool. It downloads all required files (OS packages, container images, binary files, PyPI packages) on an internet-connected machine, then provides scripts to serve them locally on an air-gapped target cluster.
 
-Supported OS: RHEL/AlmaLinux/Rocky Linux 9, Ubuntu 22.04/24.04. The current Kubespray version target is set in `target-scripts/config.sh` (`KUBESPRAY_VERSION`).
+Supported OS: RHEL/AlmaLinux/Rocky Linux 9/10, Ubuntu 22.04/24.04/26.04. The current Kubespray version target is set in `target-scripts/config.sh` (`KUBESPRAY_VERSION`).
 
 ## Key Configuration
 

@@ -19,8 +19,8 @@ This supports:
 
 ## Requirements
 
-- RHEL / AlmaLinux / Rocky Linux : 9
-- Ubuntu 22.04 / 24.04
+- RHEL / AlmaLinux / Rocky Linux : 9 / 10
+- Ubuntu 22.04 / 24.04 / 26.04
 
 Note: RHEL8 support is dropped from Kubespray 2.29.0.
 
