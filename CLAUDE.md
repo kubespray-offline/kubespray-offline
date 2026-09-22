@@ -64,7 +64,7 @@ Copy `outputs/` to the target node, then run from that directory:
 ./setup-offline.sh         # configure yum/deb repos and pip to use local nginx
 ./setup-py.sh              # install python from local repo
 ./start-registry.sh        # start private Docker registry on REGISTRY_PORT (default 35000)
-./load-push-all-images.sh  # load all images into containerd, tag and push to local registry
+./load-push-all-images.sh  # push all downloaded images to local registry (via skopeo, straight from the tar.gz archives)
 ./extract-kubespray.sh     # extract kubespray tarball and apply patches
 ```
 

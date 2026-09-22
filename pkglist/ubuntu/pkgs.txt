@@ -40,6 +40,9 @@ xfsprogs
 firewalld
 lvm2
 
+# skopeo: used by load-push-all-images.sh to push images to the local registry
+skopeo
+
 # nfs
 #nfs-common
 #nfs-kernel-server

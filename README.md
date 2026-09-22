@@ -78,9 +78,8 @@ Then run following scripts in `outputs` directory.
     - Install python3 and venv from local repo.
 * start-registry.sh
     - Start docker private registry container.
-* load-push-images.sh
-    - Load all container images to containerd.
-    - Tag and push them to the private registry.
+* load-push-all-images.sh
+    - Push all container images (from the downloaded tar.gz archives) to the private registry using skopeo.
 * extract-kubespray.sh
     - Extract kubespray tarball and apply all patches.
 
