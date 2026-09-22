@@ -4,7 +4,7 @@
 
 NERDCTL_TARBALL=nerdctl-${NERDCTL_VERSION}-linux-${IMAGE_ARCH}.tar.gz
 
-if [ ! -x /usr/local/bin/nerctl ]; then
+if [ ! -x /usr/local/bin/nerdctl ]; then
     echo "==> Install nerdctl"
     curl -SLO https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VERSION}/${NERDCTL_TARBALL} || exit 1
     tar xvf ./${NERDCTL_TARBALL} -C /tmp
