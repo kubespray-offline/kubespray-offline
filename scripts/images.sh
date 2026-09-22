@@ -33,6 +33,11 @@ get_image() {
         fi
 
         echo "==> Save $image"
+        # Remove any leftover tar from a previously interrupted/failed save.
+        # podman's docker-archive format refuses to write into an existing
+        # file ("doesn't support modifying existing images"), so a stale
+        # partial .tar here would make every retry fail at this step.
+        $sudo rm -f "$IMAGES_DIR/$tarname"
         echo $sudo $docker save -o "$IMAGES_DIR/$tarname" "$image"
         $sudo $docker save -o "$IMAGES_DIR/$tarname" "$image" || exit 1
         $sudo chown "$(whoami)" "$IMAGES_DIR/$tarname"
