@@ -7,8 +7,6 @@ TESTDIR=$BASEDIR/test
 cd $BASEDIR/outputs
 source ./config.sh
 
-NERDCTL=/usr/local/bin/nerdctl
-
 prepare_ssh_key() {
     if [ ! -e ~/.ssh/id_rsa ]; then
         ssh-keygen -f ~/.ssh/id_rsa -N "" && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
@@ -27,22 +25,12 @@ prepare_servers() {
     # Restore default route
     $TESTDIR/restore-offline.sh
 
-    # remove all images
-    images=$(cat images/*.list)
-    for image in $images; do
-        if ! grep "^nginx" $image >/dev/null && ! grep "^registry" $image >/dev/null; then  # do not remove running nginx/registry image
-            echo "==> Remove image: $image"
-            sudo $NERDCTL image rm $image
-        fi
-
-        localImage=$image
-        for repo in registry.k8s.io k8s.gcr.io gcr.io ghcr.io docker.io quay.io; do
-            localImage=$(echo ${localImage} | sed s@^${repo}/@@)
-        done
-
-        echo "==> Remove image: localhost:$REGISTRY_PORT/$localImage"
-        sudo $NERDCTL image rm localhost:$REGISTRY_PORT/$localImage
-    done
+    # No local image cleanup needed here anymore: load-push-all-images.sh
+    # pushes straight from the tar.gz archives to the registry via skopeo,
+    # so these images never touch local containerd storage, and nginx/
+    # registry are reloaded idempotently by setup-container.sh on the next
+    # run. Re-pushing to the registry is idempotent too (existing blobs are
+    # skipped), so there's nothing to reset between test runs.
     #set +x
 }
 
