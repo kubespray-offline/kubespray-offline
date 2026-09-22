@@ -12,35 +12,21 @@ get_image() {
     zipname="$(echo "$image" | sed s@"/"@"_"@g | sed s/":"/"-"/g)".tar.gz
 
     if [ ! -e "$IMAGES_DIR/$zipname" ]; then
-        echo "==> Pull $image"
+        echo "==> Pull & save $image"
 
-        max_retries=3
-        retry_delay=3
-        attempt=0
-        success=false
-
-        while [ $attempt -lt $max_retries ]; do
-            echo $sudo $docker pull "$image"
-            $sudo $docker pull "$image" && success=true && break
-            attempt=$((attempt + 1))
-            echo "Attempt $attempt/$max_retries failed. Retrying in $retry_delay seconds..."
-            sleep $retry_delay
-        done
-
-        if [ "$success" = false ]; then
-            echo "Failed to pull $image after $max_retries attempts."
-            exit 1
-        fi
-
-        echo "==> Save $image"
-        # Remove any leftover tar from a previously interrupted/failed save.
-        # podman's docker-archive format refuses to write into an existing
+        # Remove any leftover tar from a previously interrupted/failed copy.
+        # skopeo's docker-archive format refuses to write into an existing
         # file ("doesn't support modifying existing images"), so a stale
         # partial .tar here would make every retry fail at this step.
-        $sudo rm -f "$IMAGES_DIR/$tarname"
-        echo $sudo $docker save -o "$IMAGES_DIR/$tarname" "$image"
-        $sudo $docker save -o "$IMAGES_DIR/$tarname" "$image" || exit 1
-        $sudo chown "$(whoami)" "$IMAGES_DIR/$tarname"
+        rm -f "$IMAGES_DIR/$tarname"
+
+        # skopeo copies straight from the registry to a docker-archive file,
+        # with no local container storage/daemon and no root privileges
+        # required. --override-arch pins the architecture for multi-arch
+        # (manifest list) images, since skopeo otherwise defaults to the
+        # build host's own architecture.
+        echo skopeo copy --override-arch "$IMAGE_ARCH" --retry-times 3 "docker://$image" "docker-archive:$IMAGES_DIR/$tarname:$image"
+        skopeo copy --override-arch "$IMAGE_ARCH" --retry-times 3 "docker://$image" "docker-archive:$IMAGES_DIR/$tarname:$image" || exit 1
         chmod 0644 "$IMAGES_DIR/$tarname"
         gzip -v "$IMAGES_DIR/$tarname"
     else

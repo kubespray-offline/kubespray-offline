@@ -11,11 +11,6 @@ Download all offline files (excludes container images) to local disk using Docke
 
 Note: Vagrant with libvirt will not work because synced_folder supports only one-way sync of rsync.
 
-Then, download container images.
-
-    $ cd ..
-    $ ./download-kubespray-files.sh
-
 ## Phase 2: Deploy test
 
 Destroy and re-create the cluster using vagrant.

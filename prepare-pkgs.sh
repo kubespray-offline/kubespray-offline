@@ -13,7 +13,7 @@ if [ -e /etc/redhat-release ]; then
     echo "==> Install required packages"
     $sudo dnf check-update
 
-    $sudo dnf install -y rsync gcc libffi-devel createrepo git podman || exit 1
+    $sudo dnf install -y rsync gcc libffi-devel createrepo git podman skopeo || exit 1
 
     case "$VERSION_ID" in
         7*)
@@ -68,5 +68,5 @@ else
             $sudo apt update
             ;;
     esac
-    $sudo apt install -y python${PY} python${PY}-venv python${PY}-dev python3-pip python3-selinux podman || exit 1
+    $sudo apt install -y python${PY} python${PY}-venv python${PY}-dev python3-pip python3-selinux podman skopeo || exit 1
 fi

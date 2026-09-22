@@ -30,12 +30,11 @@ Note: You must execute this process on same OS of k8s target nodes.
 
 Before download offline files, check and edit configurations in `config.sh`.
 
-The `podman` is automatically installed to pull and save container images.
-But you can use `containerd` instead of `podman`.
+Container images are pulled and saved with `skopeo` (automatically installed), which talks
+directly to the registry and needs no daemon or root privileges.
 
-* To use containerd
-    - Run `install-containerd.sh` to install containerd and nerdctl.
-    - Edit `config.sh` and change `docker` variable to nerdctl.
+The `docker`/`podman` variable in `config.sh` is unrelated to image downloading; it only
+selects the container runtime used to run Ansible itself when `ansible_in_container=true`.
 
 Then, download all files:
 
