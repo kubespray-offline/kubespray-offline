@@ -4,12 +4,17 @@ You can run a single VM test with `FULL-TEST-SINGLE.sh`.
 
 ## Phase 1: Preparation
 
-Download all offline files to local disk using Docker.
+Download all offline files (excludes container images) to local disk using Docker.
 
     $ ../cleanup.sh
     $ ../docker/download-all.sh ubuntu24
 
 Note: Vagrant with libvirt will not work because synced_folder supports only one-way sync of rsync.
+
+Then, download container images.
+
+    $ cd ..
+    $ ./download-kubespray-files.sh
 
 ## Phase 2: Deploy test
 
