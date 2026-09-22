@@ -16,6 +16,12 @@ $NERDCTL container update --restart no nginx 2>/dev/null
 $NERDCTL container stop nginx 2>/dev/null
 $NERDCTL container rm nginx 2>/dev/null
 
+echo "===> Configure nginx listen port ${NGINX_PORT}"
+sed -r -i \
+    -e "s/^([[:space:]]*listen[[:space:]]+)[0-9]+;/\1${NGINX_PORT};/" \
+    -e "s/^([[:space:]]*listen[[:space:]]+\[::\]:)[0-9]+;/\1${NGINX_PORT};/" \
+    "${BASEDIR}/nginx-default.conf" || exit 1
+
 echo "===> Start nginx"
 $NERDCTL container run -d \
     --network host \
