@@ -2,7 +2,8 @@
 
 ## v2.32.0-0 - 2026/09/22
 
-- Update kubespray 2.32.0
+- Update Kubespray 2.32.0
+- Use skopeo instead of podman/nerdctl to pull/save/push container images (#73)
 - Add support of Ubuntu 26.04
 - Update registry server to 3.1.1
 - Update Nginx to 1.31.6
