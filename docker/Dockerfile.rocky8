@@ -1,4 +1,4 @@
-FROM almalinux:9
+FROM rockylinux:8
 
 RUN dnf update -y && dnf install -y sudo dnf 'dnf-command(download)' git && dnf clean all
 
