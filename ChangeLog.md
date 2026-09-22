@@ -1,5 +1,12 @@
 # ChangeLogs
 
+## v2.32.0-0 - 2026/09/22
+
+- Update kubespray 2.32.0
+- Add support of Ubuntu 26.04
+- Update registry server to 3.1.1
+- Update Nginx to 1.31.6
+
 ## v2.31.0-0 - 2026/04/25
 
 - Update kubespray 2.31.0

@@ -1,14 +1,14 @@
 #!/bin/bash
 # Kubespray version to download. Use "master" for latest master branch.
-KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.31.0}
+KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-2.32.0}
 #KUBESPRAY_VERSION=${KUBESPRAY_VERSION:-master}
 
 # Versions of containerd related binaries used in `install-containerd.sh`
 # These version must be same as kubespray.
 # Refer `roles/kubespray_defaults/vars/main/checksums.yml` of kubespray.
-RUNC_VERSION=1.4.2
-CONTAINERD_VERSION=2.2.3
-NERDCTL_VERSION=2.2.2
+RUNC_VERSION=1.4.3
+CONTAINERD_VERSION=2.3.5
+NERDCTL_VERSION=2.3.5
 CNI_VERSION=1.9.1
 
 # Some container versions, must be same as ../imagelists/images.txt
