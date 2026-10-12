@@ -19,7 +19,7 @@ setup_yum_repos() {
     cat <<EOF | sudo tee /etc/yum.repos.d/offline.repo
 [offline-repo]
 name=Offline repo
-baseurl=http://localhost/rpms/local/
+baseurl=http://localhost:${NGINX_PORT}/rpms/local/
 enabled=1
 gpgcheck=0
 EOF
@@ -35,7 +35,7 @@ Acquire::AllowDowngradeToInsecureRepositories "true";
 EOF
 
     cat <<EOF | sudo tee /etc/apt/sources.list.d/offline.list
-deb [trusted=yes] http://localhost/debs/local/ ./
+deb [trusted=yes] http://localhost:${NGINX_PORT}/debs/local/ ./
 EOF
 
     case "$VERSION_ID" in
@@ -66,8 +66,8 @@ setup_pypi_mirror() {
     mkdir -p ~/.config/pip/
     cat <<EOF >~/.config/pip/pip.conf
 [global]
-index = http://localhost/pypi/
-index-url = http://localhost/pypi/
+index = http://localhost:${NGINX_PORT}/pypi/
+index-url = http://localhost:${NGINX_PORT}/pypi/
 trusted-host = localhost
 EOF
 }
